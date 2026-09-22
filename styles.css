@@ -575,7 +575,7 @@ h1 span {
 }
 
 .app-section {
-  padding-top: 64px;
+  padding-block: 0 72px;
 }
 
 .app-overview {
@@ -673,7 +673,7 @@ h1 span {
     gap: 24px;
   }
   .app-section {
-    padding-top: 40px;
+    padding-block: 0 44px;
   }
   .app-invitation {
     padding: 24px;
