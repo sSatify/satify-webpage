@@ -849,9 +849,9 @@ h2 {
 .game-card {
   display: grid;
   grid-template-columns: 1.1fr .9fr;
-  border: 3px solid var(--ink);
-  background: var(--ink);
-  color: var(--cream);
+  border: 3px solid var(--line);
+  background: var(--soft-bg);
+  color: var(--text);
   box-shadow: 6px 6px 0 var(--frame-shadow);
   overflow: hidden
 }
@@ -864,7 +864,7 @@ h2 {
 }
 
 .game-copy .eyebrow {
-  color: var(--mint);
+  color: var(--forest);
   font-size: 9px;
   margin-bottom: 18px
 }
@@ -876,11 +876,11 @@ h2 {
 }
 
 .game-copy h2 span {
-  color: var(--gold)
+  color: var(--forest)
 }
 
 .game-copy>p:not(.eyebrow) {
-  color: #d8e1d0;
+  color: var(--muted);
   font-size: 15px;
   max-width: 440px;
   line-height: 1.75
@@ -892,13 +892,13 @@ h2 {
 
 .game-action .pixel-button {
   color: var(--ink);
-  box-shadow: 3px 3px 0 #11291e
+  box-shadow: 3px 3px 0 var(--frame-shadow)
 }
 
 .game-action>span {
   display: block;
   font-size: 11px;
-  color: #c0cfba;
+  color: var(--muted);
   margin-top: 14px
 }
 
@@ -907,15 +907,15 @@ h2 {
   justify-items: center;
   gap: 18px;
   padding: 32px;
-  background: #172c25;
+  background: var(--legal-bg);
   text-align: center;
 }
 
 .game-preview a {
   display: block;
   width: min(100%, 260px);
-  border: 2px solid #729b73;
-  box-shadow: 5px 5px 0 #102019;
+  border: 2px solid var(--line);
+  box-shadow: 5px 5px 0 var(--frame-shadow);
 }
 
 .game-preview img {
@@ -924,7 +924,7 @@ h2 {
 }
 
 .game-preview figcaption {
-  color: #d8e1d0;
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.6;
 }
