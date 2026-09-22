@@ -8,9 +8,9 @@ try {
   // Follow the system until a theme is selected on this page.
 }
 
-const screenshotPanel = document.querySelector('#app-screenshot-panel');
-const screenshotTrigger = document.querySelector('.app-preview-open');
-if (screenshotPanel && screenshotTrigger) {
+document.querySelectorAll('.app-preview-open, .game-preview-open').forEach(screenshotTrigger => {
+  const screenshotPanel = document.getElementById(screenshotTrigger.getAttribute('aria-controls'));
+  if (!screenshotPanel) return;
   screenshotTrigger.addEventListener('click', () => {
     screenshotPanel.showModal();
     document.documentElement.classList.add('screenshot-open');
@@ -26,7 +26,7 @@ if (screenshotPanel && screenshotTrigger) {
     document.documentElement.classList.remove('screenshot-open');
     screenshotTrigger.focus({ preventScroll: true });
   });
-}
+});
 
 function currentTheme() {
   return preferredTheme || (systemTheme.matches ? 'dark' : 'light');

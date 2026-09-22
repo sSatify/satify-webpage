@@ -58,7 +58,8 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
   Created with the built-in image-generation tool; the full prompt is in [docs/contact-artwork.md](docs/contact-artwork.md).
 - Game promotion screenshot: `assets/satify-game-mobile.png`, supplied by Marco on 22 September 2026.
   It shows the actual Satify game on mobile, with satellite imagery, labels, and labelling tools. The original
-  screenshot is displayed without retouching and can be opened at full size. The interactive hero retains the pixel artwork.
+  screenshot is displayed without retouching and opens in an on-page panel, using the same Close button,
+  Escape, and outside-click behaviour as the app screenshot. The interactive hero retains the pixel artwork.
 - Game sticker: `assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
   The "Let’s play!" sticker links to the game from its promotion panel.
 - App workspace screenshot: `assets/satify-app-workspace.png`, supplied by Marco on 22 September 2026.

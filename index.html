@@ -222,11 +222,11 @@
                 </div>
             </div>
             <figure class="game-preview">
-                <a href="assets/satify-game-mobile.png" target="_blank" rel="noopener noreferrer"
-                   aria-label="View the full Satify game screenshot in a new tab">
+                <button class="game-preview-open" type="button" aria-haspopup="dialog" aria-controls="game-screenshot-panel"
+                        aria-label="Enlarge the Satify game screenshot">
                     <img src="assets/satify-game-mobile.png" width="1080" height="2392" loading="lazy"
                          alt="Satify game on mobile: satellite images from 2021 and 1996 with vegetation labels and labelling tools.">
-                </a>
+                </button>
                 <figcaption>Satify — The Game on mobile.<br>Tap the screenshot for a closer look.</figcaption>
             </figure>
         </div>
@@ -254,6 +254,14 @@
     </div>
     <img src="assets/satify-app-workspace.png" width="1619" height="1269" loading="lazy"
          alt="Satify app workspace with coloured labels over remote sensing imagery, Smart Fill controls, and the settings panel.">
+</dialog>
+<dialog class="screenshot-panel game-screenshot-panel" id="game-screenshot-panel" aria-labelledby="game-screenshot-title">
+    <div class="screenshot-panel-header">
+        <h2 id="game-screenshot-title">SATIFY — The Game</h2>
+        <button class="screenshot-panel-close" type="button" autofocus>Close</button>
+    </div>
+    <img src="assets/satify-game-mobile.png" width="1080" height="2392" loading="lazy"
+         alt="Satify game on mobile: satellite images from 2021 and 1996 with vegetation labels and labelling tools.">
 </dialog>
 <footer class="site-footer">
     <div class="footer-inner wrap"><a class="brand footer-brand" href="./" aria-label="Satify home"><img

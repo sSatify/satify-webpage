@@ -681,7 +681,8 @@ h1 span {
   align-self: center;
 }
 
-.app-preview-open {
+.app-preview-open,
+.game-preview-open {
   display: block;
   width: 100%;
   padding: 0;
@@ -721,6 +722,10 @@ html.screenshot-open {
 
 .screenshot-panel::backdrop {
   background: #07110ee0;
+}
+
+.game-screenshot-panel {
+  width: min(600px, calc(100% - 32px));
 }
 
 .screenshot-panel-header {
@@ -957,7 +962,7 @@ h2 {
   text-align: center;
 }
 
-.game-preview a {
+.game-preview-open {
   display: block;
   width: min(100%, 260px);
   border: 2px solid var(--line);
