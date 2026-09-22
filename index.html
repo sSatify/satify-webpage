@@ -1,77 +1,228 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A fresh perspective on satellite imagery. Explore your images, create labels, and discover environmental change with Satify.">
-  <meta name="theme-color" content="#203c31">
-  <title>Satify — Small pixels. Big discoveries.</title>
-  <link rel="icon" href="assets/satify-logo.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/silkscreen-regular.ttf" as="font" type="font/ttf" crossorigin>
-  <script src="theme.js"></script>
-  <link rel="stylesheet" href="styles.css">
-  <script src="site.js" defer></script>
-  <script src="discovery.js" defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+          content="Turn remote sensing imagery into labelled data with the Satify app. Work with satellite, drone, and aerial imagery. Request an invitation or try our free game.">
+    <meta name="theme-color" content="#203c31">
+    <title>Satify — Small pixels. Big discoveries.</title>
+    <link rel="icon" href="assets/satify-logo.svg" type="image/svg+xml">
+    <link rel="preload" href="assets/fonts/silkscreen-regular.ttf" as="font" type="font/ttf" crossorigin>
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="site.js" defer></script>
+    <script src="discovery.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
-  <header class="site-header">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
     <div class="header-inner wrap">
-      <a class="brand" href="./" aria-label="Satify home"><img src="assets/satify-logo.svg" width="42" height="42" alt=""><span>SATIFY<span class="brand-caption">MAKE SENSE. MAKE LABELS.</span></span></a>
-      <div class="header-tools"><nav aria-label="Main navigation"><a href="#how-it-works">The mission</a><a href="#the-game">The game</a><a class="header-app" href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Open app</a></nav><button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false" title="Switch to dark theme" hidden><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path class="theme-sun" d="M8 0h4v3H8zM8 17h4v3H8zM0 8h3v4H0zM17 8h3v4h-3zM3 3h3v3H3zM14 3h3v3h-3zM3 14h3v3H3zM14 14h3v3h-3zM6 6h8v8H6z"/><path class="theme-moon" d="M8 1h4v3H8v8h8V8h3v7h-3v3H5v-3H2V5h3V2h3z"/></svg><span class="theme-label">Light</span></button></div>
+        <a class="brand" href="./" aria-label="Satify home"><img src="assets/satify-logo.svg" width="42" height="42"
+                                                                 alt=""><span>SATIFY<span class="brand-caption">MAKE SENSE. MAKE LABELS.</span></span></a>
+        <div class="header-tools">
+            <nav aria-label="Main navigation"><a href="#how-it-works">The mission</a><a href="#the-app">The app</a></nav>
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"
+                    title="Switch to dark theme" hidden>
+                <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+                    <path class="theme-sun"
+                          d="M8 0h4v3H8zM8 17h4v3H8zM0 8h3v4H0zM17 8h3v4h-3zM3 3h3v3H3zM14 3h3v3h-3zM3 14h3v3H3zM14 14h3v3h-3zM6 6h8v8H6z"/>
+                    <path class="theme-moon" d="M8 1h4v3H8v8h8V8h3v7h-3v3H5v-3H2V5h3V2h3z"/>
+                </svg>
+                <span class="theme-label">Light</span></button>
+        </div>
     </div>
-  </header>
-  <main id="main">
+</header>
+<main id="main">
     <section class="hero wrap" aria-labelledby="hero-heading">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="pixel-spark" aria-hidden="true">✦</span> FOR THE CURIOUS, DOWN TO EARTH.</p>
-        <h1 id="hero-heading">Small pixels.<br><span>Big discoveries.</span></h1>
-        <p class="intro">There’s a whole world in your imagery.<br class="desktop-break"> Let’s make sense of it.</p>
-        <p class="hero-description">Explore satellite images, give landscapes their labels, and bring the details into focus. Your next discovery starts with a closer look.</p>
-        <div class="hero-actions"><a class="pixel-button primary" href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Enter the app</a><a class="pixel-button secondary" href="https://game.satify.tech/" target="_blank" rel="noopener noreferrer">Play the game</a></div>
-        <p class="access-note"><span aria-hidden="true" class="status-dot"></span> The app is invitation only. <a href="mailto:info@satify.tech?subject=Satify%20invitation%20request">Request access</a></p>
-      </div>
-      <figure class="world-console">
-        <div class="console-top"><span><span class="status-dot" aria-hidden="true"></span> A WORLD WORTH EXPLORING</span><button id="discovery-sound" class="sound-toggle" type="button" aria-label="Game sounds" aria-pressed="true" title="Mute game sounds" hidden><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M2 9h4l6-5v16l-6-5H2z"/><path class="sound-waves" d="M15 8h2v8h-2zM19 5h2v14h-2z"/><path class="sound-muted" d="m16 8 3 3 3-3 1 2-3 2 3 2-1 2-3-3-3 3-1-2 3-2-3-2z"/></svg></button></div>
-        <div class="map-viewport" id="world-map">
-          <img class="world-image" src="assets/pixel-world.png" width="1536" height="1024" alt="A cheerful pixel-art landscape with a winding river, green forests, fields, and a small village." fetchpriority="high">
-          <svg class="map-labels" viewBox="0 0 1536 1024" aria-hidden="true" hidden>
-            <path class="region vegetation" data-region="forest-west" data-category="forest" data-name="Western forest" d="M0 0H550V95H582V183H541V263H495V298H414V347H461V386H392V428H265V375H185V277H108V226H0Z"/>
-            <path class="region vegetation" data-region="forest-east" data-category="forest" data-name="Eastern forest" d="M1062 0H1536V74H1459V134H1408V191H1374V251H1311V308H1212V240H1183V190H1080V125H1036V57H1062Z"/>
-            <path class="region vegetation" data-region="forest-south" data-category="forest" data-name="Southern forest" d="M582 751H691V815H781V884H856V937H1019V970H1117V1024H433V950H478V875H542V827H582Z"/>
-            <path class="region water" data-region="river" data-category="water" data-name="River and waterfalls" d="M709 0H799V20H850V75H891V115H932V145H980V175H1040V199H1100V228H1124V257H1090V280H1020V308H950V334H870V360H778V400H740V441H764V460H837V484H902V510H937V552H916V590H849V623H797V649H735V694H681V718H602V750H570V807H500V831H376V809H300V829H223V863H196V902H146V928H101V966H50V1006H0V946H42V915H84V887H137V850H170V817H198V802H255V787H349V778H436V798H482V778H487V730H540V697H615V666H636V623H704V591H789V570H839V544H817V519H748V499H687V472H663V429H682V391H705V358H780V329H850V298H943V275H1008V250H1061V228H1030V211H969V191H895V166H863V130H841V101H810V83H793V35H746V23H709Z"/>
-            <path class="region buildings" data-region="windmill" data-category="built" data-name="Windmill" d="M1337 345H1426V372H1452V415H1486V489H1410V507H1361V475H1341V411H1318V370H1337Z"/>
-            <path class="region buildings" data-region="church" data-category="built" data-name="Village church" d="M1362 574H1401V671H1420V720H1339V745H1241V680H1262V651H1302V630H1362Z"/>
-            <path class="region buildings" data-region="houses" data-category="built" data-name="Village houses" d="M1116 731H1150V752H1181V810H1245V827H1300V789H1337V762H1371V734H1430V757H1466V806H1498V865H1460V900H1357V879H1262V868H1182V866H1129V898H983V842H1018V803H1078V778H1116Z"/>
-            <path class="region water" data-region="waterfall-southeast" data-category="water" data-name="Lower-right waterfall" d="M1247 887H1310V901H1334V921H1355V944H1380V977H1424V990H1456V1024H1309V1003H1285V974H1272V939H1240V920H1247Z"/>
-          </svg>
-          <span class="map-crosshair" aria-hidden="true"></span>
-          <canvas class="map-fireworks" aria-hidden="true" hidden></canvas>
+        <div class="hero-copy">
+            <p class="eyebrow"><span class="pixel-spark" aria-hidden="true">✦</span> FOR THE CURIOUS, DOWN TO EARTH.</p>
+            <h1 id="hero-heading">Small pixels.<br><span>Big discoveries.</span></h1>
+            <p class="intro">There’s a whole world in your imagery.<br class="desktop-break"> Let’s make sense of it.
+            </p>
+            <p class="hero-description">The Satify app helps you turn remote sensing imagery into labelled data.
+                Explore your images, mark what matters, and refine the result for your next step.</p>
+            <div class="hero-actions"><a class="pixel-button primary"
+                    href="mailto:info@satify.tech?subject=Satify%20invitation%20request">Request an invitation</a>
+                <a class="pixel-button secondary" href="#the-app">Discover the app</a></div>
+            <p class="access-note"><span aria-hidden="true" class="status-dot"></span> The app is invitation only.
+                <a href="#the-game">Try the concepts in our free game.</a></p>
         </div>
-        <div class="discovery-panel" hidden>
-          <div class="discovery-heading"><p id="map-instructions">Find 2 water areas, 3 forests &amp; 3 built-up areas.</p><span class="discovery-score" id="discovery-score">0 / 8</span></div>
-          <progress id="discovery-progress" max="8" value="0" aria-label="Areas discovered">0 of 8 areas discovered</progress>
-          <div class="discovery-footer">
-            <div class="map-legend" aria-label="Areas found by class"><span><i class="legend-forest"></i>Forest <b id="forest-count">0/3</b></span><span><i class="legend-water"></i>Water <b id="water-count">0/2</b></span><span><i class="legend-land"></i>Built-up <b id="built-count">0/3</b></span></div>
-            <p class="discovery-status"><span id="map-status" role="status">Click or tap an area to reveal it.</span> <button id="discovery-reset" class="replay-link" type="button" hidden>Play again?</button></p>
-          </div>
-        </div>
-      </figure>
+        <figure class="world-console">
+            <div class="console-top"><span><span class="status-dot"
+                                                 aria-hidden="true"></span> A WORLD WORTH EXPLORING</span>
+                <button id="discovery-sound" class="sound-toggle" type="button" aria-label="Game sounds"
+                        aria-pressed="true" title="Mute game sounds" hidden>
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M2 9h4l6-5v16l-6-5H2z"/>
+                        <path class="sound-waves" d="M15 8h2v8h-2zM19 5h2v14h-2z"/>
+                        <path class="sound-muted" d="m16 8 3 3 3-3 1 2-3 2 3 2-1 2-3-3-3 3-1-2 3-2-3-2z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="map-viewport" id="world-map">
+                <img class="world-image" src="assets/pixel-world.png" width="1536" height="1024"
+                     alt="A cheerful pixel-art landscape with a winding river, green forests, fields, and a small village."
+                     fetchpriority="high">
+                <svg class="map-labels" viewBox="0 0 1536 1024" aria-hidden="true" hidden>
+                    <path class="region vegetation" data-region="forest-west" data-category="forest"
+                          data-name="Western forest"
+                          d="M0 0H550V95H582V183H541V263H495V298H414V347H461V386H392V428H265V375H185V277H108V226H0Z"/>
+                    <path class="region vegetation" data-region="forest-east" data-category="forest"
+                          data-name="Eastern forest"
+                          d="M1062 0H1536V74H1459V134H1408V191H1374V251H1311V308H1212V240H1183V190H1080V125H1036V57H1062Z"/>
+                    <path class="region vegetation" data-region="forest-south" data-category="forest"
+                          data-name="Southern forest"
+                          d="M582 751H691V815H781V884H856V937H1019V970H1117V1024H433V950H478V875H542V827H582Z"/>
+                    <path class="region water" data-region="river" data-category="water"
+                          data-name="River and waterfalls"
+                          d="M709 0H799V20H850V75H891V115H932V145H980V175H1040V199H1100V228H1124V257H1090V280H1020V308H950V334H870V360H778V400H740V441H764V460H837V484H902V510H937V552H916V590H849V623H797V649H735V694H681V718H602V750H570V807H500V831H376V809H300V829H223V863H196V902H146V928H101V966H50V1006H0V946H42V915H84V887H137V850H170V817H198V802H255V787H349V778H436V798H482V778H487V730H540V697H615V666H636V623H704V591H789V570H839V544H817V519H748V499H687V472H663V429H682V391H705V358H780V329H850V298H943V275H1008V250H1061V228H1030V211H969V191H895V166H863V130H841V101H810V83H793V35H746V23H709Z"/>
+                    <path class="region buildings" data-region="windmill" data-category="built" data-name="Windmill"
+                          d="M1337 345H1426V372H1452V415H1486V489H1410V507H1361V475H1341V411H1318V370H1337Z"/>
+                    <path class="region buildings" data-region="church" data-category="built" data-name="Village church"
+                          d="M1362 574H1401V671H1420V720H1339V745H1241V680H1262V651H1302V630H1362Z"/>
+                    <path class="region buildings" data-region="houses" data-category="built" data-name="Village houses"
+                          d="M1116 731H1150V752H1181V810H1245V827H1300V789H1337V762H1371V734H1430V757H1466V806H1498V865H1460V900H1357V879H1262V868H1182V866H1129V898H983V842H1018V803H1078V778H1116Z"/>
+                    <path class="region water" data-region="waterfall-southeast" data-category="water"
+                          data-name="Lower-right waterfall"
+                          d="M1247 887H1310V901H1334V921H1355V944H1380V977H1424V990H1456V1024H1309V1003H1285V974H1272V939H1240V920H1247Z"/>
+                </svg>
+                <span class="map-crosshair" aria-hidden="true"></span>
+                <canvas class="map-fireworks" aria-hidden="true" hidden></canvas>
+            </div>
+            <div class="discovery-panel" hidden>
+                <div class="discovery-heading"><p id="map-instructions">Find 2 water areas, 3 forests &amp; 3 built-up
+                    areas.</p><span class="discovery-score" id="discovery-score">0 / 8</span></div>
+                <progress id="discovery-progress" max="8" value="0" aria-label="Areas discovered">0 of 8 areas
+                    discovered
+                </progress>
+                <div class="discovery-footer">
+                    <div class="map-legend" aria-label="Areas found by class"><span><i class="legend-forest"></i>Forest <b
+                            id="forest-count">0/3</b></span><span><i class="legend-water"></i>Water <b id="water-count">0/2</b></span><span><i
+                            class="legend-land"></i>Built-up <b id="built-count">0/3</b></span></div>
+                    <p class="discovery-status"><span id="map-status"
+                                                      role="status">Click or tap an area to reveal it.</span>
+                        <button id="discovery-reset" class="replay-link" type="button" hidden>Play again?</button>
+                    </p>
+                </div>
+            </div>
+        </figure>
     </section>
-    <div class="terrain-divider" aria-hidden="true"><span>LOOK CLOSER</span><span>↓</span><span>THERE’S MORE TO DISCOVER</span></div>
+    <div class="terrain-divider" aria-hidden="true">
+        <span>LOOK CLOSER</span><span>↓</span><span>THERE’S MORE TO DISCOVER</span></div>
+    <section class="app-section wrap" id="the-app" aria-labelledby="app-heading">
+        <div class="section-heading">
+            <div><p class="eyebrow">YOUR IMAGERY. YOUR WORKSPACE.</p>
+                <h2 id="app-heading">Meet the Satify app.<br><span>Give your imagery meaning.</span></h2></div>
+        </div>
+        <div class="app-overview">
+            <div class="app-details">
+                <p class="app-intro">From a landscape full of pixels to labels you can work with.
+                    Satify brings image exploration, labelling, and review into one browser workspace.</p>
+                <ul class="app-features">
+                    <li><strong>Work with your imagery.</strong> Explore satellite, drone, and aerial imagery. Switch views to see the details.</li>
+                    <li><strong>Define what matters.</strong> Create your own classes and mark the areas that belong to them.</li>
+                    <li><strong>Make the result useful.</strong> Review your labels, refine them, and download your work.</li>
+                </ul>
+            </div>
+            <aside class="app-invitation" aria-labelledby="invitation-heading">
+                <p class="eyebrow">ACCESS BY INVITATION</p>
+                <h3 id="invitation-heading">Bring your next project.</h3>
+                <p>Tell us about your imagery and what you’d like to label. Get in touch to request access to the app.</p>
+                <a class="pixel-button primary"
+                   href="mailto:info@satify.tech?subject=Satify%20invitation%20request">Request an invitation</a>
+                <p class="app-sign-in">Already have an account?
+                    <a href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Sign in to the app</a></p>
+            </aside>
+        </div>
+        <figure class="app-preview">
+            <a href="assets/satify-app-workspace.png" target="_blank" rel="noopener noreferrer"
+               aria-label="View the full Satify app screenshot in a new tab">
+                <img src="assets/satify-app-workspace.png" width="1619" height="1269" loading="lazy"
+                     alt="Satify app workspace showing remote sensing imagery with vegetation, water, bare ground, and street labels, Smart Fill controls, and the settings panel.">
+            </a>
+            <figcaption>The Satify app: imagery, labels, and editing tools in one workspace.
+                Select the screenshot for a closer look.</figcaption>
+        </figure>
+    </section>
     <section class="mission wrap" id="how-it-works" aria-labelledby="mission-heading">
-      <div class="section-heading"><div><p class="eyebrow">YOUR MISSION, SHOULD YOU ACCEPT IT</p><h2 id="mission-heading">Make sense. Make labels.<br><span>Make it Satify.</span></h2></div><p>From a bird’s-eye view to the little details.<br>Three steps to a remote sensing image that makes sense.</p></div>
-      <div class="mission-steps">
-        <article class="step"><div class="step-top"><svg class="pixel-icon" viewBox="0 0 32 32" aria-hidden="true"><path fill="#a7d7a9" d="M4 6h20v18H4z"/><path fill="#38624a" d="M4 6h20v3H4zm0 3h3v15H4zm17 0h3v15h-3zM7 21h14v3H7z"/><path fill="#5fa86b" d="M7 18h3v-6h3v3h3v-3h5v9H7z"/><path fill="#dfbd62" d="M9 9h4v4H9z"/><path fill="#203c31" d="M24 22h4v4h-4zm4 4h3v5h-3z"/></svg><span class="step-number">01</span></div><h3>Explore the view.</h3><p>Bring your satellite imagery into Satify. Find your bearings, switch your view, and see what’s waiting to be discovered.</p><span class="step-tag">A LITTLE PERSPECTIVE</span></article>
-        <article class="step"><div class="step-top"><svg class="pixel-icon" viewBox="0 0 32 32" aria-hidden="true"><path fill="#a7d7a9" d="M3 7h24v22H3z"/><path fill="#5fa86b" d="M3 18h9v-5h9v16H3z"/><path fill="#dfbd62" d="M18 4h7v7h-7zm-4 7h7v7h-7zm-4 7h7v7h-7z"/><path fill="#203c31" d="M23 2h5v5h-5zM8 24h7v3H8z"/></svg><span class="step-number">02</span></div><h3>Give it meaning.</h3><p>Forest, water, bare ground—or something of your own. Define your classes and use the labelling tools to mark what you see.</p><span class="step-tag">EVERY PIXEL HAS A STORY</span></article>
-        <article class="step"><div class="step-top"><svg class="pixel-icon" viewBox="0 0 32 32" aria-hidden="true"><path fill="#a7d7a9" d="M5 3h20v26H5z"/><path fill="#38624a" d="M5 3h20v3H5zm0 3h3v23H5zm17 0h3v23h-3zM8 26h14v3H8z"/><path fill="#5fa86b" d="M9 16h4v4H9zm4 4h4v4h-4zm4-8h4v8h-4z"/><path fill="#dfbd62" d="M24 0h3v3h-3zm3 3h4v3h-4zm-3 3h3v3h-3z"/></svg><span class="step-number">03</span></div><h3>Refine your world.</h3><p>Review the details, adjust your labels, and download the result. A clearer picture, ready for your next step.</p><span class="step-tag">THE DETAILS MAKE THE DIFFERENCE</span></article>
-      </div>
+        <div class="section-heading">
+            <div><p class="eyebrow">YOUR MISSION, SHOULD YOU ACCEPT IT</p>
+                <h2 id="mission-heading">Make sense. Make labels.<br><span>Make it Satify.</span></h2></div>
+            <p>Explore, label, refine.<br>Your workflow in the Satify app.
+            </p></div>
+        <div class="mission-steps">
+            <article class="step">
+                <div class="step-top">
+                    <svg class="pixel-icon" viewBox="0 0 32 32" aria-hidden="true">
+                        <path fill="#a7d7a9" d="M4 6h20v18H4z"/>
+                        <path fill="#38624a" d="M4 6h20v3H4zm0 3h3v15H4zm17 0h3v15h-3zM7 21h14v3H7z"/>
+                        <path fill="#5fa86b" d="M7 18h3v-6h3v3h3v-3h5v9H7z"/>
+                        <path fill="#dfbd62" d="M9 9h4v4H9z"/>
+                        <path fill="#203c31" d="M24 22h4v4h-4zm4 4h3v5h-3z"/>
+                    </svg>
+                    <span class="step-number">01</span></div>
+                <h3>Explore the view.</h3>
+                <p>Bring your remote sensing imagery into Satify. Find your bearings, switch your view, and see what’s
+                    waiting to be discovered.</p><span class="step-tag">A LITTLE PERSPECTIVE</span></article>
+            <article class="step">
+                <div class="step-top">
+                    <svg class="pixel-icon" viewBox="0 0 32 32" aria-hidden="true">
+                        <path fill="#a7d7a9" d="M3 7h24v22H3z"/>
+                        <path fill="#5fa86b" d="M3 18h9v-5h9v16H3z"/>
+                        <path fill="#dfbd62" d="M18 4h7v7h-7zm-4 7h7v7h-7zm-4 7h7v7h-7z"/>
+                        <path fill="#203c31" d="M23 2h5v5h-5zM8 24h7v3H8z"/>
+                    </svg>
+                    <span class="step-number">02</span></div>
+                <h3>Give it meaning.</h3>
+                <p>Forest, water, bare ground—or something of your own. Define your classes and use the labelling tools
+                    to mark what you see.</p><span class="step-tag">EVERY PIXEL HAS A STORY</span></article>
+            <article class="step">
+                <div class="step-top">
+                    <svg class="pixel-icon" viewBox="0 0 32 32" aria-hidden="true">
+                        <path fill="#a7d7a9" d="M5 3h20v26H5z"/>
+                        <path fill="#38624a" d="M5 3h20v3H5zm0 3h3v23H5zm17 0h3v23h-3zM8 26h14v3H8z"/>
+                        <path fill="#5fa86b" d="M9 16h4v4H9zm4 4h4v4h-4zm4-8h4v8h-4z"/>
+                        <path fill="#dfbd62" d="M24 0h3v3h-3zm3 3h4v3h-4zm-3 3h3v3h-3z"/>
+                    </svg>
+                    <span class="step-number">03</span></div>
+                <h3>Refine your world.</h3>
+                <p>Review the details, adjust your labels, and download the result. A clearer picture, ready for your
+                    next step.</p><span class="step-tag">THE DETAILS MAKE THE DIFFERENCE</span></article>
+        </div>
     </section>
     <section class="game-section wrap" id="the-game" aria-labelledby="game-heading">
-      <div class="game-card"><div class="game-copy"><p class="eyebrow">SIDE QUEST UNLOCKED · SATIFY — THE GAME</p><h2 id="game-heading">Sharp eyes?<br><span>Let’s play.</span></h2><p>Discover how our planet is changing. Explore real satellite images, label the landscape, and put your eye for detail to the test.</p><div class="game-action"><a class="pixel-button gold" href="https://game.satify.tech/" target="_blank" rel="noopener noreferrer">Choose your challenge</a><span>Free to play. No account needed.</span></div></div><div class="game-art" aria-hidden="true"><div class="quest-badge"><span>YOUR NEXT ADVENTURE</span><strong>3–7 MIN</strong><span>A WHOLE NEW VIEW</span></div></div></div>
+        <div class="game-card">
+            <div class="game-copy"><p class="eyebrow">LEARN BY PLAYING · SATIFY — THE GAME</p>
+                <h2 id="game-heading">A little practice.<br><span>A new perspective.</span></h2>
+                <p>No invitation yet? Start with the game. Explore real remote sensing imagery, recognise features,
+                    and label the landscape. Get a feel for the concepts behind the app before working with your own imagery.</p>
+                <div class="game-action"><a class="pixel-button gold" href="https://game.satify.tech/" target="_blank"
+                                            rel="noopener noreferrer">Try labelling in the game</a><span>Free to play. No account or invitation needed.</span>
+                </div>
+            </div>
+            <figure class="game-preview">
+                <a href="assets/satify-game-mobile.png" target="_blank" rel="noopener noreferrer"
+                   aria-label="View the full Satify game screenshot in a new tab">
+                    <img src="assets/satify-game-mobile.png" width="1080" height="2392" loading="lazy"
+                         alt="Satify game on mobile: satellite images from 2021 and 1996 with vegetation labels and labelling tools.">
+                </a>
+                <figcaption>Satify — The Game on mobile.<br>Tap the screenshot for a closer look.</figcaption>
+            </figure>
+        </div>
     </section>
-    <section class="contact wrap" aria-labelledby="contact-heading"><span class="pixel-spark" aria-hidden="true">✦</span><div><h2 id="contact-heading">Curious about what you could discover?</h2><p>We’d love to hear what you’re working on.</p></div><a href="mailto:info@satify.tech">Say hello</a></section>
-  </main>
-  <footer class="site-footer"><div class="footer-inner wrap"><a class="brand footer-brand" href="./" aria-label="Satify home"><img src="assets/satify-logo.svg" width="30" height="30" alt=""><span>SATIFY</span></a><span class="footer-tagline">A little curiosity goes a long way.</span><nav aria-label="Legal"><a href="imprint/">Imprint</a><a href="privacy/">Privacy Notice</a></nav><small>© 2026 Satify</small></div></footer>
+    <section class="contact wrap" aria-labelledby="contact-heading"><span class="pixel-spark"
+                                                                          aria-hidden="true">✦</span>
+        <div><h2 id="contact-heading">What would you like to label?</h2>
+            <p>Tell us about your project and explore how Satify could help.</p></div>
+        <a href="mailto:info@satify.tech">Say hello</a></section>
+</main>
+<footer class="site-footer">
+    <div class="footer-inner wrap"><a class="brand footer-brand" href="./" aria-label="Satify home"><img
+            src="assets/satify-logo.svg" width="30" height="30" alt=""><span>SATIFY</span></a><span
+            class="footer-tagline">A little curiosity goes a long way.</span>
+        <nav aria-label="Legal"><a href="imprint/">Imprint</a><a href="privacy/">Privacy Notice</a></nav>
+        <small>© 2026 Satify</small></div>
+</footer>
 </body>
 </html>

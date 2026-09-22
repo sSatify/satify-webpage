@@ -177,17 +177,6 @@ p {
   color: var(--mint)
 }
 
-.header-inner nav .header-app {
-  border: 1px solid #729b73;
-  box-shadow: inset 0 0 0 3px #294738;
-  padding: 9px 18px;
-  color: var(--mint)
-}
-
-.header-app span {
-  margin-left: 14px
-}
-
 .hero {
   display: grid;
   grid-template-columns: 0.91fr 1.09fr;
@@ -585,6 +574,112 @@ h1 span {
   padding-block: 64px 72px
 }
 
+.app-section {
+  padding-top: 64px;
+}
+
+.app-overview {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.app-intro {
+  font-size: 18px;
+  max-width: 580px;
+}
+
+.app-features {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.app-features li {
+  border-top: 1px solid var(--line);
+  padding: 16px 0;
+}
+
+.app-features strong {
+  display: block;
+  color: var(--text);
+}
+
+.app-invitation {
+  background: var(--soft-bg);
+  border: 2px solid var(--line);
+  box-shadow: 5px 5px 0 var(--frame-shadow);
+  padding: 30px;
+}
+
+.app-invitation .eyebrow {
+  color: var(--forest);
+  font-size: 10px;
+  margin-bottom: 16px;
+}
+
+.app-invitation h3 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.app-invitation p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.app-invitation .pixel-button {
+  margin-block: 22px;
+  color: var(--ink);
+}
+
+.app-invitation .app-sign-in {
+  font-size: 13px;
+}
+
+.app-sign-in a {
+  font-weight: bold;
+}
+
+.app-preview {
+  max-width: 1040px;
+  margin: 36px auto 0;
+}
+
+.app-preview a {
+  display: block;
+  border: 2px solid var(--line);
+  box-shadow: 5px 5px 0 var(--frame-shadow);
+}
+
+.app-preview img {
+  width: 100%;
+  height: auto;
+}
+
+.app-preview figcaption {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+@media(max-width:800px) {
+  .app-overview {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .app-section {
+    padding-top: 40px;
+  }
+  .app-invitation {
+    padding: 24px;
+  }
+}
+
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -694,6 +789,7 @@ h2 {
 }
 
 .game-copy {
+  align-self: center;
   padding: 40px 42px 43px;
   position: relative;
   z-index: 1
@@ -738,40 +834,31 @@ h2 {
   margin-top: 14px
 }
 
-.game-art {
-  position: relative;
-  background: linear-gradient(90deg,var(--ink),transparent 28%),url('assets/pixel-world.png') 85% 75%/auto 120%;
-  image-rendering: pixelated;
-  min-height: 330px
-}
-
-.quest-badge {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-40%,-50%) rotate(4deg);
-  background: var(--gold);
-  border: 3px solid var(--ink);
-  box-shadow: 5px 5px 0 #203c3180;
-  color: var(--ink);
-  padding: 22px 17px;
+.game-preview {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: 32px;
+  background: #172c25;
   text-align: center;
-  white-space: nowrap
 }
 
-.quest-badge span {
+.game-preview a {
   display: block;
-  font-family: var(--pixel);
-  font-size: 8px;
-  line-height: 1.8
+  width: min(100%, 260px);
+  border: 2px solid #729b73;
+  box-shadow: 5px 5px 0 #102019;
 }
 
-.quest-badge strong {
-  font-family: var(--pixel);
-  font-size: 34px;
-  display: block;
-  margin-block: 9px;
-  font-weight: 400
+.game-preview img {
+  width: 100%;
+  height: auto;
+}
+
+.game-preview figcaption {
+  color: #d8e1d0;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 .contact {
@@ -1097,19 +1184,8 @@ h2 {
   .game-card {
     grid-template-columns: 1fr
   }
-  .game-art {
-    min-height: 220px;
-    order: 2;
-    background: linear-gradient(var(--ink),transparent 30%),url('assets/pixel-world.png') center 65%/cover
-  }
-  .quest-badge {
-    padding: 13px;
-    left: 68%;
-    transform: translate(-50%,-40%) rotate(4deg)
-  }
-  .quest-badge strong {
-    font-size: 25px;
-    margin: 3px
+  .game-preview {
+    padding: 24px;
   }
   .game-copy {
     padding: 30px
@@ -1167,9 +1243,6 @@ h2 {
   .header-inner nav {
     gap: 13px;
     font-size: 11px
-  }
-  .header-inner nav .header-app {
-    display: none
   }
   h1 {
     font-size: 34px;

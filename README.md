@@ -5,6 +5,11 @@ small progressive-enhancement script; no framework, package dependencies, tracke
 light/dark switch is available on every page. The default follows the browser/system preference, including changes
 while the page is open; an explicit choice overrides it and is remembered locally.
 
+The homepage introduces the invitation-only Satify app, its labelling workflow, and how to request access.
+Remote sensing imagery is the general term used for the app's satellite, drone, and aerial imagery support.
+The header's "The app" link leads to the app section, which also provides sign-in for existing users.
+The free game introduces the labelling concepts without requiring an account or invitation.
+
 ## License
 
 See [LICENSE](LICENSE) for copyright and permissions. The website is not offered under an open-source license;
@@ -46,6 +51,12 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
   Source: [Google Fonts](https://github.com/google/fonts/tree/main/ofl/silkscreen).
 - Original generated pixel artwork: `assets/pixel-world.png`. Creation details and the full prompt are
   in [docs/artwork.md](docs/artwork.md).
+- Game promotion screenshot: `assets/satify-game-mobile.png`, supplied by Marco on 22 September 2026.
+  It shows the actual Satify game on mobile, with satellite imagery, labels, and labelling tools. The original
+  screenshot is displayed without retouching and can be opened at full size. The interactive hero retains the pixel artwork.
+- App workspace screenshot: `assets/satify-app-workspace.png`, supplied by Marco on 22 September 2026.
+  Displayed without retouching in the app section, with a link to the full-size image. It shows label classes,
+  Smart Fill controls, and the settings panel; the visible OpenStreetMap attribution is retained.
 - The hero illustration is an eight-area discovery game: one connected river, a separate lower-right waterfall, three
   forests, and three built-up areas. Click or tap an area to reveal it. Map areas use pointer input only; the legend and
   status share a compact two-column footer. Each newly discovered area plays a short chime. Duplicate clicks do not
