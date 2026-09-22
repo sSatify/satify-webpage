@@ -578,11 +578,26 @@ h1 span {
   padding-block: 0 72px;
 }
 
+.app-card {
+  border: 3px solid var(--line);
+  background: var(--soft-bg);
+  box-shadow: 6px 6px 0 var(--frame-shadow);
+  overflow: hidden;
+}
+
+.app-card .section-heading {
+  padding: 32px 40px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+
 .app-overview {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-  gap: 48px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+}
+
+.app-details {
+  padding: 32px 40px;
 }
 
 .app-intro {
@@ -677,8 +692,12 @@ h1 span {
 }
 
 .app-preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 100%;
-  align-self: center;
+  padding: 32px;
+  border-left: 1px solid var(--line);
 }
 
 .app-preview-open,
@@ -760,7 +779,15 @@ html.screenshot-open {
 @media(max-width:800px) {
   .app-overview {
     grid-template-columns: 1fr;
-    gap: 24px;
+  }
+  .app-card .section-heading,
+  .app-details {
+    padding: 24px;
+  }
+  .app-preview {
+    padding: 24px;
+    border-left: 0;
+    border-top: 1px solid var(--line);
   }
   .app-section {
     padding-block: 0 44px;
