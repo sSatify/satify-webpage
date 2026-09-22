@@ -54,6 +54,8 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
 - Invitation illustration: `assets/pixel-heroine-dragon.png`, a female pixel-art explorer with a dragon flying over a distant valley.
   Created with the built-in image-generation tool; the full prompt is in
   [docs/invitation-heroine-dragon.md](docs/invitation-heroine-dragon.md).
+- Contact illustration: `assets/pixel-quest-giver.png`, an adventurer meeting a quest giver over a map.
+  Created with the built-in image-generation tool; the full prompt is in [docs/contact-artwork.md](docs/contact-artwork.md).
 - Game promotion screenshot: `assets/satify-game-mobile.png`, supplied by Marco on 22 September 2026.
   It shows the actual Satify game on mobile, with satellite imagery, labels, and labelling tools. The original
   screenshot is displayed without retouching and can be opened at full size. The interactive hero retains the pixel artwork.

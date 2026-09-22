@@ -37,6 +37,9 @@ apply. No additional rights in that material are granted by this notice.
 - assets/pixel-heroine-dragon.png: AI-generated artwork created for this website.
   See docs/invitation-heroine-dragon.md for its provenance. This notice asserts
   rights only to the extent that applicable law recognizes them.
+- assets/pixel-quest-giver.png: AI-generated artwork created for this website.
+  See docs/contact-artwork.md for its provenance. This notice asserts rights only
+  to the extent that applicable law recognizes them.
 - discovery.js: the discovery chime and victory fanfare are synthesised
   in the browser from tones defined in code. They do not use third-party
   audio recordings or samples.
