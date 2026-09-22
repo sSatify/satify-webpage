@@ -562,7 +562,8 @@ h1 span {
   padding: 15px 20px;
   color: var(--forest);
   font-family: var(--pixel);
-  font-size: 9px;
+  font-size: 12px;
+  text-align: center;
   background: var(--soft-bg)
 }
 
@@ -1386,8 +1387,7 @@ h2 {
     width: 100%
   }
   .terrain-divider {
-    gap: 22px;
-    font-size: 8px
+    gap: 22px
   }
 }
 
@@ -1453,7 +1453,6 @@ h2 {
     height: 6px
   }
   .terrain-divider {
-    font-size: 6px;
     gap: 15px
   }
   h2 {
