@@ -1,0 +1,45 @@
+Satify website - Copyright and permissions
+
+Copyright (c) 2026 Peter Arlinghaus, for original material in which he
+holds copyright. All rights reserved.
+
+This repository contains the Satify website, associated with
+https://www.satify.tech. It is not offered under an open-source license.
+
+Except for the permissions and exclusions below, no permission is granted
+to reproduce, modify, redistribute, sublicense, sell, or reuse the website's
+source code, original design, written content, artwork, sounds, or branding
+without prior written permission from the applicable rights holder.
+
+Normal browsing of the published website, including the downloading,
+execution, and caching needed to display it, is permitted. Linking to the
+website is also permitted.
+
+This notice does not restrict uses permitted by applicable law, rights
+provided under the hosting platform's applicable terms (including GitHub's
+viewing and forking provisions), or rights validly granted under an earlier
+license. Public availability alone does not grant additional reuse rights.
+
+Third-party material and asset notes
+
+Third-party material is excluded from the copyright claim and restrictions
+above. Its own copyright status, license, and usage conditions continue to
+apply. No additional rights in that material are granted by this notice.
+
+- assets/fonts/silkscreen-regular.ttf: Copyright 2001 The Silkscreen
+  Project Authors (https://github.com/googlefonts/silkscreen).
+  Licensed under the SIL Open Font License, Version 1.1.
+  See assets/fonts/OFL.txt for the full license. Its permissions remain
+  unaffected by this notice.
+- assets/pixel-world.png: AI-generated artwork created for this website.
+  See docs/artwork.md for its provenance. This notice asserts rights only
+  to the extent that applicable law recognizes them.
+- discovery.js: the discovery chime and victory fanfare are synthesised
+  in the browser from tones defined in code. They do not use third-party
+  audio recordings or samples.
+
+No trademark rights or rights to use a person's likeness are granted by
+this notice.
+
+For permission enquiries, contact info@satify.tech.
+

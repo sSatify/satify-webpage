@@ -5,6 +5,11 @@ small progressive-enhancement script; no framework, package dependencies, tracke
 light/dark switch is available on every page. The default follows the browser/system preference, including changes
 while the page is open; an explicit choice overrides it and is remembered locally.
 
+## License
+
+See [LICENSE](LICENSE) for copyright and permissions. The website is not offered under an open-source license;
+third-party material, including the Silkscreen font, retains its own license terms.
+
 ## Local preview
 
 Open `index.html` through your IDE's built-in web preview. Reload the browser after changes.
