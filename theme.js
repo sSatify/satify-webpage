@@ -1,6 +1,6 @@
-// Apply the saved preference before the stylesheet paints the page.
+// Apply the saved preference or system theme before the stylesheet paints.
 (() => {
-  let theme = 'light';
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   try {
     const saved = localStorage.getItem('satify-theme');
     if (saved === 'light' || saved === 'dark') theme = saved;

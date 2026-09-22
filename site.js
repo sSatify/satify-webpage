@@ -1,4 +1,16 @@
 const themeToggle = document.querySelector('#theme-toggle');
+const systemTheme = window.matchMedia('(prefers-color-scheme: dark)');
+let preferredTheme;
+try {
+  const saved = localStorage.getItem('satify-theme');
+  if (saved === 'light' || saved === 'dark') preferredTheme = saved;
+} catch {
+  // Follow the system until a theme is selected on this page.
+}
+
+function currentTheme() {
+  return preferredTheme || (systemTheme.matches ? 'dark' : 'light');
+}
 
 function showTheme(theme) {
   const dark = theme === 'dark';
@@ -11,10 +23,11 @@ function showTheme(theme) {
 }
 
 if (themeToggle) {
-  showTheme(document.documentElement.dataset.theme);
+  showTheme(currentTheme());
   themeToggle.hidden = false;
   themeToggle.addEventListener('click', () => {
     const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    preferredTheme = theme;
     showTheme(theme);
     try {
       localStorage.setItem('satify-theme', theme);
@@ -22,9 +35,13 @@ if (themeToggle) {
       // Retain the selection for this page even if saving is blocked.
     }
   });
+  systemTheme.addEventListener('change', () => {
+    if (!preferredTheme) showTheme(currentTheme());
+  });
   window.addEventListener('storage', event => {
-    if (event.key === 'satify-theme' || event.key === null) {
-      showTheme(event.newValue === 'dark' ? 'dark' : 'light');
+    if (event.storageArea === localStorage && (event.key === 'satify-theme' || event.key === null)) {
+      preferredTheme = event.newValue === 'light' || event.newValue === 'dark' ? event.newValue : undefined;
+      showTheme(currentTheme());
     }
   });
 }

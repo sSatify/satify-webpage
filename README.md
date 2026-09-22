@@ -2,7 +2,8 @@
 
 A three-page static website for Satify: a cheerful pixel-art homepage and plain, readable legal pages. HTML, CSS, and a
 small progressive-enhancement script; no framework, package dependencies, trackers, or external font requests. A
-light/dark switch is available on every page; light is the default and an explicit choice is remembered locally.
+light/dark switch is available on every page. The default follows the browser/system preference, including changes
+while the page is open; an explicit choice overrides it and is remembered locally.
 
 ## Local preview
 
