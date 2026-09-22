@@ -580,7 +580,7 @@ h1 span {
 
 .app-overview {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: 48px;
   align-items: start;
 }
@@ -609,6 +609,11 @@ h1 span {
 }
 
 .app-invitation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 32px;
+  margin-top: 36px;
   background: var(--soft-bg);
   border: 2px solid var(--line);
   box-shadow: 5px 5px 0 var(--frame-shadow);
@@ -632,8 +637,16 @@ h1 span {
 }
 
 .app-invitation .pixel-button {
-  margin-block: 22px;
+  margin-bottom: 16px;
   color: var(--ink);
+}
+
+.app-invitation-copy {
+  max-width: 620px;
+}
+
+.app-invitation-actions {
+  max-width: 320px;
 }
 
 .app-invitation .app-sign-in {
@@ -645,12 +658,16 @@ h1 span {
 }
 
 .app-preview {
-  max-width: 1040px;
-  margin: 36px auto 0;
+  width: 100%;
+  align-self: center;
 }
 
-.app-preview a {
+.app-preview-open {
   display: block;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  cursor: zoom-in;
   border: 2px solid var(--line);
   box-shadow: 5px 5px 0 var(--frame-shadow);
 }
@@ -667,6 +684,55 @@ h1 span {
   text-align: center;
 }
 
+html.screenshot-open {
+  overflow: hidden;
+}
+
+.screenshot-panel {
+  width: min(1600px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 16px;
+  border: 2px solid var(--line);
+  background: var(--page-bg);
+  color: var(--text);
+  box-shadow: 8px 8px 0 #0005;
+}
+
+.screenshot-panel::backdrop {
+  background: #07110ee0;
+}
+
+.screenshot-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.screenshot-panel-header h2 {
+  font-size: clamp(14px, 2vw, 22px);
+}
+
+.screenshot-panel-close {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 2px solid var(--ink);
+  background: var(--mint);
+  color: var(--ink);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.screenshot-panel > img {
+  width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 128px);
+  object-fit: contain;
+}
+
 @media(max-width:800px) {
   .app-overview {
     grid-template-columns: 1fr;
@@ -676,6 +742,8 @@ h1 span {
     padding-block: 0 44px;
   }
   .app-invitation {
+    grid-template-columns: 1fr;
+    gap: 24px;
     padding: 24px;
   }
 }

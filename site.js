@@ -8,6 +8,26 @@ try {
   // Follow the system until a theme is selected on this page.
 }
 
+const screenshotPanel = document.querySelector('#app-screenshot-panel');
+const screenshotTrigger = document.querySelector('.app-preview-open');
+if (screenshotPanel && screenshotTrigger) {
+  screenshotTrigger.addEventListener('click', () => {
+    screenshotPanel.showModal();
+    document.documentElement.classList.add('screenshot-open');
+  });
+  screenshotPanel.querySelector('.screenshot-panel-close').addEventListener('click', () => screenshotPanel.close());
+  screenshotPanel.addEventListener('click', event => {
+    if (event.target !== screenshotPanel) return;
+    const bounds = screenshotPanel.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) screenshotPanel.close();
+  });
+  screenshotPanel.addEventListener('close', () => {
+    document.documentElement.classList.remove('screenshot-open');
+    screenshotTrigger.focus({ preventScroll: true });
+  });
+}
+
 function currentTheme() {
   return preferredTheme || (systemTheme.matches ? 'dark' : 'light');
 }

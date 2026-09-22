@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
-          content="Turn remote sensing imagery into labelled data with the Satify app. Work with satellite, drone, and aerial imagery. Request an invitation or try our free game.">
+          content="Turn remote sensing imagery into labelled data with the SATIFY app. Work with satellite, drone, and aerial imagery. Request an invitation or try our free game.">
     <meta name="theme-color" content="#203c31">
     <title>Satify — Small pixels. Big discoveries.</title>
     <link rel="icon" href="assets/satify-logo.svg" type="image/svg+xml">
@@ -40,7 +40,7 @@
             <h1 id="hero-heading">Small pixels.<br><span>Big discoveries.</span></h1>
             <p class="intro">There’s a whole world in your imagery.<br class="desktop-break"> Let’s make sense of it.
             </p>
-            <p class="hero-description">The Satify app helps you turn remote sensing imagery into labelled data.
+            <p class="hero-description">The SATIFY app helps you turn remote sensing imagery into labelled data.
                 Explore your images, mark what matters, and refine the result for your next step.</p>
             <div class="hero-actions"><a class="pixel-button primary"
                     href="mailto:info@satify.tech?subject=Satify%20invitation%20request">Request an invitation</a>
@@ -158,37 +158,46 @@
     <section class="app-section wrap" id="the-app" aria-labelledby="app-heading">
         <div class="section-heading">
             <div><p class="eyebrow">YOUR IMAGERY. YOUR WORKSPACE.</p>
-                <h2 id="app-heading">The Satify app. <span>Give your imagery meaning.</span></h2></div>
+                <h2 id="app-heading">The SATIFY app. <span>Give your imagery meaning.</span></h2></div>
         </div>
         <div class="app-overview">
             <div class="app-details">
-                <p class="app-intro">From a landscape full of pixels to labels you can work with.
-                    Satify brings image exploration, labelling, and review into one browser workspace.</p>
+                <p class="app-intro">Work with satellite, drone, and aerial imagery using the tool that fits each task.
+                    Fill a model-suggested region, label similar pixels, or draw the details yourself.</p>
                 <ul class="app-features">
-                    <li><strong>Work with your imagery.</strong> Explore satellite, drone, and aerial imagery. Switch views to see the details.</li>
-                    <li><strong>Define what matters.</strong> Create your own classes and mark the areas that belong to them.</li>
-                    <li><strong>Make the result useful.</strong> Review your labels, refine them, and download your work.</li>
+                    <li><strong>Smart Fill: put model masks to work.</strong> Choose a model-provided mask and click a region
+                        to apply your selected label. Switch masks to find the level of detail that fits.</li>
+                    <li><strong>Bucket Fill: follow similar colours.</strong> Fill pixels with colours similar to the point
+                        you select. Adjust the tolerance to include a narrower or broader range.</li>
+                    <li><strong>Pen: take care of the details.</strong> Paint labels directly onto the image, adjusting the
+                        brush size for broad strokes or precise corrections.</li>
+                    <li><strong>Local or Global: choose your reach.</strong> With either fill tool, use Local for one
+                        connected area or Global for matching areas across the image.</li>
                 </ul>
             </div>
-            <aside class="app-invitation" aria-labelledby="invitation-heading">
+            <figure class="app-preview">
+                <button class="app-preview-open" type="button" aria-haspopup="dialog" aria-controls="app-screenshot-panel"
+                        aria-label="Enlarge the Satify app screenshot">
+                    <img src="assets/satify-app-workspace.png" width="1619" height="1269" loading="lazy"
+                         alt="Satify app workspace showing remote sensing imagery with vegetation, water, bare ground, and street labels, Smart Fill controls, and the settings panel.">
+                </button>
+                <figcaption>The SATIFY app: imagery, labels, and editing tools in one workspace.
+                    Select the screenshot for a closer look.</figcaption>
+            </figure>
+        </div>
+        <aside class="app-invitation" aria-labelledby="invitation-heading">
+            <div class="app-invitation-copy">
                 <p class="eyebrow">ACCESS BY INVITATION</p>
                 <h3 id="invitation-heading">Bring your next project.</h3>
                 <p>Tell us about your imagery and what you’d like to label. Get in touch to request access to the app.</p>
+            </div>
+            <div class="app-invitation-actions">
                 <a class="pixel-button primary"
                    href="mailto:info@satify.tech?subject=Satify%20invitation%20request">Request an invitation</a>
                 <p class="app-sign-in">Already have an account?
                     <a href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Sign in to the app</a></p>
-            </aside>
-        </div>
-        <figure class="app-preview">
-            <a href="assets/satify-app-workspace.png" target="_blank" rel="noopener noreferrer"
-               aria-label="View the full Satify app screenshot in a new tab">
-                <img src="assets/satify-app-workspace.png" width="1619" height="1269" loading="lazy"
-                     alt="Satify app workspace showing remote sensing imagery with vegetation, water, bare ground, and street labels, Smart Fill controls, and the settings panel.">
-            </a>
-            <figcaption>The Satify app: imagery, labels, and editing tools in one workspace.
-                Select the screenshot for a closer look.</figcaption>
-        </figure>
+            </div>
+        </aside>
     </section>
     <section class="game-section wrap" id="the-game" aria-labelledby="game-heading">
         <div class="game-card">
@@ -216,6 +225,14 @@
             <p>Tell us about your project and explore how Satify could help.</p></div>
         <a href="mailto:info@satify.tech">Say hello</a></section>
 </main>
+<dialog class="screenshot-panel" id="app-screenshot-panel" aria-labelledby="app-screenshot-title">
+    <div class="screenshot-panel-header">
+        <h2 id="app-screenshot-title">The SATIFY app</h2>
+        <button class="screenshot-panel-close" type="button" autofocus>Close</button>
+    </div>
+    <img src="assets/satify-app-workspace.png" width="1619" height="1269" loading="lazy"
+         alt="Satify app workspace with coloured labels over remote sensing imagery, Smart Fill controls, and the settings panel.">
+</dialog>
 <footer class="site-footer">
     <div class="footer-inner wrap"><a class="brand footer-brand" href="./" aria-label="Satify home"><img
             src="assets/satify-logo.svg" width="30" height="30" alt=""><span>SATIFY</span></a><span

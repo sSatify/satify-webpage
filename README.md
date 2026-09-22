@@ -55,7 +55,8 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
   It shows the actual Satify game on mobile, with satellite imagery, labels, and labelling tools. The original
   screenshot is displayed without retouching and can be opened at full size. The interactive hero retains the pixel artwork.
 - App workspace screenshot: `assets/satify-app-workspace.png`, supplied by Marco on 22 September 2026.
-  Displayed without retouching in the app section, with a link to the full-size image. It shows label classes,
+  Displayed without retouching in the app section, with an enlarged on-page panel that closes using its Close button,
+  Escape, or a click outside the panel. It shows label classes,
   Smart Fill controls, and the settings panel; the visible OpenStreetMap attribution is retained.
 - The hero illustration is an eight-area discovery game: one connected river, a separate lower-right waterfall, three
   forests, and three built-up areas. Click or tap an area to reveal it. Map areas use pointer input only; the legend and
