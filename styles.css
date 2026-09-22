@@ -187,7 +187,7 @@ p {
 
 .eyebrow {
   font-family: var(--pixel);
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: .5px;
   line-height: 1.7
 }
@@ -648,7 +648,6 @@ h1 span {
 
 .app-invitation .eyebrow {
   color: var(--forest);
-  font-size: 10px;
   margin-bottom: 16px;
 }
 
@@ -926,7 +925,6 @@ h2 {
 
 .game-copy .eyebrow {
   color: var(--forest);
-  font-size: 9px;
   margin-bottom: 18px
 }
 
@@ -1208,9 +1206,6 @@ h2 {
   h1 {
     font-size: 37px
   }
-  .hero-copy .eyebrow {
-    font-size: 8px
-  }
   .hero-description {
     font-size: 14px
   }
@@ -1283,7 +1278,6 @@ h2 {
     max-width: 590px
   }
   .hero-copy .eyebrow {
-    font-size: 9px;
     margin-bottom: 20px
   }
   h1 {
@@ -1419,7 +1413,6 @@ h2 {
     letter-spacing: -1px
   }
   .hero-copy .eyebrow {
-    font-size: 7px;
     gap: 7px
   }
   .hero-description {
@@ -1459,17 +1452,11 @@ h2 {
     font-size: 6px;
     gap: 15px
   }
-  .mission .eyebrow {
-    font-size: 8px
-  }
   h2 {
     font-size: 23px
   }
   .game-copy {
     padding: 27px 23px
-  }
-  .game-copy .eyebrow {
-    font-size: 7px
   }
   .game-copy h2 {
     font-size: 32px
