@@ -645,22 +645,22 @@ h1 span {
 
 .app-overview {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
-}
-
-.app-details {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
   padding: var(--panel-padding);
 }
 
 .app-intro {
   font-size: 18px;
-  max-width: 580px;
 }
 
 .app-features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 40px;
   list-style: none;
   padding: 0;
-  margin: 24px 0 0;
+  margin: 0;
   color: var(--muted);
   font-size: 15px;
 }
@@ -726,6 +726,16 @@ h1 span {
   align-items: center;
   gap: 18px;
   width: 100%;
+}
+
+@media(min-width:801px) {
+  .app-preview {
+    width: min(80%, 960px);
+    justify-self: center;
+  }
+}
+
+.game-preview {
   padding: 32px;
   border-left: 1px solid var(--line);
 }
@@ -776,7 +786,16 @@ html.screenshot-open {
 }
 
 .game-screenshot-panel {
-  width: min(600px, calc(100% - 32px));
+  /* Match the portrait image to the space left below the popup header. */
+  width: min(1004px, calc(100% - 32px), calc(64dvh - 48px));
+  min-width: min(320px, calc(100% - 32px));
+  height: calc(100dvh - 32px);
+  overflow: hidden;
+}
+
+.game-screenshot-panel[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .screenshot-panel-header {
@@ -792,12 +811,7 @@ html.screenshot-open {
 }
 
 .screenshot-panel-close {
-  min-height: 44px;
-  padding: 8px 16px;
-  border: 2px solid var(--ink);
-  background: var(--mint);
-  color: var(--ink);
-  font-weight: bold;
+  flex-shrink: 0;
   cursor: pointer;
 }
 
@@ -808,6 +822,12 @@ html.screenshot-open {
   object-fit: contain;
 }
 
+.game-screenshot-panel > img {
+  min-height: 0;
+  height: 100%;
+  max-height: none;
+}
+
 @media(max-width:800px) {
   .app-card,
   .app-invitation,
@@ -815,10 +835,9 @@ html.screenshot-open {
   .contact-card {
     --panel-padding: 24px;
   }
-  .app-overview {
+  .app-features {
     grid-template-columns: 1fr;
   }
-  .app-preview,
   .game-preview {
     padding: 24px;
     border-left: 0;
@@ -987,7 +1006,7 @@ h3.panel-title {
 }
 
 .game-preview-open {
-  width: min(100%, 260px);
+  width: min(100%, 360px);
 }
 
 .contact {

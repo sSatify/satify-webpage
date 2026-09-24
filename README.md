@@ -56,15 +56,15 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
   [docs/invitation-heroine-dragon.md](docs/invitation-heroine-dragon.md).
 - Contact illustration: `assets/pixel-quest-giver.png`, an adventurer meeting a quest giver over a map.
   Created with the built-in image-generation tool; the full prompt is in [docs/contact-artwork.md](docs/contact-artwork.md).
-- Game promotion screenshot: `assets/satify-game-mobile.png`, supplied by Marco on 22 September 2026.
-  It shows the actual Satify game on mobile, with satellite imagery, labels, and labelling tools. The original
+- Game promotion screenshot: `assets/satify-game-mobile.jpeg`, supplied by Marco on 24 September 2026.
+  It shows the Satify game comparing remote sensing imagery from 2026 and 2016, with agriculture labels and area measurements. The original
   screenshot is displayed without retouching and opens in an on-page panel, using the same Close button,
   Escape, and outside-click behaviour as the app screenshot. The interactive hero retains the pixel artwork.
 - Game sticker: `assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
   The "Let’s play!" sticker links to the game from its promotion panel.
-- App workspace screenshot: `assets/satify-app-workspace.png`, supplied by Marco on 22 September 2026.
+- App workspace screenshot: `assets/satify-app-workspace.jpeg`, supplied by Marco on 24 September 2026.
   Displayed without retouching in the app section, with an enlarged on-page panel that closes using its Close button,
-  Escape, or a click outside the panel. It shows label classes,
+  Escape, or a click outside the panel. It shows colour-infrared imagery, built-up labels,
   Smart Fill controls, and the settings panel; the visible OpenStreetMap attribution is retained.
 - The hero illustration is an eight-area discovery game: one connected river, a separate lower-right waterfall, three
   forests, and three built-up areas. Click or tap an area to reveal it. Map areas use pointer input only; the legend and
