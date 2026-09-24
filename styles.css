@@ -237,41 +237,75 @@ h1 span {
 }
 
 .pixel-button {
+  --button-face: var(--mint);
+  --button-light: #d4efd0;
+  --button-shade: #5c8a59;
+  --button-edge: #203c31;
+  position: relative;
+  isolation: isolate;
   color: var(--ink);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 24px;
-  font-size: 14px;
-  font-weight: 700;
+  font-family: var(--pixel);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
   text-decoration: none;
   min-height: 48px;
-  padding: 11px 18px;
-  border: 2px solid var(--ink);
-  box-shadow: 3px 3px 0 var(--ink);
-  transition: transform .12s,box-shadow .12s
+  padding: 15px 22px;
+  border: 0;
+  background: transparent;
+  filter: drop-shadow(3px 3px 0 #10271f);
+  transition: transform .1s, filter .1s;
 }
 
-.pixel-button:hover {
-  transform: translate(-1px,-2px);
-  box-shadow: 4px 5px 0 var(--ink)
+.pixel-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--button-face);
+  border: 2px solid var(--button-edge);
+  box-shadow: inset 3px 3px 0 var(--button-light), inset -3px -3px 0 var(--button-shade);
+  clip-path: polygon(4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px,
+    100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px),
+    calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px),
+    0 calc(100% - 4px), 0 4px, 4px 4px);
+  pointer-events: none;
+}
+
+.pixel-button:hover,
+.pixel-button:focus-visible {
+  --button-edge: var(--gold);
+}
+
+.pixel-button:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 5px;
 }
 
 .pixel-button:active {
   transform: translate(3px,3px);
-  box-shadow: none
+  filter: none;
 }
 
-.pixel-button.primary {
-  background: var(--mint)
+.pixel-button:active::before {
+  box-shadow: inset 3px 3px 0 var(--button-shade), inset -3px -3px 0 var(--button-light);
 }
 
 .pixel-button.secondary {
-  background: #fdfcf5
+  --button-face: #d5dfc4;
+  --button-light: #f0f4df;
+  --button-shade: #879c73;
 }
 
 .pixel-button.gold {
-  background: var(--gold)
+  --button-face: var(--gold);
+  --button-light: #fff0be;
+  --button-shade: #a58b46;
 }
 
 .access-note {
@@ -1432,9 +1466,10 @@ h3.panel-title {
 }
 
 [data-theme="dark"] .pixel-button.secondary {
-  background: #2d4837;
+  --button-face: #365640;
+  --button-light: #719674;
+  --button-shade: #1b3023;
   color: var(--text);
-  border-color: #6f9273;
 }
 
 [data-theme="dark"] a:focus-visible,
