@@ -675,6 +675,17 @@ h1 span {
   color: var(--text);
 }
 
+.app-feature-summary {
+  margin-block: 4px 8px;
+}
+
+.app-feature-final {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: calc((100% - 40px) / 2);
+  text-align: center;
+}
+
 .app-invitation {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -838,6 +849,9 @@ html.screenshot-open {
   .app-features {
     grid-template-columns: 1fr;
   }
+  .app-feature-final {
+    width: 100%;
+  }
   .game-preview {
     padding: 24px;
     border-left: 0;
@@ -896,9 +910,17 @@ h3.panel-title {
   line-height: 1.8
 }
 
+.mission-intro {
+  max-width: 850px;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.8
+}
+
 .mission-steps {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(2,minmax(0,1fr));
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line)
 }
@@ -910,16 +932,20 @@ h3.panel-title {
   position: relative
 }
 
-.step:first-child {
+.step:nth-child(odd) {
   padding-left: 0
 }
 
-.step:last-child {
+.step:nth-child(even) {
   padding-right: 0
 }
 
-.step+.step {
+.step:nth-child(even) {
   border-left: 1px solid var(--line)
+}
+
+.step:nth-child(n+3) {
+  border-top: 1px solid var(--line)
 }
 
 .step-top {
@@ -951,18 +977,7 @@ h3.panel-title {
   font-size: 14px;
   line-height: 1.85;
   color: var(--muted);
-  max-width: 330px
-}
-
-.step-tag {
-  font-family: var(--pixel);
-  font-size: 12px;
-  line-height: 1.7;
-  letter-spacing: .2px;
-  display: block;
-  margin-top: auto;
-  padding-top: 24px;
-  color: var(--forest)
+  max-width: none
 }
 
 .game-section {
@@ -1295,11 +1310,13 @@ h3.panel-title {
   .mission-steps {
     grid-template-columns: 1fr
   }
-  .step,.step:first-child,.step:last-child {
+  .step,.step:nth-child(odd),.step:nth-child(even) {
     padding: 24px 0
   }
-  .step+.step {
+  .step:nth-child(even) {
     border-left: 0;
+  }
+  .step+.step {
     border-top: 1px solid var(--line)
   }
   .step>p {
@@ -1307,9 +1324,6 @@ h3.panel-title {
   }
   .step-top {
     margin-bottom: 12px
-  }
-  .step-tag {
-    padding-top: 15px
   }
   .game-card {
     grid-template-columns: 1fr
