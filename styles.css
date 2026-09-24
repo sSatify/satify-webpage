@@ -1503,25 +1503,16 @@ h3.panel-title {
 }
 
 .theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 9px;
   min-height: 44px;
   min-width: 88px;
   padding: 8px 11px;
-  border: 1px solid #729b73;
-  background: transparent;
-  color: var(--mint);
   font-size: 12px;
   cursor: pointer;
 }
 
-.theme-toggle:hover {
-  background: #ffffff10;
-}
-
 .theme-toggle svg {
+  flex-shrink: 0;
   fill: currentColor;
   shape-rendering: crispEdges;
 }
@@ -1533,11 +1524,6 @@ h3.panel-title {
 
 [data-theme="dark"] .theme-moon {
   display: block;
-}
-
-.legal-page .theme-toggle {
-  color: var(--forest);
-  border-color: var(--legal-line);
 }
 
 @media(max-width:800px) {
