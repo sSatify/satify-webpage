@@ -24,7 +24,7 @@
   --legal-muted: #647165;
   --legal-footer: var(--soft-bg);
   --frame-shadow: #c6ccb1;
-  --pixel: Silkscreen,'Courier New',monospace
+  --pixel: Silkscreen,'Courier New'
 }
 
 * {
@@ -81,7 +81,7 @@ h1,h2,h3 {
 }
 
 h1,h2 {
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-weight: 400
 }
 
@@ -142,7 +142,7 @@ p {
   align-items: center;
   gap: 13px;
   text-decoration: none;
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: 27px;
   line-height: 1.2;
   flex-shrink: 0
@@ -154,7 +154,7 @@ p {
 
 .brand-caption {
   display: block;
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: 8px;
   letter-spacing: 1.2px;
   color: var(--mint);
@@ -186,7 +186,7 @@ p {
 }
 
 .eyebrow {
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: 12px;
   letter-spacing: .5px;
   line-height: 1.7
@@ -248,7 +248,7 @@ h1 span {
   align-items: center;
   justify-content: center;
   gap: 24px;
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: 13px;
   font-weight: 400;
   line-height: 1.5;
@@ -335,8 +335,15 @@ h1 span {
 }
 
 .world-console {
-  border: 3px solid var(--ink);
-  background: var(--ink);
+  --console-bg: var(--soft-bg);
+  --console-text: var(--text);
+  --console-muted: var(--muted);
+  --console-accent: var(--forest);
+  --console-track: var(--line);
+  --console-complete: #80601b;
+  --console-hover: #203c3114;
+  border: 3px solid var(--line);
+  background: var(--console-bg);
   padding: 5px;
   box-shadow: 7px 7px 0 var(--frame-shadow);
   position: relative;
@@ -348,8 +355,8 @@ h1 span {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #e9edd7;
-  font-family: var(--pixel);
+  color: var(--console-text);
+  font-family: var(--pixel),monospace;
   font-size: 9px;
   padding: 0 10px 5px;
   gap: 10px
@@ -362,10 +369,12 @@ h1 span {
 }
 
 .console-top .status-dot {
-  background: var(--mint)
+  background: var(--console-accent)
 }
 
 .map-viewport {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
   position: relative;
   overflow: hidden;
   border: 2px solid #6d8b63;
@@ -409,7 +418,7 @@ h1 span {
 .map-legend {
   display: flex;
   gap: 14px;
-  color: #e9edd7;
+  color: var(--console-text);
   font-size: 10px
 }
 
@@ -489,7 +498,7 @@ h1 span {
 
 .discovery-panel {
   padding: 12px 7px 8px;
-  color: #e9edd7;
+  color: var(--console-text);
 }
 
 .discovery-heading {
@@ -502,10 +511,10 @@ h1 span {
 }
 
 .discovery-score {
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: 14px;
   white-space: nowrap;
-  color: var(--mint);
+  color: var(--console-accent);
 }
 
 #discovery-progress {
@@ -515,13 +524,13 @@ h1 span {
   margin-block: 9px 3px;
   appearance: none;
   border: 0;
-  background: #3c5543;
-  color: var(--mint);
+  background: var(--console-track);
+  color: var(--console-accent);
 }
 
-#discovery-progress::-webkit-progress-bar { background: #3c5543; }
-#discovery-progress::-webkit-progress-value { background: var(--mint); }
-#discovery-progress::-moz-progress-bar { background: var(--mint); }
+#discovery-progress::-webkit-progress-bar { background: var(--console-track); }
+#discovery-progress::-webkit-progress-value { background: var(--console-accent); }
+#discovery-progress::-moz-progress-bar { background: var(--console-accent); }
 
 .discovery-footer {
   display: grid;
@@ -541,11 +550,11 @@ h1 span {
   padding: 4px;
   border: 0;
   background: transparent;
-  color: var(--mint);
+  color: var(--console-accent);
   cursor: pointer;
 }
 
-.sound-toggle:hover { background: #ffffff14; }
+.sound-toggle:hover { background: var(--console-hover); }
 .sound-toggle svg { fill: currentColor; shape-rendering: crispEdges; }
 .sound-toggle .sound-muted,
 .sound-toggle[aria-pressed="false"] .sound-waves { display: none; }
@@ -564,7 +573,7 @@ h1 span {
 }
 
 .replay-link:hover {
-  color: #fff4d8;
+  color: var(--console-complete);
 }
 
 .discovery-panel .map-legend {
@@ -577,13 +586,13 @@ h1 span {
 
 .discovery-status {
   font-size: 11px;
-  color: #c0cfba;
+  color: var(--console-muted);
   line-height: 1.5;
 }
 
 .is-complete .discovery-status,
 .is-complete .discovery-score {
-  color: var(--gold);
+  color: var(--console-complete);
 }
 
 .terrain-divider {
@@ -595,7 +604,7 @@ h1 span {
   border-block: 1px solid var(--line);
   padding: 15px 20px;
   color: var(--forest);
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: 12px;
   text-align: center;
   background: var(--soft-bg)
@@ -891,7 +900,7 @@ h2 {
 
 h2.panel-title,
 h3.panel-title {
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: clamp(24px, 2.8vw, 32px);
   font-weight: 400;
   line-height: 1.3;
@@ -963,7 +972,7 @@ h3.panel-title {
 }
 
 .step-number {
-  font-family: var(--pixel);
+  font-family: var(--pixel),monospace;
   font-size: 25px;
   color: #a6b49e
 }
@@ -1496,6 +1505,21 @@ h3.panel-title {
   --legal-muted: #b7c8b6;
   --legal-footer: #1c3227;
   --frame-shadow: #091b13;
+}
+
+[data-theme="dark"] .world-console {
+  --console-bg: var(--ink);
+  --console-text: #e9edd7;
+  --console-muted: #c0cfba;
+  --console-accent: var(--mint);
+  --console-track: #3c5543;
+  --console-complete: var(--gold);
+  --console-hover: #ffffff14;
+  border-color: var(--ink);
+}
+
+[data-theme="dark"] .world-console .replay-link:hover {
+  color: #fff4d8;
 }
 
 [data-theme="dark"] .pixel-button.secondary {
