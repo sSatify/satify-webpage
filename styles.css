@@ -5,6 +5,13 @@
   font-weight: 400
 }
 
+@font-face {
+  font-family: 'Departure Mono';
+  src: url('assets/fonts/departure-mono.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 400
+}
+
 :root {
   --ink: #203c31;
   --forest: #38624a;
@@ -24,7 +31,8 @@
   --legal-muted: #647165;
   --legal-footer: var(--soft-bg);
   --frame-shadow: #c6ccb1;
-  --pixel: Silkscreen,'Courier New'
+  --pixel: Silkscreen,'Courier New';
+  --prose: 'Departure Mono','Courier New',monospace
 }
 
 * {
@@ -40,7 +48,7 @@ body {
   margin: 0;
   background: var(--page-bg);
   color: var(--text);
-  font-family: Arial,Helvetica,sans-serif;
+  font-family: var(--pixel),monospace;
   font-size: 16px;
   line-height: 1.65
 }
@@ -87,6 +95,23 @@ h1,h2 {
 
 p {
   overflow-wrap: break-word
+}
+
+.intro,
+.hero-description,
+.mission-intro,
+.step>p,
+.app-intro,
+.app-features p,
+.panel-copy>p:not(.eyebrow),
+.section-heading>p:not(.eyebrow),
+.app-preview figcaption,
+.game-preview figcaption,
+.app-sign-in,
+.legal-content p,
+.legal-content address,
+.legal-content li {
+  font-family: var(--prose)
 }
 
 .wrap {
@@ -218,7 +243,7 @@ h1 span {
 .intro {
   font-size: 20px;
   line-height: 1.5;
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: 15px
 }
 
@@ -1100,7 +1125,7 @@ h3.panel-title {
 }
 
 .legal-page .brand {
-  font-family: Arial,Helvetica,sans-serif;
+  font-family: var(--pixel),monospace;
   font-size: 23px;
   font-weight: bold
 }
@@ -1123,7 +1148,7 @@ h3.panel-title {
 }
 
 .legal-content h1 {
-  font-family: Arial,Helvetica,sans-serif;
+  font-family: var(--pixel),monospace;
   font-size: 39px;
   letter-spacing: -1px;
   line-height: 1.2;
@@ -1131,7 +1156,7 @@ h3.panel-title {
 }
 
 .legal-content h2 {
-  font-family: Arial,Helvetica,sans-serif;
+  font-family: var(--pixel),monospace;
   font-size: 22px;
   letter-spacing: 0;
   font-weight: 600;
@@ -1179,7 +1204,7 @@ h3.panel-title {
 }
 
 .legal-page .footer-brand {
-  font-family: Arial,Helvetica,sans-serif
+  font-family: var(--pixel),monospace
 }
 
 .legal-content .back-link {
