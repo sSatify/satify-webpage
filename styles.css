@@ -650,7 +650,8 @@ h1 span {
 .app-card,
 .app-invitation,
 .game-card,
-.contact-card {
+.contact-card,
+.supporters-card {
   --panel-padding: 40px;
   border: 3px solid var(--line);
   background: var(--soft-bg);
@@ -877,7 +878,8 @@ html.screenshot-open {
   .app-card,
   .app-invitation,
   .game-card,
-  .contact-card {
+  .contact-card,
+  .supporters-card {
     --panel-padding: 24px;
   }
   .app-features {
@@ -1073,6 +1075,65 @@ h3.panel-title {
   min-height: 380px;
   object-fit: cover;
   border-left: 1px solid var(--line);
+}
+
+.supporters {
+  padding-bottom: 64px;
+}
+
+.supporters-card {
+  padding: var(--panel-padding);
+}
+
+.supporters-copy {
+  max-width: 760px;
+}
+
+.supporters-logos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0;
+}
+
+.supporters-logos a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 170px;
+  padding: 20px;
+  background: #fff;
+  border: 2px solid var(--line);
+  box-shadow: 3px 3px 0 var(--frame-shadow);
+}
+
+.supporters-logos a:hover {
+  border-color: var(--green);
+}
+
+.supporters-logos img {
+  width: auto;
+  height: auto;
+  max-height: 126px;
+  object-fit: contain;
+}
+
+@media(max-width:800px) {
+  .supporters {
+    padding-bottom: 44px;
+  }
+  .supporters-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media(max-width:480px) {
+  .supporters-logos {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 
 .site-footer {

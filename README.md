@@ -46,6 +46,8 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
 
 ## Design assets
 
+- Supporter logos in `assets/supporters/`, supplied by Marco on 7 October 2026 and displayed unchanged.
+  The homepage supporters panel links to Hereon, Helmholtz, DyNobel, and GITZ in that order.
 - Original Satify SVG and PNG supplied by the owner, in `assets/`.
 - Silkscreen by Jason Kottke, self-hosted under the SIL Open Font License; license in `assets/fonts/OFL.txt`.
   Source: [Google Fonts](https://github.com/google/fonts/tree/main/ofl/silkscreen).
