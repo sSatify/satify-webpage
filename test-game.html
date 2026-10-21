@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Try the SATIFY satellite-to-pixel discovery game prototype.">
+    <meta name="theme-color" content="#203c31">
+    <title>SATIFY — Test game</title>
+    <link rel="icon" href="assets/satify-logo.svg" type="image/svg+xml">
+    <script src="theme.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="test-game.css">
+    <script src="site.js" defer></script>
+    <script src="test-game.js" defer></script>
+</head>
+<body class="test-game-page">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+    <div class="header-inner wrap">
+        <a class="brand" href="./" aria-label="SATIFY home"><img src="assets/satify-logo.svg" width="42" height="42"
+                                                                 alt=""><span>SATIFY<span class="brand-caption">Pixels. Insights. Discoveries.</span></span></a>
+        <div class="header-tools">
+            <nav aria-label="Main navigation"><a href="./">Back to SATIFY</a></nav>
+            <button class="theme-toggle pixel-button secondary" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"
+                    title="Switch to dark theme" hidden>
+                <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+                    <path class="theme-sun"
+                          d="M8 0h4v3H8zM8 17h4v3H8zM0 8h3v4H0zM17 8h3v4h-3zM3 3h3v3H3zM14 3h3v3h-3zM3 14h3v3H3zM14 14h3v3h-3zM6 6h8v8H6z"/>
+                    <path class="theme-moon" d="M8 1h4v3H8v8h8V8h3v7h-3v3H5v-3H2V5h3V2h3z"/>
+                </svg>
+                <span class="theme-label">Light</span></button>
+        </div>
+    </div>
+</header>
+<main id="main" class="test-game-main wrap">
+    <div class="test-game-intro">
+        <p class="eyebrow">GAME EXPERIMENT</p>
+        <h1>Find the world in pixels.</h1>
+        <p>Click or tap forests, water, and buildings to turn each area into pixel art.
+            Find all eight to transform the whole landscape.</p>
+    </div>
+    <figure class="world-console">
+            <div class="console-top"><span><span class="status-dot"
+                                                 aria-hidden="true"></span> FROM SATELLITE TO PIXELS</span>
+                <button id="discovery-sound" class="sound-toggle" type="button" aria-label="Game sounds"
+                        aria-pressed="true" title="Mute game sounds" hidden>
+                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M2 9h4l6-5v16l-6-5H2z"/>
+                        <path class="sound-waves" d="M15 8h2v8h-2zM19 5h2v14h-2z"/>
+                        <path class="sound-muted" d="m16 8 3 3 3-3 1 2-3 2 3 2-1 2-3-3-3 3-1-2 3-2-3-2z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="map-viewport" id="world-map" aria-describedby="map-instructions">
+                <img class="world-image satellite-image" src="assets/test-game-satellite.png" width="1536" height="1024"
+                     alt="A fictional aerial landscape with a winding river, forests, fields, and a small village."
+                     fetchpriority="high">
+                <img class="world-image pixel-image" src="assets/test-game-pixel.png" width="1536" height="1024" alt="" aria-hidden="true">
+                <svg class="map-labels" viewBox="0 0 1536 1024" role="group" aria-label="Discover areas in the landscape" hidden>
+                    <defs>
+                        <pattern id="pixel-landscape" patternUnits="userSpaceOnUse" width="1536" height="1024">
+                            <image href="assets/test-game-pixel.png" width="1536" height="1024"/>
+                        </pattern>
+                    </defs>
+                    <path class="region" data-region="forest-west" data-category="forest" data-name="Northwestern forest" d="M0 0H539L550 68 532 113 493 123 476 162 440 187 407 195 389 247 346 270 302 277 271 293 237 276 181 287 134 271 117 224 69 213 0 198Z"/>
+                    <path class="region" data-region="forest-east" data-category="forest" data-name="Northeastern forest" d="M1263 0H1536V184L1483 177 1440 194 1390 184 1367 193 1318 177 1274 163 1242 149 1252 104Z"/>
+                    <path class="region" data-region="forest-south" data-category="forest" data-name="Southwestern forest" d="M0 704L42 683 78 653 101 623 148 608 192 598 245 608 296 622 335 639 381 655 421 687 460 725 485 763 513 809 515 862 505 910 498 956 468 992 437 1024H0Z"/>
+                    <path class="region" data-region="river" data-category="water" data-name="Winding river" d="M690 0H756C772 34 795 47 800 89C815 133 815 161 794 200C776 238 743 264 724 301C703 342 706 374 740 399C777 429 810 454 837 494C867 536 902 567 919 614C940 661 941 706 920 744C900 778 859 779 817 793C779 808 744 841 737 877C728 915 745 947 784 978L833 1024H747C712 996 694 968 685 928C671 877 678 849 698 822C725 785 767 764 802 748C846 728 877 710 881 672C888 635 859 603 833 569C804 531 786 507 754 479C719 449 677 427 650 398C622 368 629 331 642 300C660 256 696 230 718 198C741 165 752 140 738 105C726 68 712 36 690 0Z"/>
+                    <path class="region" data-region="village" data-category="built" data-name="Village and gardens" d="M186 347L272 328 331 346 392 361 446 371 500 378 523 414 577 411 586 461 600 489 577 546 540 562 510 592 473 632 412 654 354 631 300 609 311 559 279 528 284 493 191 495 156 461 166 412Z"/>
+                    <path class="region" data-region="sheds" data-category="built" data-name="Agricultural sheds" d="M951 255L1030 222 1128 195 1162 215 1203 296 1172 337 1157 387 1088 402 983 405 965 363Z"/>
+                    <path class="region" data-region="farm" data-category="built" data-name="Farm courtyard" d="M1009 450L1060 445 1111 463 1155 460 1191 492 1204 553 1198 595 1148 606 1053 587 1030 540Z"/>
+                    <path class="region" data-region="pond" data-category="water" data-name="Pond" d="M1210 791C1241 774 1281 779 1302 797C1329 796 1364 808 1371 840C1383 874 1367 912 1343 925C1310 934 1277 920 1248 904C1219 895 1208 876 1206 855C1196 833 1191 809 1210 791Z"/>
+                </svg>
+                <span class="map-crosshair" aria-hidden="true"></span>
+                <canvas class="map-fireworks" aria-hidden="true" hidden></canvas>
+            </div>
+            <div class="discovery-panel" hidden>
+                <div class="discovery-heading"><p id="map-instructions">Find 2 water areas, 3 forests &amp; 3 built-up
+                    areas.</p><span class="discovery-score" id="discovery-score">0 / 8</span></div>
+                <progress id="discovery-progress" max="8" value="0" aria-label="Areas discovered">0 of 8 areas
+                    discovered
+                </progress>
+                <div class="discovery-footer">
+                    <div class="map-legend" aria-label="Areas found by class"><span><i class="legend-forest"></i>Forest <b
+                            id="forest-count">0/3</b></span><span><i class="legend-water"></i>Water <b id="water-count">0/2</b></span><span><i
+                            class="legend-land"></i>Built-up <b id="built-count">0/3</b></span></div>
+                    <p class="discovery-status"><span id="map-status"
+                                                      role="status">Loading the two landscapes…</span>
+                        <button id="discovery-reset" class="replay-link" type="button" hidden>Play again?</button>
+                    </p>
+                </div>
+            </div>
+        </figure>
+    <noscript><p class="test-game-note">Enable JavaScript to play the discovery game.</p></noscript>
+    <p class="test-game-note">A fictional, AI-generated aerial scene, matched to our pixel world.</p>
+</main>
+</body>
+</html>

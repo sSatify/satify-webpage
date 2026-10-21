@@ -19,6 +19,19 @@ third-party material, including the Silkscreen font, retains its own license ter
 
 Open `index.html` through your IDE's built-in web preview. Reload the browser after changes.
 
+### Satellite-to-pixel experiment
+
+Open `test-game.html` directly to try the separate discovery-game prototype for issue #218.
+It starts with fictional overhead aerial imagery; finding each of eight areas reveals the matching
+pixel-art segment. The final discovery replaces the entire scene. Replay restores the aerial image.
+The copy retains progress, sound controls, and the celebration, and also supports Tab plus Enter/Space.
+
+The page and its isolated script/styles are included in the static build, but are not linked from the
+public pages. Its `noindex, nofollow` metadata asks search engines not to index it. This is an unlisted
+prototype, not access control: anyone with its URL can open it after deployment.
+The homepage and its original game assets remain unchanged. The two new images were generated for
+this prototype; they depict a fictional landscape, not an actual satellite observation.
+
 ## GitHub Pages
 
 The workflow in `.github/workflows/pages.yml` checks, builds, and deploys on pushes to `main`, or on a manual run. In
