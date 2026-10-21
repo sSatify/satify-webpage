@@ -414,6 +414,22 @@ h1 span {
   image-rendering: pixelated
 }
 
+.satellite-image {
+  image-rendering: auto;
+}
+
+.pixel-image {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .8s ease;
+}
+
+.map-viewport.is-complete .pixel-image {
+  opacity: 1;
+}
+
 .map-crosshair {
   display: none;
   position: absolute;
@@ -483,32 +499,32 @@ h1 span {
   opacity: 0;
   pointer-events: all;
   cursor: inherit;
-  transition: opacity .18s;
-  stroke-width: 3;
-  stroke-dasharray: 9 6;
   outline: none;
+  fill: url(#pixel-landscape);
+  stroke: none;
+  transition: opacity .3s ease;
+}
+
+.map-labels image {
+  image-rendering: pixelated;
 }
 
 .region.is-found {
   opacity: 1;
-  stroke: #fff;
-  stroke-width: 8;
-  stroke-dasharray: none;
+  stroke: none;
 }
 
-.vegetation {
-  fill: #a7d7a990;
-  stroke: #e1f8ca
+.region:focus-visible {
+  opacity: 1;
+  fill: transparent;
+  stroke: #fff4d8;
+  stroke-width: 5;
+  stroke-dasharray: 10 6;
+  vector-effect: non-scaling-stroke;
 }
 
-.water {
-  fill: #52c7ebaa;
-  stroke: #ccf4ff
-}
-
-.buildings {
-  fill: #edcb73b0;
-  stroke: #fff0bc
+.region.is-found:focus-visible {
+  fill: url(#pixel-landscape);
 }
 
 .map-fireworks {
@@ -524,6 +540,14 @@ h1 span {
 .discovery-panel {
   padding: 12px 7px 8px;
   color: var(--console-text);
+}
+
+.discovery-caption {
+  padding: 0 7px 8px;
+  font-family: var(--prose);
+  font-size: 10px;
+  color: var(--console-muted);
+  line-height: 1.5;
 }
 
 .discovery-heading {
@@ -570,8 +594,8 @@ h1 span {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   padding: 4px;
   border: 0;
   background: transparent;
@@ -1129,6 +1153,13 @@ h3.panel-title {
   }
 }
 
+@media(max-width:600px) {
+  .discovery-footer {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
 @media(max-width:480px) {
   .supporters-logos {
     grid-template-columns: 1fr;
@@ -1564,6 +1595,10 @@ h3.panel-title {
 }
 
 @media(prefers-reduced-motion:reduce) {
+  .pixel-image,
+  .region {
+    transition: none;
+  }
   html {
     scroll-behavior: auto
   }

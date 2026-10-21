@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 
-const pages = ['index.html', 'imprint/index.html', 'privacy/index.html', 'test-game.html'];
+const pages = ['index.html', 'imprint/index.html', 'privacy/index.html'];
 let links = 0;
 for (const page of pages) {
   const html = await readFile(page, 'utf8');
@@ -22,7 +22,11 @@ for (const page of pages) {
   }
 }
 const css = await readFile('styles.css', 'utf8');
-for (const [, asset] of css.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) await stat(asset);
+for (const [, asset] of css.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) {
+  if (asset.startsWith('#')) {
+    assert((await readFile('index.html', 'utf8')).includes(`id="${asset.slice(1)}"`), `Valid SVG paint reference: ${asset}`);
+  } else await stat(asset);
+}
 const privacy = await readFile('privacy/index.html', 'utf8');
 assert.match(privacy, /Mittlerer Landweg 26, 21033 Hamburg/);
 assert.match(privacy, /GitHub Pages/);
@@ -31,9 +35,4 @@ assert(!/Geesthacht|IONOS — main website|WebAnalytics|Website Builder/.test(pr
 for (const fragment of ['accounts-and-projects', 'usage-insights', 'leaderboard', 'contributions', 'cookies-and-browser-storage', 'consent-and-administrative-records', 'your-rights']) {
   assert(privacy.includes(fragment), `Missing privacy section: ${fragment}`);
 }
-const prototype = await readFile('test-game.html', 'utf8');
-assert.match(prototype, /name="robots" content="noindex, nofollow"/);
-for (const page of pages.filter(page => page !== 'test-game.html')) {
-  assert(!/test-game\.html/.test(await readFile(page, 'utf8')), `${page}: prototype stays unlinked`);
-}
-console.log(`Checked all ${pages.length} pages, ${links} local references, CSS assets, legal migration requirements, and unlinked prototype.`);
+console.log(`Checked all ${pages.length} pages, ${links} local references, CSS assets, and legal migration requirements.`);

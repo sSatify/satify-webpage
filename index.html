@@ -56,7 +56,7 @@
         </div>
         <figure class="world-console">
             <div class="console-top"><span><span class="status-dot"
-                                                 aria-hidden="true"></span> A WORLD WORTH EXPLORING</span>
+                                                 aria-hidden="true"></span> FROM SATELLITE TO PIXELS</span>
                 <button id="discovery-sound" class="sound-toggle" type="button" aria-label="Game sounds"
                         aria-pressed="true" title="Mute game sounds" hidden>
                     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -66,32 +66,25 @@
                     </svg>
                 </button>
             </div>
-            <div class="map-viewport" id="world-map">
-                <img class="world-image" src="assets/pixel-world.png" width="1536" height="1024"
-                     alt="A cheerful pixel-art landscape with a winding river, green forests, fields, and a small village."
+            <div class="map-viewport" id="world-map" aria-describedby="map-instructions">
+                <img class="world-image satellite-image" src="assets/discovery-aerial.png" width="1536" height="1024"
+                     alt="A fictional aerial landscape with a winding river, forests, fields, and a small village."
                      fetchpriority="high">
-                <svg class="map-labels" viewBox="0 0 1536 1024" aria-hidden="true" hidden>
-                    <path class="region vegetation" data-region="forest-west" data-category="forest"
-                          data-name="Western forest"
-                          d="M0 0H550V95H582V183H541V263H495V298H414V347H461V386H392V428H265V375H185V277H108V226H0Z"/>
-                    <path class="region vegetation" data-region="forest-east" data-category="forest"
-                          data-name="Eastern forest"
-                          d="M1062 0H1536V74H1459V134H1408V191H1374V251H1311V308H1212V240H1183V190H1080V125H1036V57H1062Z"/>
-                    <path class="region vegetation" data-region="forest-south" data-category="forest"
-                          data-name="Southern forest"
-                          d="M582 751H691V815H781V884H856V937H1019V970H1117V1024H433V950H478V875H542V827H582Z"/>
-                    <path class="region water" data-region="river" data-category="water"
-                          data-name="River and waterfalls"
-                          d="M709 0H799V20H850V75H891V115H932V145H980V175H1040V199H1100V228H1124V257H1090V280H1020V308H950V334H870V360H778V400H740V441H764V460H837V484H902V510H937V552H916V590H849V623H797V649H735V694H681V718H602V750H570V807H500V831H376V809H300V829H223V863H196V902H146V928H101V966H50V1006H0V946H42V915H84V887H137V850H170V817H198V802H255V787H349V778H436V798H482V778H487V730H540V697H615V666H636V623H704V591H789V570H839V544H817V519H748V499H687V472H663V429H682V391H705V358H780V329H850V298H943V275H1008V250H1061V228H1030V211H969V191H895V166H863V130H841V101H810V83H793V35H746V23H709Z"/>
-                    <path class="region buildings" data-region="windmill" data-category="built" data-name="Windmill"
-                          d="M1337 345H1426V372H1452V415H1486V489H1410V507H1361V475H1341V411H1318V370H1337Z"/>
-                    <path class="region buildings" data-region="church" data-category="built" data-name="Village church"
-                          d="M1362 574H1401V671H1420V720H1339V745H1241V680H1262V651H1302V630H1362Z"/>
-                    <path class="region buildings" data-region="houses" data-category="built" data-name="Village houses"
-                          d="M1116 731H1150V752H1181V810H1245V827H1300V789H1337V762H1371V734H1430V757H1466V806H1498V865H1460V900H1357V879H1262V868H1182V866H1129V898H983V842H1018V803H1078V778H1116Z"/>
-                    <path class="region water" data-region="waterfall-southeast" data-category="water"
-                          data-name="Lower-right waterfall"
-                          d="M1247 887H1310V901H1334V921H1355V944H1380V977H1424V990H1456V1024H1309V1003H1285V974H1272V939H1240V920H1247Z"/>
+                <img class="world-image pixel-image" src="assets/discovery-pixel.png" width="1536" height="1024" alt="" aria-hidden="true">
+                <svg class="map-labels" viewBox="0 0 1536 1024" role="group" aria-label="Discover areas in the landscape" hidden>
+                    <defs>
+                        <pattern id="pixel-landscape" patternUnits="userSpaceOnUse" width="1536" height="1024">
+                            <image href="assets/discovery-pixel.png" width="1536" height="1024"/>
+                        </pattern>
+                    </defs>
+                    <path class="region" data-region="forest-west" data-category="forest" data-name="Northwestern forest" d="M0 0H539L550 68 532 113 493 123 476 162 440 187 407 195 389 247 346 270 302 277 271 293 237 276 181 287 134 271 117 224 69 213 0 198Z"/>
+                    <path class="region" data-region="forest-east" data-category="forest" data-name="Northeastern forest" d="M1263 0H1536V184L1483 177 1440 194 1390 184 1367 193 1318 177 1274 163 1242 149 1252 104Z"/>
+                    <path class="region" data-region="forest-south" data-category="forest" data-name="Southwestern forest" d="M0 704L42 683 78 653 101 623 148 608 192 598 245 608 296 622 335 639 381 655 421 687 460 725 485 763 513 809 515 862 505 910 498 956 468 992 437 1024H0Z"/>
+                    <path class="region" data-region="river" data-category="water" data-name="Winding river" d="M690 0H756C772 34 795 47 800 89C815 133 815 161 794 200C776 238 743 264 724 301C703 342 706 374 740 399C777 429 810 454 837 494C867 536 902 567 919 614C940 661 941 706 920 744C900 778 859 779 817 793C779 808 744 841 737 877C728 915 745 947 784 978L833 1024H747C712 996 694 968 685 928C671 877 678 849 698 822C725 785 767 764 802 748C846 728 877 710 881 672C888 635 859 603 833 569C804 531 786 507 754 479C719 449 677 427 650 398C622 368 629 331 642 300C660 256 696 230 718 198C741 165 752 140 738 105C726 68 712 36 690 0Z"/>
+                    <path class="region" data-region="village" data-category="built" data-name="Village and gardens" d="M186 347L272 328 331 346 392 361 446 371 500 378 523 414 577 411 586 461 600 489 577 546 540 562 510 592 473 632 412 654 354 631 300 609 311 559 279 528 284 493 191 495 156 461 166 412Z"/>
+                    <path class="region" data-region="sheds" data-category="built" data-name="Agricultural sheds" d="M951 255L1030 222 1128 195 1162 215 1203 296 1172 337 1157 387 1088 402 983 405 965 363Z"/>
+                    <path class="region" data-region="farm" data-category="built" data-name="Farm courtyard" d="M1009 450L1060 445 1111 463 1155 460 1191 492 1204 553 1198 595 1148 606 1053 587 1030 540Z"/>
+                    <path class="region" data-region="pond" data-category="water" data-name="Pond" d="M1210 791C1241 774 1281 779 1302 797C1329 796 1364 808 1371 840C1383 874 1367 912 1343 925C1310 934 1277 920 1248 904C1219 895 1208 876 1206 855C1196 833 1191 809 1210 791Z"/>
                 </svg>
                 <span class="map-crosshair" aria-hidden="true"></span>
                 <canvas class="map-fireworks" aria-hidden="true" hidden></canvas>
@@ -107,11 +100,12 @@
                             id="forest-count">0/3</b></span><span><i class="legend-water"></i>Water <b id="water-count">0/2</b></span><span><i
                             class="legend-land"></i>Built-up <b id="built-count">0/3</b></span></div>
                     <p class="discovery-status"><span id="map-status"
-                                                      role="status">Click or tap an area to reveal it.</span>
+                                                      role="status">Loading the two landscapes…</span>
                         <button id="discovery-reset" class="replay-link" type="button" hidden>Play again?</button>
                     </p>
                 </div>
             </div>
+            <figcaption class="discovery-caption">Find all eight to reveal the whole pixel world. Fictional aerial imagery.</figcaption>
         </figure>
     </section>
     <div class="terrain-divider" aria-hidden="true">

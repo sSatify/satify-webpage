@@ -19,19 +19,6 @@ third-party material, including the Silkscreen font, retains its own license ter
 
 Open `index.html` through your IDE's built-in web preview. Reload the browser after changes.
 
-### Satellite-to-pixel experiment
-
-Open `test-game.html` directly to try the separate discovery-game prototype for issue #218.
-It starts with fictional overhead aerial imagery; finding each of eight areas reveals the matching
-pixel-art segment. The final discovery replaces the entire scene. Replay restores the aerial image.
-The copy retains progress, sound controls, and the celebration, and also supports Tab plus Enter/Space.
-
-The page and its isolated script/styles are included in the static build, but are not linked from the
-public pages. Its `noindex, nofollow` metadata asks search engines not to index it. This is an unlisted
-prototype, not access control: anyone with its URL can open it after deployment.
-The homepage and its original game assets remain unchanged. The two new images were generated for
-this prototype; they depict a fictional landscape, not an actual satellite observation.
-
 ## GitHub Pages
 
 The workflow in `.github/workflows/pages.yml` checks, builds, and deploys on pushes to `main`, or on a manual run. In
@@ -64,8 +51,10 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
 - Original Satify SVG and PNG supplied by the owner, in `assets/`.
 - Silkscreen by Jason Kottke, self-hosted under the SIL Open Font License; license in `assets/fonts/OFL.txt`.
   Source: [Google Fonts](https://github.com/google/fonts/tree/main/ofl/silkscreen).
-- Original generated pixel artwork: `assets/pixel-world.png`. Creation details and the full prompt are
+- Previous hero artwork (retained as a design asset): `assets/pixel-world.png`. Creation details and the full prompt are
   in [docs/artwork.md](docs/artwork.md).
+- Homepage discovery images: `assets/discovery-aerial.png` and `assets/discovery-pixel.png`, generated on 21 October 2026.
+  A fictional overhead aerial scene and a matching pixel-art version, registered to the same landscape layout.
 - Invitation illustration: `assets/pixel-heroine-dragon.png`, a female pixel-art explorer with a dragon flying over a distant valley.
   Created with the built-in image-generation tool; the full prompt is in
   [docs/invitation-heroine-dragon.md](docs/invitation-heroine-dragon.md).
@@ -74,16 +63,18 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
 - Game promotion screenshot: `assets/satify-game-mobile.jpeg`, supplied by Marco on 24 September 2026.
   It shows the Satify game comparing remote sensing imagery from 2026 and 2016, with agriculture labels and area measurements. The original
   screenshot is displayed without retouching and opens in an on-page panel, using the same Close button,
-  Escape, and outside-click behaviour as the app screenshot. The interactive hero retains the pixel artwork.
+  Escape, and outside-click behaviour as the app screenshot. The interactive hero uses its own aerial and pixel-art image pair.
 - Game sticker: `assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
   The "Let’s play!" sticker links to the game from its promotion panel.
 - App workspace screenshot: `assets/satify-app-workspace.jpeg`, supplied by Marco on 24 September 2026.
   Displayed without retouching in the app section, with an enlarged on-page panel that closes using its Close button,
   Escape, or a click outside the panel. It shows colour-infrared imagery, built-up labels,
   Smart Fill controls, and the settings panel; the visible OpenStreetMap attribution is retained.
-- The hero illustration is an eight-area discovery game: one connected river, a separate lower-right waterfall, three
-  forests, and three built-up areas. Click or tap an area to reveal it. Map areas use pointer input only; the legend and
-  status share a compact two-column footer. Each newly discovered area plays a short chime. Duplicate clicks do not
+- The hero illustration is an eight-area discovery game: one connected river, a separate pond, three
+  forests, and three built-up areas (village, farm, and agricultural sheds). It starts with fictional aerial imagery;
+  click or tap each area to replace it with the matching pixel-art segment. Finding all eight reveals the whole pixel
+  landscape; replay restores the aerial image. Keyboard users can Tab to each area and press Enter or Space. The legend
+  and status share a compact footer that stacks on narrow screens. Each newly discovered area plays a short chime. Duplicate clicks do not
   increase the score or play a sound. Finding all eight triggers pixel fireworks and a locally synthesised victory
   sound, with a sound icon in the map header that toggles all game sounds and an inline replay button shown only after
   completion. Reduced-motion preferences replace the animation with still pixel stars. Progress is kept only for the

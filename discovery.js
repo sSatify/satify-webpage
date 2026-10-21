@@ -1,4 +1,4 @@
-(() => {
+(async () => {
   const map = document.querySelector('#world-map');
   if (!map) return;
 
@@ -20,8 +20,22 @@
   let celebrationTimer;
   let round = 0;
 
-  map.querySelector('.map-labels').removeAttribute('hidden');
   panel.hidden = false;
+  // Both layers must be ready before a discovery can count.
+  try {
+    await Promise.all([...map.querySelectorAll('img')].map(image => image.decode()));
+  } catch {
+    status.textContent = 'The images could not load. Reload the page to try again.';
+    return;
+  }
+  map.querySelector('.map-labels').removeAttribute('hidden');
+  regions.forEach(region => {
+    region.setAttribute('role', 'button');
+    region.setAttribute('tabindex', '0');
+    region.setAttribute('aria-label', region.dataset.name);
+    region.setAttribute('aria-pressed', 'false');
+  });
+  status.textContent = 'Click or tap an area to turn it into pixels.';
   sound.hidden = false;
   progress.max = regions.length;
   map.classList.add('discovery-ready');
@@ -167,11 +181,14 @@
     const discoveryRound = round;
     found.add(region.dataset.region);
     region.classList.add('is-found');
+    region.setAttribute('aria-pressed', 'true');
     updateProgress();
     if (found.size === regions.length) {
       completed = true;
       panel.classList.add('is-complete');
-      status.textContent = `World discovered! All ${regions.length} areas found.`;
+      map.classList.add('is-complete');
+      map.querySelector('.satellite-image').alt = 'The fully revealed pixel-art landscape with forests, rivers, fields, and a village.';
+      status.textContent = `World transformed! All ${regions.length} areas found.`;
       reset.hidden = false;
       fireworks();
     } else {
@@ -191,6 +208,13 @@
     if (region) discover(region);
     else if (!completed) status.textContent = 'Keep looking — try the river, a forest, or a building.';
   });
+  map.addEventListener('keydown', event => {
+    const region = event.target.closest('.region');
+    if (region && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      discover(region);
+    }
+  });
   map.addEventListener('pointermove', event => {
     if (event.pointerType === 'touch') return;
     const rect = map.getBoundingClientRect();
@@ -207,13 +231,17 @@
     found.clear();
     regions.forEach(region => {
       region.classList.remove('is-found');
+      region.setAttribute('aria-pressed', 'false');
     });
     panel.classList.remove('is-complete');
+    map.classList.remove('is-complete');
+    map.querySelector('.satellite-image').alt = 'A fictional aerial landscape with a winding river, forests, fields, and a small village.';
     stopFireworks();
     silence();
     updateProgress();
     reset.hidden = true;
     status.textContent = 'A fresh start! Find 2 water areas, 3 forests and 3 built-up areas.';
+    regions[0].focus({ preventScroll: true });
   });
   sound.addEventListener('click', () => {
     soundOn = !soundOn;
