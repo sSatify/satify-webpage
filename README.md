@@ -53,8 +53,11 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
   Source: [Google Fonts](https://github.com/google/fonts/tree/main/ofl/silkscreen).
 - Previous hero artwork (retained as a design asset): `assets/pixel-world.png`. Creation details and the full prompt are
   in [docs/artwork.md](docs/artwork.md).
-- Homepage discovery images: `assets/discovery-aerial.png` and `assets/discovery-pixel.png`, generated on 21 October 2026.
+- Homepage discovery images: `assets/discovery-aerial.webp` and `assets/discovery-pixel.webp`, generated on 21 October 2026.
   A fictional overhead aerial scene and a matching pixel-art version, registered to the same landscape layout.
+  Served as 1152 × 768 WebP images (about 729 KB combined). The aerial image uses Lanczos downscaling and
+  quality 82; the pixel image uses nearest-neighbour downscaling and quality 90, both encoded with method 6.
+  The SVG retains its 1536 × 1024 coordinate system so discovery areas stay aligned.
 - Invitation illustration: `assets/pixel-heroine-dragon.png`, a female pixel-art explorer with a dragon flying over a distant valley.
   Created with the built-in image-generation tool; the full prompt is in
   [docs/invitation-heroine-dragon.md](docs/invitation-heroine-dragon.md).
