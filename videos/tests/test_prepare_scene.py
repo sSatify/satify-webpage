@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import struct
 import tempfile
 import unittest
 
@@ -59,6 +60,33 @@ class PrepareSceneTest(unittest.TestCase):
     def test_rejects_output_inside_sources(self):
         with self.assertRaisesRegex(ValueError, "outside the source"):
             module.prepare(self.source, self.source / "combined.tif")
+
+    def test_crop_preserves_window_grid_pixels_and_explicit_thirteenth_band(self):
+        self.make_band("B10", 10.125)
+        order = (*module.BAND_ORDER[:10], "B10", *module.BAND_ORDER[10:])
+        # A nonuniform raster makes an incorrect crop position detectable.
+        ascii_grid = self.root / "gradient.asc"
+        ascii_grid.write_text("ncols 3\nnrows 4\nxllcorner -116\nyllcorner 61\n"
+                              "cellsize 0.25\nNODATA_value -9999\n"
+                              "0 1 2\n3 4 5\n6 7 8\n9 10 11\n")
+        self.gdal.run("gdal_translate", "-q", "-ot", "Float64", "-a_srs", "EPSG:4326",
+                      "-a_ullr", -116, 62, -115, 61, "-a_nodata", "none",
+                      ascii_grid, self.source / "B4.tif")
+        result = module.prepare(self.source, self.output, window=(1, 1, 2, 2), band_order=order)
+        self.assertEqual(result["source_window"], [1, 1, 2, 2])
+        self.assertEqual([result["width"], result["height"]], [2, 2])
+        self.assertAlmostEqual(result["geotransform"][0], -116 + 1/3)
+        self.assertAlmostEqual(result["geotransform"][3], 61.75)
+        raw = self.root / "pixels.bin"
+        self.gdal.pixels(self.output, 4, raw)
+        self.assertEqual(struct.unpack("=4d", raw.read_bytes()), (4, 5, 7, 8))
+        self.assertEqual([b["name"] for b in result["bands"]], list(order))
+        self.assertEqual(result["bands"][3]["source_sha256"], module.digest(self.source / "B4.tif"))
+
+    def test_rejects_outside_crop_before_publishing(self):
+        with self.assertRaisesRegex(ValueError, "entirely inside"):
+            module.prepare(self.source, self.output, window=(2, 0, 2, 2))
+        self.assertFalse(self.output.exists())
 
 
 if __name__ == "__main__":

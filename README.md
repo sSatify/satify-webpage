@@ -23,13 +23,21 @@ Open `index.html` through your IDE's built-in web preview. Reload the browser af
 
 The repeatable Pen and Smart fill demonstrations live in [videos/](videos/README.md).
 That standalone Node.js package records the published app at `https://app.satify.tech`
-and includes its portable demo scene, scenarios, recording helpers and tests.
+and includes dataset checksums, scenarios, recording helpers and tests. The four
+GeoTIFFs and their full scene metadata are hosted as versioned GitHub Release assets
+and cached locally outside Git.
 It does not require the application source or a local SATIFY stack.
 
 Start with `cd videos`, `npm ci`, `npm run browsers`, then `npm run login`.
 The video guide explains recording, the dedicated demo project and prerequisites.
+Setup fetches missing scenes automatically; `npm run fetch-assets` from `videos/`
+downloads all four in advance and verifies their checksums.
 Generated recordings stay in ignored `videos/output/` for review. Website playback
 integration is a later step; the static build excludes the recording tools and scene.
+
+`npm run setup:time-series` from `videos/` prepares a separate project with three
+matching coastal Sentinel-2 cutouts from 2021 and 2022. See the
+[time-series guide](videos/README.md#time-series-project) for data provenance and commands.
 
 ## GitHub Pages
 

@@ -42,7 +42,7 @@ class Gdal:
     def run(self, program: str, *args: object) -> str:
         result = subprocess.run(
             [self.programs[program], *map(str, args)], env=self.env,
-            capture_output=True, text=True, check=False,
+            capture_output=True, text=True, encoding="utf-8", check=False,
         )
         if result.returncode:
             raise ValueError(f"{program} failed: {result.stderr.strip()}")
@@ -63,7 +63,8 @@ def grid(info: dict) -> tuple:
     return (info["size"], info.get("geoTransform"), info.get("coordinateSystem", {}).get("wkt"))
 
 
-def prepare(source: Path, output: Path, *, replace: bool = False) -> dict:
+def prepare(source: Path, output: Path, *, replace: bool = False,
+            window: tuple[int, int, int, int] | None = None, band_order=BAND_ORDER) -> dict:
     source, output = source.resolve(), output.resolve()
     manifest_path = output.with_suffix(".json")
     if output.suffix.lower() not in (".tif", ".tiff"):
@@ -72,7 +73,9 @@ def prepare(source: Path, output: Path, *, replace: bool = False) -> dict:
         raise ValueError("Keep the output outside the source scene directory.")
     if not replace and (output.exists() or manifest_path.exists()):
         raise ValueError("Output already exists. Use --replace to rebuild the bundle.")
-    paths = [source / f"{name}.tif" for name in BAND_ORDER]
+    if not band_order or len(set(band_order)) != len(band_order):
+        raise ValueError("Band order must contain unique band names.")
+    paths = [source / f"{name}.tif" for name in band_order]
     missing = [path.name for path in paths if not path.is_file()]
     if missing:
         raise ValueError(f"Missing source bands: {', '.join(missing)}")
@@ -83,6 +86,14 @@ def prepare(source: Path, output: Path, *, replace: bool = False) -> dict:
     gdal = Gdal()
     infos = [gdal.info(path) for path in paths]
     reference = infos[0]
+    source_reference = reference
+    original_paths = paths
+    if window is not None:
+        if (len(window) != 4 or any(type(value) is not int for value in window)
+                or min(window[:2]) < 0 or min(window[2:]) <= 0
+                or window[0] + window[2] > reference["size"][0]
+                or window[1] + window[3] > reference["size"][1]):
+            raise ValueError("The pixel window must be positive and entirely inside the source grid.")
     if not reference.get("geoTransform") or not reference.get("coordinateSystem", {}).get("wkt"):
         raise ValueError("The source scene needs an embedded CRS and geotransform.")
     for path, info in zip(paths, infos):
@@ -98,13 +109,22 @@ def prepare(source: Path, output: Path, *, replace: bool = False) -> dict:
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="scene-", dir=output.parent) as temporary:
         temp = Path(temporary)
+        if window is not None:
+            cropped = []
+            for path in paths:
+                target = temp / path.name
+                gdal.run("gdal_translate", "-q", "-of", "GTiff", "-srcwin", *window, path, target)
+                cropped.append(target)
+            paths = cropped
+            infos = [gdal.info(path) for path in paths]
+            reference = infos[0]
         vrt = temp / "stack.vrt"
         gdal.run("gdalbuildvrt", "-q", "-separate", vrt, *paths)
         tree = ET.parse(vrt)
         vrt_bands = tree.getroot().findall("VRTRasterBand")
         if len(vrt_bands) != len(paths):
             raise ValueError("GDAL did not include every source band.")
-        for band, name, info in zip(vrt_bands, BAND_ORDER, infos):
+        for band, name, info in zip(vrt_bands, band_order, infos):
             ET.SubElement(band, "Description").text = name
             # These are spectral channels, not RGB/alpha samples.
             color = band.find("ColorInterp")
@@ -125,7 +145,7 @@ def prepare(source: Path, output: Path, *, replace: bool = False) -> dict:
             raise ValueError("The output grid or band count differs from the source.")
 
         records = []
-        for index, (name, path, info) in enumerate(zip(BAND_ORDER, paths, infos), 1):
+        for index, (name, path, info) in enumerate(zip(band_order, paths, infos), 1):
             actual, original = combined["bands"][index - 1], info["bands"][0]
             if actual.get("description") != name or any(
                 str(actual.get(key)) != str(original.get(key)) for key in ("type", "noDataValue", "scale", "offset")
@@ -136,7 +156,7 @@ def prepare(source: Path, output: Path, *, replace: bool = False) -> dict:
             if source_pixels != output_pixels:
                 raise ValueError(f"Decoded output pixels differ for {name}.")
             records.append({"index": index, "name": name, "source_file": path.name,
-                            "source_sha256": digest(path), "pixels_sha256": source_pixels})
+                            "source_sha256": digest(original_paths[index - 1]), "pixels_sha256": source_pixels})
 
         duplicates = []
         for index, record in enumerate(records):
@@ -150,11 +170,15 @@ def prepare(source: Path, output: Path, *, replace: bool = False) -> dict:
             "crs_wkt": reference["coordinateSystem"]["wkt"], "geotransform": reference["geoTransform"],
             "data_type": reference["bands"][0]["type"], "bands": records,
             "identical_pixel_bands": duplicates,
-            "verification": "Each decoded output band is byte-identical to its source; no resampling or type conversion.",
+            "verification": "Each decoded output band is byte-identical to its source window; no resampling or type conversion."
+                            if window else "Each decoded output band is byte-identical to its source; no resampling or type conversion.",
             "gdal_version": gdal.run("gdalinfo", "--version").strip(),
             "notes": ["Band names are preserved as descriptions. Duplicate bands are retained as supplied.",
-                      "The source directory name describes mirroring; original acquisition/export provenance has not been verified."],
+                      "Original acquisition/export provenance has not been independently verified."],
         }
+        if window is not None:
+            manifest.update(source_window=list(window), source_size=source_reference["size"],
+                            source_geotransform=source_reference["geoTransform"])
         staged_manifest = temp / manifest_path.name
         staged_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         staged.replace(output)
@@ -167,9 +191,11 @@ def main() -> None:
     parser.add_argument("source", type=Path, help="Directory containing B1.tif ... B12.tif (without B10).")
     parser.add_argument("--output", type=Path, default=ROOT / "assets" / "demo-scene.tif")
     parser.add_argument("--replace", action="store_true", help="Replace an existing generated bundle after verification.")
+    parser.add_argument("--window", type=int, nargs=4, metavar=("X", "Y", "WIDTH", "HEIGHT"),
+                        help="Crop a source pixel window without resampling.")
     args = parser.parse_args()
     try:
-        manifest = prepare(args.source, args.output, replace=args.replace)
+        manifest = prepare(args.source, args.output, replace=args.replace, window=args.window)
     except (ValueError, OSError) as error:
         parser.exit(1, f"Scene preparation failed: {error}\n")
     print(f"Verified {len(manifest['bands'])} bands: {args.output.resolve()}")

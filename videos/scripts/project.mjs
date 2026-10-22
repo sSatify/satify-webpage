@@ -47,7 +47,7 @@ export function importDraft(report, scene, config) {
     throw new Error('Detected bands need unique channel indexes and spectral roles.');
   }
   return { scene_id: detected.id, draft: {
-    scene_name: 'Urban forest demonstration', sensor: suggestion.sensor,
+    scene_name: scene.displayName || 'Urban forest demonstration', sensor: suggestion.sensor,
     // Do not invent L1C/L2A provenance from a band count or file name.
     product_level: suggestion.product_level ?? null,
     bands: suggestion.bands.map(band => ({ ...band, scale, offset, missing_fields: [] })),
@@ -87,7 +87,7 @@ export function validateBinding(state, config, scene, projects) {
   return project;
 }
 
-async function poll(check, timeoutMs, description, wait = pause) {
+export async function poll(check, timeoutMs, description, wait = pause) {
   const deadline = Date.now() + timeoutMs;
   do {
     const result = await check();

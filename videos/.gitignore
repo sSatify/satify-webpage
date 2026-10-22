@@ -5,3 +5,7 @@ __pycache__/
 *.pyc
 .venv/
 .cache/
+assets/**/*.tif
+assets/demo-scene.json
+assets/time-series/coast-*.json
+assets/**/*.download-*

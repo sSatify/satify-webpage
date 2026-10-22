@@ -16,5 +16,25 @@
     { "id": 4, "labelName": "Built-up", "color": "#e85d5d" }
   ],
   "viewport": { "width": 1000, "height": 900 },
-  "timeoutMs": 1800000
+  "timeoutMs": 1800000,
+  "timeSeries": {
+    "projectName": "SATIFY time-series demonstrations - coastal farmland",
+    "scenes": [
+      "assets/time-series/coast-2021-09-01.json",
+      "assets/time-series/coast-2022-08-15.json",
+      "assets/time-series/coast-2022-09-04.json"
+    ],
+    "selectedLabel": "Vegetation",
+    "calibration": {
+      "scale": 0.0001,
+      "offset": 0,
+      "source": "Demo import convention for the exported Sentinel-2 digital numbers. Original product metadata and processing-baseline offsets were not supplied; TIFF samples remain unchanged."
+    },
+    "labels": [
+      { "id": 1, "labelName": "Vegetation", "color": "#44aa44" },
+      { "id": 2, "labelName": "Water", "color": "#3399ff" },
+      { "id": 3, "labelName": "Open ground", "color": "#ffe000" },
+      { "id": 4, "labelName": "Built-up", "color": "#e85d5d" }
+    ]
+  }
 }

@@ -15,7 +15,13 @@ export async function writeJson(path, value) {
   await rename(`${path}.tmp`, path);
 }
 export async function configuration(options) {
-  const config = await readJson(resolve(root, 'config.json'));
+  const base = await readJson(resolve(root, 'config.json'));
+  const dataset = options.dataset || 'tools';
+  if (!['tools', 'time-series'].includes(dataset)) throw new Error('Unknown dataset. Choose tools or time-series.');
+  const config = dataset === 'time-series' ? { ...base, ...base.timeSeries } : { ...base };
+  delete config.timeSeries;
+  if (dataset === 'time-series') delete config.scene;
+  config.dataset = dataset;
   config.baseUrl = (options.url || config.baseUrl).replace(/\/$/, '');
   const url = new URL(config.baseUrl);
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.pathname !== '/' || url.search || url.hash) {

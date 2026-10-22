@@ -14,7 +14,8 @@ documentation now use the published application.
 
 ## Repository contents
 
-- `assets/`: the portable input GeoTIFF and its provenance manifest.
+- `assets/`: tracked selection definitions and the pinned dataset release with checksums.
+  Downloaded scene JSON and GeoTIFFs are cached here and ignored by Git.
 - `scripts/`, `scenarios/`, `tests/`: reusable recording code and automated checks.
 - Configuration, npm package/lock files, this README and `.gitignore`.
 
@@ -73,6 +74,29 @@ npm run record -- pen
 npm run record -- smart-fill
 ```
 
+Setup and recording automatically download missing scenes from the pinned
+[demo-data-v2 release](https://github.com/sSatify/satify-webpage/releases/tag/demo-data-v2)
+before opening the app. To download all four scenes separately (about 53 MB):
+
+```powershell
+npm run fetch-assets
+```
+
+Use `-- --dataset tools` for just the urban forest scene or `-- --dataset time-series`
+for the three coastal scenes. Valid cached files are reused without network access;
+every JSON and TIFF is checked against the SHA-256 and size in `assets/release.json`.
+Scene JSON files are downloaded and verified first; their image references and
+checksums must agree with that lock before any imagery is downloaded.
+Downloads are staged under temporary filenames and only installed after verification.
+Interrupted or invalid downloads are discarded. If a local JSON or TIFF differs, it is kept
+and the command stops; `npm run fetch-assets -- --force` explicitly restores the
+published copies. The standalone downloader needs only Node.js, not Playwright.
+
+This repository and its release are public, so downloads need no account. For a
+private dataset repository, the downloader can use `GH_TOKEN` / `GITHUB_TOKEN`, or
+the GitHub CLI login (`gh auth login`), with repository read access. Credentials
+are used only for GitHub API requests and are never written into manifests.
+
 `login` opens a separate Chromium window. Sign in to SATIFY there, then press
 Enter in the terminal. Credentials and browser cookies stay in `.state/`, which
 is Git-ignored. The app's normal authentication and permissions still apply.
@@ -110,6 +134,9 @@ of the migration. The optional `--url` override remains available, but no local
 application build is needed for this workflow.
 
 ## What setup and reset do
+
+The following describes the original single-scene `tools` dataset. The separate
+time-series dataset and its setup are described below.
 
 Setup verifies the TIFF against `assets/demo-scene.json`, detects its bands through
 the router, creates the named project, saves its ID, supplies calibration and
@@ -178,6 +205,57 @@ modified. Use `--output` for a different bundle. Regeneration can produce a
 different compressed file hash with a different GDAL version, even when the
 decoded pixels remain identical.
 
+## Time-series project
+
+Three matching Sentinel-2 cutouts are defined in [assets/time-series/](assets/time-series/README.md):
+1 September 2021, 15 August 2022 and 4 September 2022. They show coastal farmland
+and tidal flats on tile T32UMF, using the same 1024 × 1024 window on a 10 m grid.
+All 13 supplied bands, including B10, are retained without resampling. The three
+TIFFs total about 45 MB and are downloaded from the dataset release into that folder.
+H: is only needed to rebuild them, not to set up the project.
+
+From `videos/`, after the usual dependency/browser installation:
+
+```powershell
+npm run login
+npm run setup:time-series
+```
+
+This creates or resumes **SATIFY time-series demonstrations - coastal farmland**
+on the published app. Its selection, labels and calibration are under `timeSeries`
+in `config.json`. Login is shared with the tools dataset for the same origin;
+saved project identity and upload checkpoints are separate. A same-named project
+without a saved identity is not adopted. Use a new name when changing the inputs:
+
+```powershell
+npm run setup:time-series -- --project "SATIFY coastal series v2"
+```
+
+Setup verifies every bundled TIFF, detects all three scenes, saves dated metadata,
+uploads them into one project and requests preparation together. Each successful
+upload is checkpointed, so an interrupted run skips files already acknowledged.
+Ready projects are checked and reused without resetting their labels. The original
+`npm run setup` and Pen/Smart fill recordings continue to use the urban forest scene.
+
+The new project's images are ready for the time-series/change-detection features
+when those reach the published application. Recording scenarios for those features
+are not implemented yet; `record --dataset time-series` exits before contacting
+the server. The local tests cover multi-scene setup/reuse, interrupted uploads,
+project isolation, source identity and crop integrity. An authenticated run of
+this new project against the published app has not yet been performed.
+
+To reproduce the cutouts, use Python 3.11+ and GDAL as above:
+
+```powershell
+python scripts/prepare-time-series.py "H:\.shortcut-targets-by-id\17UZtfjLsDpfIyCg3pymAqIQHT-LSwEvR\Satify_files\04_Data_and_Test_Data\test_data\large_images" --replace
+```
+
+[selection.json](assets/time-series/selection.json) owns the dates, source folder
+names, band order and pixel window. `prepare-time-series.py` calls the shared scene
+builder with that window and adds date provenance to each manifest. It leaves the
+original files untouched. Dates come from the source folder names and are retained
+in the output filenames and scene names for the app's date detection.
+
 ## Editing demonstrations
 
 Each file in `scenarios/` exports `framing` alongside its captions, tool selection
@@ -225,6 +303,34 @@ npm run test:recording
 npm run test:runtime
 ```
 
+`npm test` first fetches/verifies the four scene assets; subsequent runs work from
+the local cache. To run just the downloader tests without network or imagery, use
+`node --test tests/fetch-assets.test.mjs`.
+
 The Python checks require `gdal_create` as well as the other GDAL tools.
 The runtime browser check uses a temporary local server to verify saved cookies
 and refreshed authorization still work after the setup page closes.
+
+## Updating the shared dataset
+
+`assets/release.json` pins a repository, release tag, scene manifest paths, and
+the filename, local cache path, size and SHA-256 of all eight dataset files.
+All four TIFFs and their four full scene JSON files are release attachments and
+ignored local cache files. The release also contains `SHA256SUMS.txt`.
+The dataset release is versioned independently of the website and is not marked
+as the latest software release.
+
+To change a scene, rebuild it with the appropriate preparation script and review
+the new data. Publish the resulting TIFFs, individual scene JSON files and checksums
+under a **new dataset tag** (for example `demo-data-v3`); never replace attachments
+under a tag already in use. Update `assets/release.json` with the exact byte sizes
+and SHA-256 hashes of both the TIFFs and JSON files, including their formatting.
+Commit that lock and any changed selection definitions or project configuration
+with the code; leave the full scene JSON and TIFFs in the ignored cache.
+Verify a fresh download before
+sharing that change. An old checkout continues to use its old tag and checksums.
+
+Release publication requires repository write access; consumption requires only
+read access for private repositories. Website visitors receive neither the scene
+data nor recording tools. Moving the cache out of Git does not rewrite history:
+the original demo TIFF and its scene JSON remain in earlier commits.
