@@ -2,7 +2,8 @@
 
 This folder contains a portable demonstration scene, project setup, and initial
 Pen and Smart fill recording scenarios. The scripts operate the real SATIFY
-editor at `https://app.satify.tech` and export silent videos for a 500 × 450
+editor at `https://app.satify.tech` by default, or `https://app-dev.satify.tech`
+with `--env dev`, and export silent videos for a 500 × 450
 website player. The recorder is self-contained in this website repository; it
 does not need the application source, Docker or a local SATIFY instance.
 Website playback integration will be added separately.
@@ -112,6 +113,21 @@ The default URL is `https://app.satify.tech`; the default project is
 npm run setup
 ```
 
+Use `--env dev` to target the development app. Pass it to each login, setup and
+record command; the selection is per invocation and is not saved as a default:
+
+```powershell
+npm run login -- --env dev
+npm run setup -- --env dev
+npm run setup:time-series -- --env dev
+npm run record -- pen --env dev
+```
+
+Omit `--env` or use `--env prod` for production. Login and project state remain
+separate for each app, so sign in once per environment. Existing saved state
+for either URL is reused. The advanced `--url ORIGIN` override is also available;
+use it on its own, without `--env`.
+
 Each `record` invocation runs setup automatically. `npm run record` records both
 scenarios. Add `--headed` to watch the browser. Results go to a new timestamped
 directory under `output/`: cropped WebM, 500 × 450 MP4, cropped poster, provenance JSON,
@@ -126,7 +142,7 @@ npm run record -- pen --project "SATIFY website video pilot"
 ```
 
 Login is saved separately per origin; project identity is saved separately per
-origin and project name. Setup and recording write to the published app using
+origin and project name. Setup and recording write to the selected app using
 your signed-in account: they create or reuse the dedicated demo project and
 reset its drawing layer before each recording, as described below. Sign in
 afresh in this checkout; login state and local project identities are not part
@@ -222,7 +238,7 @@ npm run setup:time-series
 ```
 
 This creates or resumes **SATIFY time-series demonstrations - coastal farmland**
-on the published app. Its selection, labels and calibration are under `timeSeries`
+on the selected app (production by default). Its selection, labels and calibration are under `timeSeries`
 in `config.json`. Login is shared with the tools dataset for the same origin;
 saved project identity and upload checkpoints are separate. A same-named project
 without a saved identity is not adopted. Use a new name when changing the inputs:

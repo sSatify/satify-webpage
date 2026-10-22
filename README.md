@@ -29,6 +29,8 @@ and cached locally outside Git.
 It does not require the application source or a local SATIFY stack.
 
 Start with `cd videos`, `npm ci`, `npm run browsers`, then `npm run login`.
+Production is the default. Add `-- --env dev` to login and setup commands to use
+`https://app-dev.satify.tech`; recordings also accept `--env dev`.
 The video guide explains recording, the dedicated demo project and prerequisites.
 Setup fetches missing scenes automatically; `npm run fetch-assets` from `videos/`
 downloads all four in advance and verifies their checksums.

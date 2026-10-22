@@ -22,7 +22,13 @@ export async function configuration(options) {
   delete config.timeSeries;
   if (dataset === 'time-series') delete config.scene;
   config.dataset = dataset;
-  config.baseUrl = (options.url || config.baseUrl).replace(/\/$/, '');
+  const environments = { prod: base.baseUrl, dev: 'https://app-dev.satify.tech' };
+  const environment = options.env ?? 'prod';
+  if (!Object.hasOwn(environments, environment)) throw new Error('Unknown environment. Choose prod or dev.');
+  if (options.env !== undefined && options.url !== undefined) {
+    throw new Error('Choose either --env or --url, not both.');
+  }
+  config.baseUrl = (options.url || environments[environment]).replace(/\/$/, '');
   const url = new URL(config.baseUrl);
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.pathname !== '/' || url.search || url.hash) {
     throw new Error('--url must be an HTTP(S) origin, without credentials, a path, or a query.');

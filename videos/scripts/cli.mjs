@@ -11,11 +11,11 @@ import { record, requireFfmpeg, scenarios } from './record.mjs';
 
 async function main() {
   const { values, positionals } = parseArgs({ allowPositionals: true,
-    options: { url: { type: 'string' }, project: { type: 'string' }, dataset: { type: 'string' },
+    options: { env: { type: 'string' }, url: { type: 'string' }, project: { type: 'string' }, dataset: { type: 'string' },
       headed: { type: 'boolean', default: false }, help: { type: 'boolean', default: false } } });
   const [command, selected = 'all'] = positionals;
   if (values.help || !command) {
-    console.log('Usage: npm run login|setup|record -- [pen|smart-fill|all] [--dataset tools|time-series] [--url https://app.satify.tech] [--project "Name"] [--headed]');
+    console.log('Usage: npm run login|setup|record -- [pen|smart-fill|all] [--dataset tools|time-series] [--env prod|dev | --url ORIGIN] [--project "Name"] [--headed]\nEnvironment defaults to prod (https://app.satify.tech); dev uses https://app-dev.satify.tech.');
     return;
   }
   if (!['login', 'setup', 'record'].includes(command)) throw new Error(`Unknown command: ${command}`);
