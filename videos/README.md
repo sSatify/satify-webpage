@@ -1,17 +1,17 @@
 # Repeatable tool videos
 
-This folder contains a portable demonstration scene, project setup, and initial
-Pen and Smart fill recording scenarios. The scripts operate the real SATIFY
+This folder contains portable demonstration data, project setup, and website
+showcases for Pen, Smart Fill, and time-series change detection. The scripts operate the real SATIFY
 editor at `https://app.satify.tech` by default, or `https://app-dev.satify.tech`
 with `--env dev`, and export silent videos for a 500 × 450
-website player. The recorder is self-contained in this website repository; it
+website player (1200 × 1080 for change detection). The recorder is self-contained in this website repository; it
 does not need the application source, Docker or a local SATIFY instance.
 Website playback integration will be added separately.
 
 Migrated from `sSatify/satify-app`, branch `feat/script-tool-videos_mp`, commit
-`a5a67afa6010de1ebf15435aeb8fb7e03d7803e0`. The Pen and Smart fill scenarios,
-portable scene and existing tests are preserved. The default target and workflow
-documentation now use the published application.
+`a5a67afa6010de1ebf15435aeb8fb7e03d7803e0`. The portable scene and project workflow
+are preserved. The original tutorial scenarios have been rewritten as silent,
+benefit-focused website showcases, with visible actions and results.
 
 ## Repository contents
 
@@ -30,12 +30,28 @@ are local runtime data; keep `.state/` to retain login and managed-project ident
 
 ## Status
 
+Website showcase pass, 22 October 2026: both scripts recorded successfully against
+`app-dev.satify.tech`. Pen exports at about 29 seconds / 503 KB; Smart Fill at about
+23 seconds / 1.5 MB, both silent H.264 at 500 × 450. Reviewed before/result frames,
+final video frames, and desktop/mobile previews. All 34 Node tests and the browser
+recording/export/responsive-preview smoke test pass. These are first review drafts;
+the new scenarios have not yet been recorded against production. The revised Pen
+result was checked against the traced dark shoreline in both the saved native tile
+and rendered image: no yellow over the water, no blue outside the yellow outline,
+and no unpainted pixels anywhere inside it.
+
+Change detection was also recorded on dev: about 19 seconds / 6.3 MB at 1200 × 1080.
+New recordings keep only this large MP4 as the video output. It compares
+the three dates, narrows the August–September 2022 NDVI decrease range, and applies
+an 8,007-pixel mask. The recorder verifies the server result, then undoes its own
+mask after capture and checks that no labels remain in the managed drawing layer.
+
 Verified after migration on 22 October 2026: all 9 project tests, all 4 GDAL
 scene tests, the browser authentication test, and the synthetic recording test
 (including 500 × 450 H.264 export) pass from this repository. The bundled scene
 matches its manifest. The website check and build pass, and the build excludes
-this tooling directory. Authenticated recordings against the published app have
-not yet been rerun; they require a fresh login.
+this tooling directory. Those checks describe the original migration, before the
+website showcase rewrite above.
 
 The following checks were completed in the original application repository
 before migration. They describe the local stack at that time, not verification
@@ -57,10 +73,40 @@ against the current published application:
 Review each clip at its final playback size before publishing. The browser smoke
 test uses a synthetic page; the scenario recordings operate the actual editor.
 Each scenario has its own focus, zoom, subject position and tool-card position.
-The current clips crop a 600 × 540 area below the application header and export
-at 500 × 450. The browser remains wider so unrelated controls stay outside the
-crop. This is a camera crop: **In viewport** still means SATIFY's full editor
-viewport, not just the portion shown in the video.
+The current clips crop a 600 × 540 imagery area and export at 500 × 450. The
+browser remains larger so unrelated help panels and navigation controls stay
+outside the crop. Smart Fill's mask and scope controls are inside the frame.
+No application UI or imagery is painted over or removed.
+This is a camera crop: **In viewport** still means SATIFY's full editor viewport,
+not just the portion shown in the video. The dashed outline marks the original
+full editor viewport when the Smart Fill demonstration zooms out.
+
+## Website showcase direction
+
+Each clip demonstrates one benefit through visible actions and results. The Pen
+panel stays visible while drawing a yellow outline with two brush sizes, switching
+to the blue label, increasing the brush size and selecting Fill gaps. Smart Fill changes masks and
+selects each fill scope. There are no instructional captions, undo comparisons, voiceovers,
+or speed changes. The pointer stays inside the recorded frame at all times,
+including pauses. Pen rests beside the size field; Smart Fill keeps its cursor on
+the subject while previewing masks with Shift + scroll. It moves to the card only
+to change scope and for the final hold, clearing the preview without hiding the cursor.
+
+- **Pen — Make every detail count:** trace a yellow boundary around the pond, select
+  blue in the on-image label picker, then use a wider brush in Fill gaps mode.
+  Use 4 px on the outer yellow curve and 2 px on the tight inner bend.
+  The brush overlaps the existing yellow pixels without replacing them. Hold the
+  two-colour result. Aim for 20–30 seconds.
+- **Smart Fill — Choose the region. Choose the reach.:** explore masks, fill the
+  forest with Local, extend the result with In viewport, then use Global. Zoom out
+  to reveal the viewport boundary and labels beyond it. Aim for 20–30 seconds.
+
+Timing is a guide, not a hard limit: real server responses and rendering are
+awaited. Every export includes `before.png`, a final `poster.png`, and a local
+`preview.html` pairing the video with draft benefit copy. The preview displays
+the video at up to 500 × 450 with text alongside; below 720 px, text moves below
+the video and the video scales proportionally. Playback is silent, user-controlled,
+and loopable. This preview does not publish or change the website.
 
 ## First recording
 
@@ -137,10 +183,21 @@ for either URL is reused. The advanced `--url ORIGIN` override is also available
 use it on its own, without `--env`.
 
 Each `record` invocation prepares only its selected dataset automatically.
-`npm run record` records both
-scenarios. Add `--headed` to watch the browser. Results go to a new timestamped
-directory under `output/`: cropped WebM, 500 × 450 MP4, cropped poster, provenance JSON,
-and `preview.html` with pause/replay controls. Setup, upload and processing are
+`npm run record` records both tools
+scenarios. `npm run record -- change-detection --env dev` records change detection
+using the time-series project automatically. Add `--headed` to watch the browser.
+Results go to a new timestamped
+directory under `output/`:
+
+- `<scenario>.mp4`: 500 × 450 for Pen/Smart Fill; 1200 × 1080 for change detection.
+- `<scenario>-unscaled.mp4`: the cropped scene at its original pixel dimensions (Pen/Smart Fill only).
+- `<scenario>.webm`: the same crop before MP4 export (Pen/Smart Fill only).
+- `capture.webm`: the original browser capture, retained for later reframing (Pen/Smart Fill only).
+- Before/result images, provenance JSON with retained output sizes, and `preview.html`
+  with pause/replay controls.
+
+Change detection keeps only the large MP4, removing temporary WebMs after a
+successful export. Setup, upload and processing are
 outside the recorded interval. Failed runs keep a diagnostic screenshot and may
 leave a partial WebM, but do not produce a successful recording manifest.
 
@@ -264,12 +321,29 @@ Pen/Smart fill recordings continue to use the urban forest scene. The default
 `npm run setup` prepares both this tools project and the time-series project;
 `npm run setup:time-series` prepares only the latter.
 
-The new project's images are ready for the time-series/change-detection features
-when those reach the published application. Recording scenarios for those features
-are not implemented yet; `record --dataset time-series` exits before contacting
-the server. The local tests cover multi-scene setup/reuse, interrupted uploads,
-project isolation, source identity and crop integrity. An authenticated run of
-this new project against the published app has not yet been performed.
+The project's images are ready for time-series/change-detection recording on dev:
+
+```powershell
+npm run record -- change-detection --env dev
+```
+
+The named scenario selects the time-series dataset automatically; an explicit
+mismatched `--dataset tools` is rejected before contacting the app. Alternatively,
+`npm run record -- all --dataset time-series --env dev` records all scenarios for
+this dataset. Production remains the default when `--env` is omitted.
+
+This scenario opens the September 2022 image, briefly shows the three dates with
+shared zoom, then compares August and September using NDVI. It visibly drags the
+range boundary to about −0.2, selects Open ground, and applies the mask. The source
+crop and final `change-detection.mp4` are 1200 × 1080. No smaller MP4 or WebM
+intermediates are retained after export. Its responsive preview uses this video
+and stacks the text below it on screens up to 1600 px wide.
+
+Recording refuses pre-existing pixels in the managed drawing layer of the current
+scene. After capture, it undoes only its own Apply operation and verifies that the
+layer is empty again. It never blanket-resets time-series labels. The recorded
+date pair, threshold, written pixel count and source hashes are saved in the
+recording manifest. Real app responses and rendering are awaited; duration varies.
 
 To reproduce the cutouts, use Python 3.11+ and GDAL as above:
 
@@ -285,28 +359,42 @@ in the output filenames and scene names for the app's date detection.
 
 ## Editing demonstrations
 
-Each file in `scenarios/` exports `framing` alongside its captions, tool selection
-and timed pointer actions. Change `focus` (image fractions), `zoom` (relative to
-Fit image), `subjectAt` and `panelAt` (fractions of the cropped frame) independently
-for each tool. `width` and `height` set the crop; `viewportWidth` preserves the
-desktop layout around it. Keep a 10:9 crop for an edge-to-edge 500 × 450 export.
+Each file in `scenarios/` exports `framing`, `showcase` (draft title, copy, timing
+and story beats), `prepare(page)` (controls set before capture), and the default
+recorded sequence. Change `focus` (image fractions), `zoom` (relative to Fit image),
+`subjectAt` and `panelAt` (fractions of the cropped frame) independently for each
+tool. `width` and `height` set the crop; `cropX`, `cropTop`, and `cropBottom` leave
+room for the surrounding editor controls. `viewportWidth` preserves the desktop
+layout. `panelAt` can place the draggable card outside the crop. Keep a 10:9 crop
+for an edge-to-edge 500 × 450 export.
 The shared framing helper uses real wheel zoom and Pan gestures before recording,
 and moves the tool card using its drag handle. Image-relative pointer paths use
 that camera transform, so moving the focus does not require rewriting the strokes.
 
-The first scenarios use the curved pond near the town centre, with the Water
-label. Pen explicitly selects a 4-pixel brush and follows an interior path through
-the narrow bend; it requires a successful native tile save. Smart fill previews masks 1–3,
-keeps mask 3 for a consistent scope comparison, fills in all three scopes,
-and verifies both the server response and request geometry/scope. It moves the
-pointer back onto the card after filling so a new preview cannot obscure the result.
-After the In viewport and Global fills it zooms out fourfold, marking the original
-editor viewport with a dashed outline. The comparison reveals the viewport fill's
-boundary and Global's off-screen results. Undo and the inverse zoom restore the
-same starting view before the Global fill.
-Captions run alongside the actions. Short pointer moves and brief mask previews
-keep the clips compact; the scope comparison and final results get longer holds.
-Server responses are still awaited, so slow processing can lengthen a recording.
+Pen starts with the yellow Open ground label and a visible panel in pixel units.
+It draws the outer curve with a 4-pixel brush, switches to 2 pixels for the tight
+inner bend, and closes the outline. It opens the native right-click label picker
+inside the crop, selects blue Water, and visibly increases the size to 8 pixels.
+It selects Fill gaps and paints the pond, overlapping the yellow outline. The
+native mode changes only unlabelled pixels, so the yellow remains visible.
+All three strokes require a successful native tile save. The paths are traced in
+native pixels against the pond's dark shoreline, with an explicit subpixel camera
+alignment in the scenario. Recheck that alignment after changing the framing or
+browser. Review the saved label tile as well as the video: yellow must stay outside
+the water, blue must stay inside the closed yellow outline, and every enclosed
+non-yellow pixel must be blue. The footprint test checks the entire enclosed area,
+including shore pixels outside the traced dark water.
+Smart Fill selects Forest before capture and starts with Mask 5 and Local scope.
+Native Shift + scroll advances to Masks 6 and 7 with the pointer stationary over
+the forest, making the different previews easy to compare. Each of the Local, In viewport
+and Global fills verifies its response and request coordinates/scope. These are
+model-suggested regions, not ground-truth forest boundaries. Review the broader
+selection when masks or source imagery change. Final holds rest on noninteractive
+parts of the visible cards, clearing map previews without triggering tooltips. Pointer
+moves outside the crop are rejected, and the browser smoke test checks every
+interpolated position for both resting styles.
+Rendering and all pending server writes must finish before the final poster and
+export are accepted. No extra recording length is added just to meet a target.
 
 `scripts/presentation.mjs` controls movement timing, cursor and captions.
 `scripts/framing.mjs` positions the image and card for each scenario.

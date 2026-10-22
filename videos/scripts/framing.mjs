@@ -10,12 +10,14 @@ export async function frameScene(page, image, framing) {
   await canvas.waitFor({ state: 'visible' });
   let box = await canvas.boundingBox();
   const bottomBorder = height + 100 - box.y - box.height;
-  await page.setViewportSize({ width: viewportWidth, height: Math.ceil(box.y + height + bottomBorder) });
+  await page.setViewportSize({ width: viewportWidth,
+    height: Math.ceil(box.y + height + (framing.cropTop ?? 0) + (framing.cropBottom ?? 0) + bottomBorder) });
   await page.getByRole('button', { name: 'Pan', exact: true }).click();
   await page.getByRole('button', { name: 'Fit image', exact: true }).click();
   await waitForCanvas(page);
   box = await canvas.boundingBox();
-  const clip = { x: 0, y: Math.ceil(box.y), width, height };
+  const clip = { x: framing.cropX ?? 0, y: Math.ceil(box.y) + (framing.cropTop ?? 0), width, height };
+  if (clip.x < 0 || clip.x + width > viewportWidth) throw new Error('The recording crop exceeds the viewport.');
   const scale = Math.min(box.width / image.width, box.height / image.height);
   const [fx, fy] = framing.focus;
   const anchor = { x: box.x + box.width / 2 + (fx - 0.5) * image.width * scale,
@@ -39,7 +41,8 @@ export async function frameScene(page, image, framing) {
   await page.mouse.move(10, 10);
   await waitForCanvas(page);
   return { clip, focus: framing.focus, target, scale: scale * framing.zoom,
-    panelAt: framing.panelAt, viewport: page.viewportSize() };
+    panelAt: framing.panelAt, restAt: framing.restAt, restOnPanel: framing.restOnPanel,
+    viewport: page.viewportSize() };
 }
 
 export async function placeToolPanel(page, frame) {

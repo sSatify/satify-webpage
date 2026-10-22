@@ -16,7 +16,7 @@ async function main() {
       headed: { type: 'boolean', default: false }, help: { type: 'boolean', default: false } } });
   const [command, selected = 'all'] = positionals;
   if (values.help || !command) {
-    console.log('Usage: npm run login|setup|record -- [pen|smart-fill|all] [--dataset tools|time-series] [--env prod|dev | --url ORIGIN] [--project "Name"] [--headed]\nSetup defaults to both projects, tools first and time-series second. Use --dataset to prepare only one; --project requires it for setup.\nEnvironment defaults to prod (https://app.satify.tech); dev uses https://app-dev.satify.tech.');
+    console.log('Usage: npm run login|setup|record -- [pen|smart-fill|change-detection|all] [--dataset tools|time-series] [--env prod|dev | --url ORIGIN] [--project "Name"] [--headed]\nSetup defaults to both projects, tools first and time-series second. Use --dataset to prepare only one; --project requires it for setup.\nRecording a named scenario selects its dataset automatically. All records the selected dataset (tools by default).\nEnvironment defaults to prod (https://app.satify.tech); dev uses https://app-dev.satify.tech.');
     return;
   }
   await runCommand(command, selected, values);
@@ -28,13 +28,14 @@ export async function runCommand(command, selected, values, execute = runProject
   if (command === 'setup' && values.dataset === undefined && values.project !== undefined) {
     throw new Error('Use --dataset tools or --dataset time-series with --project so each project has its own name.');
   }
+  const scenarioDataset = command === 'record' && selected !== 'all' ? scenarios[selected].dataset : undefined;
+  if (scenarioDataset && values.dataset && values.dataset !== scenarioDataset) {
+    throw new Error(`Scenario ${selected} requires --dataset ${scenarioDataset}.`);
+  }
   const datasets = command === 'setup' && values.dataset === undefined
-    ? ['tools', 'time-series'] : [values.dataset ?? 'tools'];
+    ? ['tools', 'time-series'] : [values.dataset ?? scenarioDataset ?? 'tools'];
   // Validate every configuration before touching the app; run each project to completion.
   const configs = await Promise.all(datasets.map(dataset => configuration({ ...values, dataset })));
-  if (command === 'record' && configs[0].dataset === 'time-series') {
-    throw new Error('Time-series setup is available; recording scenarios have not been authored yet. Use npm run setup:time-series.');
-  }
   for (const config of configs) await execute(command, selected, values, config);
 }
 
@@ -78,8 +79,9 @@ async function runProject(command, selected, values, config) {
     state = await setup({ api: runtime.api, config, scene, bytes, assets, state,
       save: async value => { await runtime.saveAuth(); await writeJson(config.stateFile, value); } });
     if (command === 'record') {
-      for (const name of selected === 'all' ? Object.keys(scenarios) : [selected]) {
-        await record(runtime, config, scene, state, name);
+      for (const name of selected === 'all'
+        ? Object.keys(scenarios).filter(name => scenarios[name].dataset === config.dataset) : [selected]) {
+        await record(runtime, config, scene, state, name, { assets });
       }
     }
     await runtime.saveAuth();

@@ -53,3 +53,17 @@ test('ambiguous project names and invalid options fail before any project runs',
     assert.equal(calls, 0);
   }
 });
+
+test('change detection selects the time-series project and rejects mismatched datasets before execution', async () => {
+  const calls = [];
+  await runCommand('record', 'change-detection', { env: 'dev' }, async (_command, selected, _values, config) => {
+    calls.push({ selected, dataset: config.dataset, origin: config.baseUrl });
+  });
+  assert.deepEqual(calls, [{ selected: 'change-detection', dataset: 'time-series', origin: 'https://app-dev.satify.tech' }]);
+  await assert.rejects(runCommand('record', 'change-detection', { dataset: 'tools' }, async () => {
+    assert.fail('A mismatched dataset must not run');
+  }), /requires --dataset time-series/);
+  await assert.rejects(runCommand('record', 'pen', { dataset: 'time-series' }, async () => {
+    assert.fail('A mismatched dataset must not run');
+  }), /requires --dataset tools/);
+});

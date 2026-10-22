@@ -21,7 +21,7 @@ Open `index.html` through your IDE's built-in web preview. Reload the browser af
 
 ## Tool videos
 
-The repeatable Pen and Smart fill demonstrations live in [videos/](videos/README.md).
+The repeatable Pen, Smart Fill, and change detection website showcases live in [videos/](videos/README.md).
 That standalone Node.js package records the published app at `https://app.satify.tech`
 and includes dataset checksums, scenarios, recording helpers and tests. The four
 GeoTIFFs and their full scene metadata are hosted as versioned GitHub Release assets
@@ -36,6 +36,16 @@ Setup fetches missing scenes automatically; `npm run fetch-assets` from `videos/
 downloads all four in advance and verifies their checksums.
 Generated recordings stay in ignored `videos/output/` for review. Website playback
 integration is a later step; the static build excludes the recording tools and scene.
+Each recording includes a responsive preview with draft feature copy beside the
+500 × 450 video on desktop and below it on mobile. The clips show the actions and
+results without tutorial captions. Pen draws a yellow boundary, then uses a wider
+blue brush in Fill gaps mode to preserve that boundary. Smart Fill compares forest
+masks under a stationary cursor and shows all
+three fill scopes; the pointer stays in view throughout both clips.
+
+Record time-series change detection with `npm run record -- change-detection --env dev`
+from `videos/`. It uses the prepared three-date project and keeps only the
+1200 × 1080 `change-detection.mp4` video, plus preview images and recording metadata.
 
 `npm run setup` from `videos/` prepares the tools project first, then a separate
 time-series project with three matching coastal Sentinel-2 cutouts from 2021 and

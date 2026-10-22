@@ -67,15 +67,17 @@ export async function launch(config, { login = false, headed = false } = {}) {
     }
   });
   const api = async (method, path, options = {}) => {
+    const { responseType = 'json', allowNotFound = false, ...requestOptions } = options;
     const response = await context.request.fetch(apiBase + path, {
-      method, ...options, headers: authorization ? { Authorization: authorization } : {},
+      method, ...requestOptions, headers: authorization ? { Authorization: authorization } : {},
       timeout: 120_000, maxRedirects: 0,
     });
+    if (response.status() === 404 && allowNotFound) return null;
     if (!response.ok()) {
       const authHint = response.status() === 401 ? ' Run npm run login for this URL first.' : '';
       throw new Error(`${method} ${path.split('?')[0]} failed (${response.status()}).${authHint}`);
     }
-    return response.json();
+    return responseType === 'buffer' ? response.body() : response.json();
   };
   return { browser, context, api,
     async saveAuth() { await mkdir(dirname(config.authFile), { recursive: true }); await context.storageState({ path: config.authFile }); },

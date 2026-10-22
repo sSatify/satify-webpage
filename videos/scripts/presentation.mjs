@@ -6,12 +6,14 @@ export async function waitForCanvas(page) {
   let previous;
   for (let attempt = 0; attempt < 60; attempt++) {
     const busy = await page.locator('[aria-busy="true"]:visible').count();
-    const digest = createHash('sha256').update(await canvas.screenshot()).digest('hex');
+    // Clipped screenshots can change Chromium's screencast surface mid-recording.
+    // Keep the full viewport size while checking that rendering has settled.
+    const digest = createHash('sha256').update(await page.screenshot()).digest('hex');
     if (!busy && digest === previous) return canvas;
     previous = busy ? undefined : digest;
     await page.waitForTimeout(250);
   }
-  throw new Error('The image did not finish rendering. No clip was recorded.');
+  throw new Error('The image did not finish rendering. The recording cannot be accepted.');
 }
 
 export async function presentation(page, image = { width: 510, height: 510 }, frame = null) {
@@ -27,6 +29,7 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
     document.addEventListener('pointerup', () => { cursor.style.background = 'transparent'; });
     const caption = document.createElement('div');
     caption.id = 'video-caption';
+    caption.hidden = true;
     caption.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);max-width:85%;padding:12px 20px;border-radius:10px;background:#111e;color:white;font:28px/1.3 sans-serif;text-align:center;pointer-events:none;z-index:2147483646';
     if (frame) {
       caption.style.left = `${frame.clip.x + frame.clip.width / 2}px`;
@@ -38,8 +41,13 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
     }
     document.body.append(caption);
   }, frame);
-  let position = { x: 40, y: 120 };
+  let position = frame ? { x: frame.clip.x + frame.clip.width / 2, y: frame.clip.y + frame.clip.height / 2 }
+    : { x: 40, y: 120 };
   async function move(target, duration = 300) {
+    if (frame && (target.x < frame.clip.x + 10 || target.y < frame.clip.y + 10
+      || target.x > frame.clip.x + frame.clip.width - 10 || target.y > frame.clip.y + frame.clip.height - 10)) {
+      throw new Error('The demonstration pointer would leave the recorded frame.');
+    }
     const start = { ...position };
     const steps = Math.max(1, Math.ceil(duration / 25));
     const began = performance.now();
@@ -52,7 +60,7 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
       if (delay > 0) await page.waitForTimeout(delay);
     }
   }
-  async function click(locator) {
+  async function click(locator, { x = 0.5, y = 0.5 } = {}) {
     await locator.waitFor({ state: 'visible' });
     if (!await locator.isEnabled()) throw new Error('The demonstration control is not ready.');
     const box = await locator.boundingBox();
@@ -61,15 +69,49 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
       || box.y + box.height > frame.clip.y + frame.clip.height)) {
       throw new Error('A demonstration control is outside the recorded frame.');
     }
-    await move({ x: box.x + box.width / 2, y: box.y + box.height / 2 });
+    await move({ x: box.x + box.width * x, y: box.y + box.height * y });
     await page.mouse.down(); await page.waitForTimeout(80); await page.mouse.up();
     await page.waitForTimeout(120);
   }
   return {
     page, image, move, click,
+    async settle() { await waitForCanvas(page); },
+    async stroke(points, duration) {
+      await move(await this.point(...points[0]), 600);
+      const saved = page.waitForResponse(response => response.request().method() === 'PUT'
+        && response.url().includes('/labeltiles/'), { timeout: 30_000 });
+      const drawing = (async () => {
+        await page.mouse.down();
+        try {
+          for (const point of points.slice(1)) await move(await this.point(...point), duration / (points.length - 1));
+        } finally { await page.mouse.up(); }
+      })();
+      const [response] = await Promise.all([saved, drawing]);
+      if (!response.ok()) throw new Error('The Pen stroke could not be saved.');
+    },
+    async fill(x, y, scope = 'Local') {
+      const saved = page.waitForResponse(response => response.request().method() === 'POST'
+        && response.url().includes('/session/fill/'), { timeout: 30_000 });
+      const [response] = await Promise.all([saved, (async () => {
+        await page.mouse.down(); await page.waitForTimeout(100); await page.mouse.up();
+      })()]);
+      if (!response.ok()) throw new Error('The Smart Fill region could not be saved.');
+      const body = response.request().postDataJSON();
+      if (Math.abs(body.x - x * image.width) > 2 || Math.abs(body.y - y * image.height) > 2
+        || body.by_label !== (scope !== 'Local') || ('viewport' in body) !== (scope !== 'Global')) {
+        throw new Error(`Smart Fill did not target the expected ${scope} region.`);
+      }
+    },
     async park() {
-      const box = await page.locator('.editor-tool-hint').boundingBox();
-      await move({ x: box.x + box.width / 2, y: box.y + 24 });
+      if (frame?.restOnPanel) {
+        // The card's bottom padding clears the map preview and keeps the cursor visible.
+        // Its title has an animated tooltip, so do not rest there.
+        const box = await page.locator('.editor-tool-hint').boundingBox();
+        await move({ x: box.x + 14, y: box.y + box.height - 12 }, 450);
+      } else if (frame) {
+        const [x, y] = frame.restAt ?? [0.85, 0.8];
+        await move({ x: frame.clip.x + frame.clip.width * x, y: frame.clip.y + frame.clip.height * y }, 450);
+      } else await move({ x: 40, y: 120 });
     },
     async zoomAt(factor, anchor) {
       if (!frame || !Number.isFinite(factor) || factor <= 0) throw new Error('Zoom needs a framed scene and a positive factor.');
@@ -98,14 +140,16 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
         outline.style.cssText = `position:fixed;left:${box.x}px;top:${box.y}px;width:${box.width}px;height:${box.height}px;box-sizing:border-box;border:2px dashed #ffdd55;pointer-events:none;z-index:2147483645`;
         const label = document.createElement('span');
         label.textContent = 'Original viewport';
-        label.style.cssText = 'position:absolute;left:0;top:-24px;white-space:nowrap;background:#111e;color:#ffdd55;font:16px/20px sans-serif;padding:1px 5px;border-radius:3px';
+        label.style.cssText = 'position:absolute;left:0;bottom:-24px;white-space:nowrap;background:#111e;color:#ffdd55;font:16px/20px sans-serif;padding:1px 5px;border-radius:3px';
         outline.append(label);
         document.body.append(outline);
       }, box);
     },
     // Captions accompany the action; only explicit result holds add screen time.
     async caption(text, hold = 0) {
-      await page.locator('#video-caption').evaluate((element, text) => { element.textContent = text; }, text);
+      await page.locator('#video-caption').evaluate((element, text) => {
+        element.textContent = text; element.hidden = !text;
+      }, text);
       if (hold > 0) await page.waitForTimeout(hold);
     },
     async choose(name) {
