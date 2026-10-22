@@ -37,8 +37,10 @@ downloads all four in advance and verifies their checksums.
 Generated recordings stay in ignored `videos/output/` for review. Website playback
 integration is a later step; the static build excludes the recording tools and scene.
 
-`npm run setup:time-series` from `videos/` prepares a separate project with three
-matching coastal Sentinel-2 cutouts from 2021 and 2022. See the
+`npm run setup` from `videos/` prepares the tools project first, then a separate
+time-series project with three matching coastal Sentinel-2 cutouts from 2021 and
+2022. Add `-- --env dev` to prepare both on the development app. To prepare only
+one, use `npm run setup -- --dataset tools` or `npm run setup:time-series`. See the
 [time-series guide](videos/README.md#time-series-project) for data provenance and commands.
 
 ## GitHub Pages

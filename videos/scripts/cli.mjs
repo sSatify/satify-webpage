@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
 import { mkdir, open, unlink } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
 import { configuration, connect, launch, readJson, root, writeJson } from './runtime.mjs';
@@ -15,15 +16,29 @@ async function main() {
       headed: { type: 'boolean', default: false }, help: { type: 'boolean', default: false } } });
   const [command, selected = 'all'] = positionals;
   if (values.help || !command) {
-    console.log('Usage: npm run login|setup|record -- [pen|smart-fill|all] [--dataset tools|time-series] [--env prod|dev | --url ORIGIN] [--project "Name"] [--headed]\nEnvironment defaults to prod (https://app.satify.tech); dev uses https://app-dev.satify.tech.');
+    console.log('Usage: npm run login|setup|record -- [pen|smart-fill|all] [--dataset tools|time-series] [--env prod|dev | --url ORIGIN] [--project "Name"] [--headed]\nSetup defaults to both projects, tools first and time-series second. Use --dataset to prepare only one; --project requires it for setup.\nEnvironment defaults to prod (https://app.satify.tech); dev uses https://app-dev.satify.tech.');
     return;
   }
+  await runCommand(command, selected, values);
+}
+
+export async function runCommand(command, selected, values, execute = runProject) {
   if (!['login', 'setup', 'record'].includes(command)) throw new Error(`Unknown command: ${command}`);
   if (command === 'record' && selected !== 'all' && !scenarios[selected]) throw new Error(`Unknown scenario: ${selected}`);
-  const config = await configuration(values);
-  if (command === 'record' && config.dataset === 'time-series') {
+  if (command === 'setup' && values.dataset === undefined && values.project !== undefined) {
+    throw new Error('Use --dataset tools or --dataset time-series with --project so each project has its own name.');
+  }
+  const datasets = command === 'setup' && values.dataset === undefined
+    ? ['tools', 'time-series'] : [values.dataset ?? 'tools'];
+  // Validate every configuration before touching the app; run each project to completion.
+  const configs = await Promise.all(datasets.map(dataset => configuration({ ...values, dataset })));
+  if (command === 'record' && configs[0].dataset === 'time-series') {
     throw new Error('Time-series setup is available; recording scenarios have not been authored yet. Use npm run setup:time-series.');
   }
+  for (const config of configs) await execute(command, selected, values, config);
+}
+
+async function runProject(command, selected, values, config) {
   if (command === 'record') requireFfmpeg();
   console.log(`Target: ${config.baseUrl} · Project: ${config.projectName}`);
   await mkdir(config.stateDir, { recursive: true });
@@ -68,10 +83,13 @@ async function main() {
       }
     }
     await runtime.saveAuth();
+    if (command === 'setup') console.log(`Prepared ${config.projectName}`);
   } finally {
     try { if (runtime) await runtime.close(); }
     finally { await lock.close(); await unlink(lockPath); }
   }
 }
 
-main().catch(error => { console.error(error.message); process.exitCode = 1; });
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch(error => { console.error(error.message); process.exitCode = 1; });
+}

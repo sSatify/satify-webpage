@@ -106,8 +106,9 @@ Setup uses the viewport from `config.json`; each recording then applies its
 scenario's framing settings.
 The bundled Chromium and its encoder are installed in `.cache/browsers/`.
 
-The default URL is `https://app.satify.tech`; the default project is
-`SATIFY tool demonstrations - urban forest`. To prepare it without recording:
+The default URL is `https://app.satify.tech`. Setup prepares both projects in order:
+`SATIFY tool demonstrations - urban forest`, then
+`SATIFY time-series demonstrations - coastal farmland`:
 
 ```powershell
 npm run setup
@@ -119,16 +120,24 @@ record command; the selection is per invocation and is not saved as a default:
 ```powershell
 npm run login -- --env dev
 npm run setup -- --env dev
-npm run setup:time-series -- --env dev
 npm run record -- pen --env dev
 ```
+
+Setup waits for the first project to finish before starting the second. Existing
+ready projects are reused. If either setup fails, the command stops; rerun it to
+resume using the saved project state and upload checkpoints.
+
+To prepare just one project, use `npm run setup -- --dataset tools` or
+`npm run setup:time-series`, adding `--env dev` as needed. When giving setup a
+custom `--project` name, also specify `--dataset` to select the intended project.
 
 Omit `--env` or use `--env prod` for production. Login and project state remain
 separate for each app, so sign in once per environment. Existing saved state
 for either URL is reused. The advanced `--url ORIGIN` override is also available;
 use it on its own, without `--env`.
 
-Each `record` invocation runs setup automatically. `npm run record` records both
+Each `record` invocation prepares only its selected dataset automatically.
+`npm run record` records both
 scenarios. Add `--headed` to watch the browser. Results go to a new timestamped
 directory under `output/`: cropped WebM, 500 × 450 MP4, cropped poster, provenance JSON,
 and `preview.html` with pause/replay controls. Setup, upload and processing are
@@ -251,7 +260,9 @@ Setup verifies every bundled TIFF, detects all three scenes, saves dated metadat
 uploads them into one project and requests preparation together. Each successful
 upload is checkpointed, so an interrupted run skips files already acknowledged.
 Ready projects are checked and reused without resetting their labels. The original
-`npm run setup` and Pen/Smart fill recordings continue to use the urban forest scene.
+Pen/Smart fill recordings continue to use the urban forest scene. The default
+`npm run setup` prepares both this tools project and the time-series project;
+`npm run setup:time-series` prepares only the latter.
 
 The new project's images are ready for the time-series/change-detection features
 when those reach the published application. Recording scenarios for those features
