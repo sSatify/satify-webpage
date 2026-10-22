@@ -19,6 +19,18 @@ third-party material, including the Silkscreen font, retains its own license ter
 
 Open `index.html` through your IDE's built-in web preview. Reload the browser after changes.
 
+## Tool videos
+
+The repeatable Pen and Smart fill demonstrations live in [videos/](videos/README.md).
+That standalone Node.js package records the published app at `https://app.satify.tech`
+and includes its portable demo scene, scenarios, recording helpers and tests.
+It does not require the application source or a local SATIFY stack.
+
+Start with `cd videos`, `npm ci`, `npm run browsers`, then `npm run login`.
+The video guide explains recording, the dedicated demo project and prerequisites.
+Generated recordings stay in ignored `videos/output/` for review. Website playback
+integration is a later step; the static build excludes the recording tools and scene.
+
 ## GitHub Pages
 
 The workflow in `.github/workflows/pages.yml` checks, builds, and deploys on pushes to `main`, or on a manual run. In

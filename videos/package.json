@@ -1,0 +1,20 @@
+{
+  "name": "satify-tool-videos",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "browsers": "node scripts/install-browser.mjs",
+    "login": "node scripts/cli.mjs login",
+    "setup": "node scripts/cli.mjs setup",
+    "record": "node scripts/cli.mjs record",
+    "test": "node --test tests/*.test.mjs",
+    "test:recording": "node tests/recording-smoke.mjs",
+    "test:runtime": "node --test tests/runtime-browser.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}

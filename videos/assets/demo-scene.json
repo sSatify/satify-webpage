@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "source_scene": "dw_-111.4634822751_56.7543659975-20190517",
+  "file": "demo-scene.tif",
+  "sha256": "2218875887218c60ae41fe6051a778cfcd80b964f2a4bd9777cfe2da9aa535ae",
+  "bytes": 8465843,
+  "width": 510,
+  "height": 510,
+  "crs_wkt": "GEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        MEMBER[\"World Geodetic System 1984 (G2296)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]",
+  "geotransform": [
+    -111.50526575241412,
+    0.0001638567737809,
+    0.0,
+    56.777272932462274,
+    0.0,
+    -8.98311174991e-05
+  ],
+  "data_type": "Float64",
+  "bands": [
+    {
+      "index": 1,
+      "name": "B1",
+      "source_file": "B1.tif",
+      "source_sha256": "9288ba6f10fdad2ad593114e68ede9bedae1258cc3eb620181e5907f08b287e2",
+      "pixels_sha256": "90d7920d3f37fa271803815536f8bc055e31cdb49a7f89aec44d6881ec890fce"
+    },
+    {
+      "index": 2,
+      "name": "B2",
+      "source_file": "B2.tif",
+      "source_sha256": "68a578661c99b5cb74014ed8d34d70bd536e0ab53debb30363d074f970260663",
+      "pixels_sha256": "286eb2090ef0641c8c2e5dafc9f12490587c9a76c8685418c3396e95d0a94eeb"
+    },
+    {
+      "index": 3,
+      "name": "B3",
+      "source_file": "B3.tif",
+      "source_sha256": "5203e2552036eccf0042b2f0bc988d9b9aa4e476e5293df6d94654b648c2e536",
+      "pixels_sha256": "008c21d10f3ae76fc506e81879eb4c79296fef77acc0494757371883f871bcf2"
+    },
+    {
+      "index": 4,
+      "name": "B4",
+      "source_file": "B4.tif",
+      "source_sha256": "4543edd66e30e85c304a35b5086b32757a709b5b1637cfb22dfcecbeb91ae889",
+      "pixels_sha256": "4655dba6281e03599872fe403170825cdb6a9cd620bfb1c6ae576a11e01959f8"
+    },
+    {
+      "index": 5,
+      "name": "B5",
+      "source_file": "B5.tif",
+      "source_sha256": "8c1c800d5c32f08145cf87c9a49cc454d01e2d36b4833e76188867c9714811e8",
+      "pixels_sha256": "424debc19f45989ad67053468d7f6fd6302a6998061606db1cfaf6b44cc8bb0d"
+    },
+    {
+      "index": 6,
+      "name": "B6",
+      "source_file": "B6.tif",
+      "source_sha256": "518eb18464ab15670b629bc2995f63681b305c7e8d0ce269dc2857ae4156163a",
+      "pixels_sha256": "dd5e9f60001b05511a6a685e809161a5d8e45c135166b870717b620f5c23732d"
+    },
+    {
+      "index": 7,
+      "name": "B7",
+      "source_file": "B7.tif",
+      "source_sha256": "2e0adfa92b0550b094d5f7ae8ddd713d6ba3abc31a50de17e6cc8ca68ee0dcf2",
+      "pixels_sha256": "4139acf3d12302416eb11f7381c5408ae8d043b7af67ecd83025d763c419a2d9"
+    },
+    {
+      "index": 8,
+      "name": "B8",
+      "source_file": "B8.tif",
+      "source_sha256": "0f46f86014a2aa6a3cd068a5411953e786fd6344ddeb0bc9d733bf78389e95a4",
+      "pixels_sha256": "6593677ae9508e010f852ff758117b4065a8ec979bc27014ee80a7d0403b2715"
+    },
+    {
+      "index": 9,
+      "name": "B8A",
+      "source_file": "B8A.tif",
+      "source_sha256": "0f46f86014a2aa6a3cd068a5411953e786fd6344ddeb0bc9d733bf78389e95a4",
+      "pixels_sha256": "6593677ae9508e010f852ff758117b4065a8ec979bc27014ee80a7d0403b2715"
+    },
+    {
+      "index": 10,
+      "name": "B9",
+      "source_file": "B9.tif",
+      "source_sha256": "4b83632a8cf7ab24e8bd48d11daf46c36d2f44de306ab08daf291be74452f41d",
+      "pixels_sha256": "b450a229b496558448fa6e4d372f1bd659e54d34ab2c42ecb933e607be966b8d"
+    },
+    {
+      "index": 11,
+      "name": "B11",
+      "source_file": "B11.tif",
+      "source_sha256": "4338323178f98286b556d51c8aaf85eaf9323c9a5a156f383c7cbb3dca6b183d",
+      "pixels_sha256": "6eea087777b7a0b92926b7c7705d68df87d355d436f8be08d0bc15b9cd8bba3a"
+    },
+    {
+      "index": 12,
+      "name": "B12",
+      "source_file": "B12.tif",
+      "source_sha256": "fb1cdccf72d8b35978ff6fe0c59bc54c1f65a73b6fd758246b241a85d0939059",
+      "pixels_sha256": "456960d30f78091552d7a0a67fa30034d6c0200973e336429400e5d32c67d85a"
+    }
+  ],
+  "identical_pixel_bands": [
+    [
+      "B8",
+      "B8A"
+    ]
+  ],
+  "verification": "Each decoded output band is byte-identical to its source; no resampling or type conversion.",
+  "gdal_version": "GDAL 3.12.1 \"Chicoutimi\", released 2025/12/12",
+  "notes": [
+    "Band names are preserved as descriptions. Duplicate bands are retained as supplied.",
+    "The source directory name describes mirroring; original acquisition/export provenance has not been verified."
+  ]
+}

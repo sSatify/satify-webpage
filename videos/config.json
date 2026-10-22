@@ -1,0 +1,20 @@
+{
+  "baseUrl": "https://app.satify.tech",
+  "apiPath": "/satify-api",
+  "projectName": "SATIFY tool demonstrations - urban forest",
+  "scene": "assets/demo-scene.json",
+  "selectedLabel": "Water",
+  "calibration": {
+    "scale": 0.0001,
+    "offset": 0,
+    "source": "Confirmed by the scene owner; applied during SATIFY import. TIFF sample values remain unchanged."
+  },
+  "labels": [
+    { "id": 1, "labelName": "Forest", "color": "#44aa44" },
+    { "id": 2, "labelName": "Water", "color": "#3399ff" },
+    { "id": 3, "labelName": "Open ground", "color": "#ffe000" },
+    { "id": 4, "labelName": "Built-up", "color": "#e85d5d" }
+  ],
+  "viewport": { "width": 1000, "height": 900 },
+  "timeoutMs": 1800000
+}
