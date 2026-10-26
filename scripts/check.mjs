@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 
-const pages = ['index.html', 'imprint/index.html', 'privacy/index.html'];
+const pages = ['index.html', 'app/index.html', 'imprint/index.html', 'privacy/index.html'];
 let links = 0;
 for (const page of pages) {
   const html = await readFile(page, 'utf8');
@@ -11,7 +11,7 @@ for (const page of pages) {
   assert.match(html, /name="viewport"/, `${page}: responsive viewport`);
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   assert.equal(ids.length, new Set(ids).size, `${page}: unique element IDs`);
-  for (const [, value] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
+  for (const [, value] of html.matchAll(/(?:href|src|poster)="([^"]+)"/g)) {
     if (/^(https?:|mailto:|tel:)/.test(value)) continue;
     assert(!value.startsWith('/'), `${page}: relative paths must work on GitHub project Pages`);
     const [path, fragment] = value.split('#');

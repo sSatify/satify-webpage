@@ -1,13 +1,22 @@
 # Satify website
 
-A three-page static website for Satify: a cheerful pixel-art homepage and plain, readable legal pages. HTML, CSS, and a
+A four-page static website for Satify: a cheerful pixel-art homepage, a dedicated app showcase, and plain, readable legal pages. HTML, CSS, and a
 small progressive-enhancement script; no framework, package dependencies, trackers, or external font requests. A
 light/dark switch is available on every page. The default follows the browser/system preference, including changes
 while the page is open; an explicit choice overrides it and is remembered locally.
 
 The homepage introduces the invitation-only Satify app, its labelling workflow, and how to request access.
 Remote sensing imagery is the general term used for the app's satellite, drone, and aerial imagery support.
-The header's "The app" link leads to the app section, which also provides sign-in for existing users.
+The header's "The app" link and homepage promotion lead to `app/`, with a workspace screenshot,
+three workflow highlights, more tool details, and invitation and sign-in links.
+Smart Fill, time-series change detection, and Pen & Fill gaps each have a real, silent
+demonstration video with a local poster, playback controls, and a full-size link.
+The comparison video uses a wide 16:10 frame and the full content width; the two close-up
+tool videos use 10:9 frames. Videos load only when played. See [the recording notes](docs/app-videos.md).
+
+The [video recorder](videos/README.md) contains the repeatable demonstration scripts imported
+from `tool_videos_mp`. Its scenes, browser login, dependencies, and generated recordings remain
+Git-ignored. Website builds exclude the tooling; only reviewed media in `assets/` is published.
 The free game introduces the labelling concepts without requiring an account or invitation.
 
 ## License
@@ -70,7 +79,7 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
 - Game sticker: `assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
   The "Let’s play!" sticker links to the game from its promotion panel.
 - App workspace screenshot: `assets/satify-app-workspace.jpeg`, supplied by Marco on 24 September 2026.
-  Displayed without retouching in the app section, with an enlarged on-page panel that closes using its Close button,
+  Displayed without retouching in the homepage app section and dedicated app page, with an enlarged on-page panel that closes using its Close button,
   Escape, or a click outside the panel. It shows colour-infrared imagery, built-up labels,
   Smart Fill controls, and the settings panel; the visible OpenStreetMap attribution is retained.
 - The hero illustration is an eight-area discovery game: one connected river, a separate pond, three

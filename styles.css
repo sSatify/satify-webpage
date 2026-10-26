@@ -1201,6 +1201,229 @@ h3.panel-title {
   color: var(--muted)
 }
 
+/* App showcase: the same palette and type, with room for imagery and demos. */
+.header-inner nav a[aria-current="page"] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 8px;
+}
+
+.app-teaser {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 32px;
+  padding: var(--panel-padding);
+}
+
+.app-teaser-copy > .pixel-button {
+  margin-top: 26px;
+}
+
+.app-teaser .app-preview,
+.app-hero .app-preview {
+  width: 100%;
+}
+
+.app-hero {
+  padding-block: 64px 48px;
+}
+
+.app-hero-copy {
+  max-width: 880px;
+  margin: 0 auto 38px;
+  text-align: center;
+}
+
+.app-hero-copy .eyebrow {
+  margin-bottom: 20px;
+  color: var(--forest);
+}
+
+.app-hero h1 {
+  font-size: clamp(34px, 4.8vw, 64px);
+}
+
+.app-hero-description {
+  max-width: 760px;
+  margin-inline: auto;
+  font-family: var(--prose);
+  color: var(--muted);
+}
+
+.app-hero .hero-actions {
+  justify-content: center;
+}
+
+.app-hero .app-sign-in {
+  margin-top: 22px;
+  font-size: 13px;
+}
+
+.app-hero .app-preview {
+  max-width: 1080px;
+  margin-inline: auto;
+}
+
+.app-jump-nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--line);
+}
+
+.app-jump-nav a {
+  padding: 22px 16px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.app-jump-nav a + a {
+  border-left: 1px solid var(--line);
+}
+
+.app-jump-nav a:hover {
+  background: var(--soft-bg);
+}
+
+.app-jump-nav span {
+  color: var(--forest);
+  margin-right: 12px;
+}
+
+.app-highlights {
+  padding-block: 64px;
+}
+
+.app-highlights > .section-heading h2 {
+  max-width: 650px;
+}
+
+.app-highlights > .section-heading > p {
+  max-width: 380px;
+}
+
+.app-highlight {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 48px;
+  align-items: center;
+  padding-block: 42px;
+  border-top: 1px solid var(--line);
+}
+
+/* Give comparison views the page width; close-up tools retain a compact crop. */
+.app-highlight--wide {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+
+.app-highlight--wide .highlight-copy {
+  max-width: 850px;
+}
+
+.app-highlight--wide .highlight-media {
+  width: min(100%, 1120px);
+  justify-self: center;
+}
+
+.highlight-copy .eyebrow {
+  color: var(--forest);
+  margin-bottom: 16px;
+}
+
+.highlight-copy h3 {
+  font-size: clamp(21px, 2.3vw, 28px);
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.highlight-copy > p:not(.eyebrow),
+.highlight-copy ol,
+.highlight-media figcaption {
+  font-family: var(--prose);
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.highlight-copy ol {
+  padding-left: 24px;
+  margin-block: 22px;
+}
+
+.highlight-copy li {
+  padding-left: 6px;
+  margin-block: 10px;
+}
+
+.highlight-copy li::marker {
+  color: var(--forest);
+}
+
+.highlight-copy .highlight-note {
+  border-left: 3px solid var(--green);
+  padding-left: 14px;
+}
+
+.highlight-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #101b16;
+  border: 2px solid var(--line);
+  box-shadow: 5px 5px 0 var(--frame-shadow);
+}
+
+.highlight-media video:focus-visible {
+  outline: 3px solid var(--forest);
+  outline-offset: 6px;
+}
+
+.highlight-media video:fullscreen {
+  border: 0;
+  box-shadow: none;
+  object-fit: contain;
+}
+
+.highlight-media figcaption a {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: bold;
+}
+
+.highlight-media figcaption {
+  margin-top: 16px;
+  font-size: 11px;
+}
+
+.media-attribution {
+  font: 12px/1.6 var(--prose);
+  color: var(--muted);
+  margin-top: 16px;
+}
+
+@media(max-width:800px) {
+  .app-teaser,
+  .app-highlight {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .app-hero {
+    padding-block: 40px 32px;
+  }
+  .app-highlights {
+    padding-block: 44px;
+  }
+  .app-jump-nav a {
+    padding: 18px 8px;
+    font-size: 11px;
+  }
+  .app-jump-nav span {
+    display: block;
+    margin: 0 0 6px;
+  }
+}
+
 /* Legal pages intentionally use simple typography and no game decoration. */
 .legal-page {
   background: var(--legal-bg)
@@ -1698,7 +1921,7 @@ h3.panel-title {
   }
 }
 
-@media(max-width:480px) {
+@media(max-width:800px) {
   .header-inner,
   .legal-page .header-inner {
     flex-wrap: wrap;
