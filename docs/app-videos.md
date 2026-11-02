@@ -11,15 +11,16 @@ These assets are integrated locally; this document does not indicate deployment.
 | --- | --- | --- | --- | --- |
 | Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 17.8 s | 6.1 MB |
 | Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 26.6 s | 3.0 MB |
-| Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 12.5 s | 2.7 MB |
+| Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 24.6 s | 6.5 MB |
 | Change detection | change-detection.mp4 | 1600 × 900 (16:9) | 17.2 s | 6.5 MB |
-| Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 22.4 s | 2.8 MB |
+| Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 33.4 s | 4.2 MB |
 
 Each silent H.264 MP4 has a WebP poster. A one-second still of the result opens
-each clip, followed by real-time app interaction with a visible pointer and short
+most clips, followed by real-time app interaction with a visible pointer and short
 captions. No predicted labels or processing results are simulated. Source datasets
-are prepared before capture. Propagate begins with Forest and Water examples;
-the Built-up examples are drawn during the clip.
+are prepared before capture. Propagate has no result preview: it starts with a
+clean image and shows every Forest, Water and Built-up example being drawn before
+prediction. Its website poster also uses the clean before frame.
 
 The close-ups use larger players beside their descriptions. The three wide
 workflows use the full content width, capped at 1120 CSS pixels. All players have
@@ -41,14 +42,17 @@ workflows were exercised successfully on that deployed build.
   to the junction, then around the broad northeast bend. An 8 px brush with Trace
   and Fit width applies 49,632 m² (495 pixels). The result follows the main roads;
   suggested boundaries still require review.
-- Sync labelling re-evaluates a Smart Fill seed on three dates of the same coastal
-  area. Persisted label counts were 159,261, 192,288 and 101,856 pixels. Both target
-  operations reported success and changed tiles.
+- Sync labelling first labels Water, then switches to Agriculture and a finer mask
+  to label two field regions across the same three coastal dates. Saved Water counts
+  were 159,261, 192,288 and 101,856 pixels; Agriculture counts were 8,729, 6,343 and
+  6,920. Both target dates reported success for all three operations. Cleanup undid
+  each operation in reverse order, checking the saved counts after each Undo and
+  verifying that all three dates were empty at the end.
 - Change detection selects an NDVI decrease range near −0.2 and applies 13,584 pixels
   using the existing Open ground class. An index difference is not validated ground
   truth; the page asks viewers to interpret it with the imagery.
-- Propagate learns from Forest, Water and Built-up examples, previews predictions,
-  and applies 248,487 new pixels after adjusting confidence to about 82%. Confidence
+- Propagate shows all Forest, Water and Built-up examples being drawn, learns from
+  them, previews predictions, and applies 248,234 new pixels after adjusting confidence to about 82%. Confidence
   and the displayed hold-out score are model diagnostics, not overall accuracy.
 
 ## Reproduction
@@ -82,12 +86,14 @@ Selected source directories under ignored videos/output/:
 
 - 2026-11-02T09-47-27-780Z-v2-smart-fill
 - 2026-11-02T10-24-11-791Z-v2-rivers-roads
-- 2026-11-02T09-54-06-747Z-v2-time-series
+- 2026-11-02T10-34-21-912Z-v2-time-series
 - 2026-11-02T09-55-08-487Z-v2-change-detection
-- 2026-11-02T09-58-17-448Z-v2-propagate
+- 2026-11-02T10-35-55-787Z-v2-propagate
 
 Each contains its MP4, final poster.png, before frame, capture and recording
-manifest. WebP posters use FFmpeg scale=960:-2, quality 86. Only selected MP4s and
+manifest. WebP posters use FFmpeg scale=960:-2, quality 86. Propagate's website
+poster uses before.png to avoid showing labels that disappear when playback starts.
+Only selected MP4s and
 WebPs in assets/videos/ enter the website build. Dataset provenance and checksums
 remain in videos/assets/release.json and the scene manifests.
 
@@ -99,7 +105,7 @@ reference, but their Pen clip and former exports are no longer used by the site.
 
 All five actual-app scenarios completed; comparison operations also verified their
 saved labels and successful Undo cleanup. Posters and sampled frames were reviewed.
-Media probes verified H.264, silent streams, dimensions and durations. All 35 Node
+Media probes verified H.264, silent streams, dimensions and durations. All 37 Node
 tests, the browser recording/export smoke test, site checks and the static build
 passed. Browser QA played all five selected videos to completion, checked desktop
 and mobile layouts at 1440, 768, 390 and 320 pixels, verified homepage links and found

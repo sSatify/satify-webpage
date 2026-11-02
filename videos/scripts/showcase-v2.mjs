@@ -148,7 +148,21 @@ export async function prepareComparison(page, context, mode = 'Change detection'
   await page.getByRole('combobox', { name: 'Current file', exact: true }).selectOption({ label: '[3] Coastal farmland 2022-09-04' });
   await tidy(page);
   await page.getByRole('button', { name: 'Fit image', exact: true }).click();
-  if (mode === 'Time series') await chooseClass(page, 'Water');
+  if (mode === 'Time series') {
+    const box = await page.locator('.ol-paint-host').first().boundingBox();
+    await page.mouse.click(box.x + box.width * .6, box.y + box.height * .7, { button: 'right' });
+    const picker = page.getByRole('dialog', { name: /^Select or create (class|label)$/ });
+    const agriculture = picker.getByRole('button', { name: 'Agriculture', exact: true });
+    if (await agriculture.count()) await agriculture.click();
+    else {
+      await picker.getByRole('button', { name: 'Add class', exact: true }).click();
+      await picker.getByRole('textbox', { name: 'New class name' }).fill('Agriculture');
+      await picker.locator('input[aria-label="Class colour"]').fill('#ff9f32');
+      await picker.getByRole('button', { name: 'Create class', exact: true }).click();
+    }
+    await picker.waitFor({ state: 'hidden' });
+    await chooseClass(page, 'Water');
+  }
   await page.getByRole('button', { name: 'Change detection', exact: true }).click();
   await page.getByRole('combobox', { name: 'Index', exact: true }).waitFor({ timeout: 60_000 });
   if (mode === 'Time series') await page.getByRole('radio', { name: mode, exact: true }).click();
@@ -172,24 +186,44 @@ export async function runSync(demo, context) {
   await demo.click(demo.page.getByRole('switch', { name: 'Sync labelling', exact: true }));
   if (await demo.page.getByRole('checkbox').filter({ visible: true }).count() < 2) throw new Error('Missing sync targets.');
   await demo.hold(700);
-  await demo.caption('Preview each date using its own imagery.');
+  await demo.caption('Label water across the dates.');
   const box = await demo.page.locator('.ol-paint-host').first().boundingBox();
-  await demo.move({ x: box.x + box.width * .75, y: box.y + box.height * .79 }, 800);
-  await demo.hold(1800);
-  const synced = demo.page.waitForResponse(r => r.request().method() === 'POST' && r.url().endsWith('/timeseries/sync'), { timeout: 120_000 });
-  await demo.page.mouse.down(); await demo.hold(100); await demo.page.mouse.up();
-  context.applied = true;
-  const response = await synced;
-  if (!response.ok()) throw new Error('The dates could not be synced.');
-  const result = await response.json();
-  const targets = result.results?.flatMap(op => op.per_target ?? []);
-  if (targets?.length !== 2 || targets.some(t => t.status !== 'ok' || !t.changed_tiles?.length)) throw new Error('Not every selected date was labelled.');
+  context.undoStates = [];
+  const counts = color => Promise.all(context.state.sceneIds.map(id => countSeriesLabels(demo.page, context.runtime.api, context.state, id, color)));
+  async function fill(x, y) {
+    const before = await counts();
+    await demo.move({ x: box.x + box.width * x, y: box.y + box.height * y }, 700);
+    await demo.hold(1500);
+    const synced = demo.page.waitForResponse(r => r.request().method() === 'POST' && r.url().endsWith('/timeseries/sync'), { timeout: 120_000 });
+    await demo.page.mouse.down(); await demo.hold(100); await demo.page.mouse.up();
+    context.undoStates.push(before);
+    context.applied = true;
+    const response = await synced;
+    if (!response.ok()) throw new Error('The dates could not be synced.');
+    const result = await response.json();
+    const targets = result.results?.flatMap(op => op.per_target ?? []);
+    if (targets?.length !== 2 || targets.some(t => t.status !== 'ok' || !t.changed_tiles?.length)) throw new Error('Not every selected date was labelled.');
+    await demo.park();
+    await demo.hold(650);
+  }
+  await fill(.75, .79);
+  await demo.caption('Switch to Agriculture.');
+  await demo.move({ x: box.x + box.width * .4, y: box.y + box.height * .6 }, 500);
+  await demo.page.mouse.click(box.x + box.width * .4, box.y + box.height * .6, { button: 'right' });
+  const picker = demo.page.getByRole('dialog', { name: /^Select or create (class|label)$/ });
+  await demo.click(picker.getByRole('button', { name: 'Agriculture', exact: true }));
+  // A finer mask separates individual fields while retaining each date's own boundaries.
+  await demo.click(demo.page.getByRole('slider', { name: 'Source mask', exact: true }), { x: 5 / 15 });
+  if (Number(await demo.page.getByRole('slider', { name: 'Source mask', exact: true }).inputValue()) !== 5) throw new Error('Expected the field-scale source mask.');
+  await demo.caption('Label fields using each date’s own imagery.');
+  await fill(.46, .50);
+  await fill(.58, .46);
   await demo.park();
-  await demo.caption('One action. Several dates.');
+  await demo.caption('Two classes. Three dates.');
   await demo.hold(3200);
-  const counts = await Promise.all(context.state.sceneIds.map(id => countSeriesLabels(demo.page, context.runtime.api, context.state, id)));
-  if (counts.some(n => n <= 0)) throw new Error('A recorded date has no saved labels.');
-  context.verifiedCounts = counts;
+  context.verifiedClasses = { Water: await counts('#3399ff'), Agriculture: await counts('#ff9f32') };
+  if (Object.values(context.verifiedClasses).some(values => values.some(n => n <= 0))) throw new Error('Both classes must be saved on every date.');
+  context.verifiedCounts = await counts();
 }
 
 export async function prepareChange(page, context) {
@@ -246,13 +280,24 @@ export async function runChange(demo, context) {
 
 export async function cleanupSeries(demo, context) {
   if (!context.applied) return;
-  await demo.page.getByRole('button', { name: 'Undo', exact: true }).click();
-  for (let n = 0; n < 40; n++) {
-    const counts = await Promise.all(context.state.sceneIds.map(id => countSeriesLabels(demo.page, context.runtime.api, context.state, id)));
-    if (counts.every(n => n === 0)) { context.applied = false; return; }
-    await demo.hold(250);
+  context.undoStates ??= [[0, 0, 0]];
+  while (context.undoStates.length) {
+    const expected = context.undoStates.at(-1);
+    if (!context.undoPending) {
+      await demo.page.getByRole('button', { name: 'Undo', exact: true }).click();
+      context.undoPending = true;
+    }
+    let restored = false;
+    for (let n = 0; n < 40; n++) {
+      const counts = await Promise.all(context.state.sceneIds.map(id => countSeriesLabels(demo.page, context.runtime.api, context.state, id)));
+      if (counts.every((value, i) => value === expected[i])) { restored = true; break; }
+      await demo.hold(250);
+    }
+    if (!restored) throw new Error('Demo edits could not be fully undone; do not reset the series.');
+    context.undoStates.pop();
+    context.undoPending = false;
   }
-  throw new Error('Demo edits could not be fully undone; do not reset the series.');
+  context.applied = false;
 }
 
 const starterExamples = [
@@ -277,24 +322,23 @@ export async function preparePropagate(page, context) {
   const size = page.getByRole('textbox', { name: 'Pen size', exact: true });
   await size.fill('5 px'); await size.press('Enter');
   await page.getByRole('radio', { name: 'Paint', exact: true }).click();
-  for (const example of starterExamples) {
-    await chooseClass(page, example.name);
-    const points = example.points.map(([x,y]) => ({ x: frame.target.x + (x-.5)*context.scene.width*frame.scale,
-      y: frame.target.y + (y-.5)*context.scene.height*frame.scale }));
-    await page.mouse.move(points[0].x, points[0].y);
-    const saved = page.waitForResponse(r => r.request().method() === 'PUT' && r.url().includes('/labeltiles/'));
-    await page.mouse.down();
-    for (const point of points.slice(1)) await page.mouse.move(point.x, point.y, { steps: 12 });
-    await page.mouse.up();
-    if (!(await saved).ok()) throw new Error('An example stroke failed.');
-  }
-  await chooseClass(page, 'Built-up');
+  await chooseClass(page, 'Forest');
   return frame;
 }
 
 export async function runPropagate(demo, context) {
-  await demo.caption('Start with examples: forest, water, built-up.');
-  await demo.hold(1000);
+  await demo.caption('Start with a clean image.');
+  await demo.hold(1300);
+  let selected = 'Forest';
+  for (const example of starterExamples) {
+    await demo.caption(`Draw examples of ${example.name.toLowerCase()}.`);
+    if (selected !== example.name) await chooseClass(demo.page, example.name, demo);
+    selected = example.name;
+    await demo.stroke(example.points, 1100);
+    await demo.hold(600);
+  }
+  await demo.caption('Add built-up examples.');
+  await chooseClass(demo.page, 'Built-up', demo);
   await demo.stroke(builtExample, 1500);
   await demo.hold(600);
   await demo.click(demo.page.getByRole('button', { name: 'Propagate labels', exact: true }));
@@ -329,7 +373,7 @@ export const definitions = {
   'rivers-roads': { dataset: 'tools', title: 'Follow the bend.', prepare: prepareRoads, run: runRoads },
   'change-detection': { dataset: 'time-series', title: 'See the change. Make it a label.', prepare: prepareChange, run: runChange, cleanup: cleanupSeries },
   'time-series': { dataset: 'time-series', title: 'One action. Several dates.', prepare: prepareSync, run: runSync, cleanup: cleanupSeries },
-  propagate: { dataset: 'tools', title: 'Teach it a little. Label a lot.', prepare: preparePropagate, run: runPropagate },
+  propagate: { dataset: 'tools', title: 'Teach it a little. Label a lot.', prepare: preparePropagate, run: runPropagate, resultPreview: false },
 };
 
 export async function openManaged(name) {
@@ -373,15 +417,17 @@ export async function openManaged(name) {
   }
 }
 
-export function encode(directory, name, frame) {
+export function encode(directory, name, frame, { resultPreview = true } = {}) {
   const bundledFfmpeg = resolve(root, 'node_modules/ffmpeg-static', process.platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg');
   const ffmpeg = process.env.FFMPEG_PATH || (existsSync(bundledFfmpeg) ? bundledFfmpeg : 'ffmpeg');
   const target = resolve(directory, name + '.mp4');
-  const filter = `[0:v]fps=30,setsar=1,format=yuv420p[intro];` +
+  const crop = `crop=${frame.clip.width}:${frame.clip.height}:${frame.clip.x}:${frame.clip.y},fps=30,setsar=1,format=yuv420p`;
+  const filter = resultPreview ? `[0:v]fps=30,setsar=1,format=yuv420p[intro];` +
     `[1:v]crop=${frame.clip.width}:${frame.clip.height}:${frame.clip.x}:${frame.clip.y},fps=30,setsar=1,format=yuv420p[demo];` +
-    '[intro][demo]concat=n=2:v=1:a=0[out]';
+    '[intro][demo]concat=n=2:v=1:a=0[out]' : `[0:v]${crop}[out]`;
   const result = spawnSync(ffmpeg, ['-hide_banner', '-loglevel', 'error', '-y',
-    '-loop', '1', '-t', '1', '-i', resolve(directory, 'poster.png'), '-i', resolve(directory, 'capture.webm'),
+    ...(resultPreview ? ['-loop', '1', '-t', '1', '-i', resolve(directory, 'poster.png')] : []),
+    '-i', resolve(directory, 'capture.webm'),
     '-filter_complex', filter, '-map', '[out]', '-an', '-c:v', 'libx264', '-crf', '19',
     '-pix_fmt', 'yuv420p', '-movflags', '+faststart', target], { encoding: 'utf8', windowsHide: true });
   if (result.status !== 0) throw new Error(result.stderr || 'Video encoding failed.');
@@ -427,11 +473,14 @@ export async function recordShowcase(name) {
     await page.screenshot({ path: resolve(directory, 'poster.png'), clip: frame.clip });
     if (results.some(r => r.status >= 400)) throw new Error('An editor operation failed.');
     await definition.cleanup?.(demo, context);
-    const mp4 = encode(directory, name, frame);
+    const mp4 = encode(directory, name, frame, definition);
     await writeFile(resolve(directory, 'recording.json'), JSON.stringify({
       scenario: name, title: definition.title, origin: context.config.baseUrl,
       recordedAt: new Date().toISOString(), frame, sourceSha256: context.scene.sha256, verifiedLabelCounts: context.verifiedCounts,
-      editorial: 'One-second result preview followed by real app interaction. Silent; no simulated results.', results,
+      verifiedClasses: context.verifiedClasses,
+      editorial: definition.resultPreview === false
+        ? 'Clean image followed by all example strokes and predictions in chronological order. Silent; no simulated results.'
+        : 'One-second result preview followed by real app interaction. Silent; no simulated results.', results,
     }, null, 2));
     console.log(`Recorded ${mp4}`);
     await runtime.saveAuth();

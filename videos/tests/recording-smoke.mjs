@@ -76,13 +76,20 @@ try {
   assert.deepEqual(JSON.parse(largerProbe.stdout).streams[0], { width: 1440, height: 900 });
   const fixture = Buffer.from(await page.evaluate(() => {
     const canvas = document.createElement('canvas'); canvas.width = 4; canvas.height = 4;
-    canvas.getContext('2d').fillRect(1, 1, 1, 1);
+    const context = canvas.getContext('2d');
+    context.fillRect(1, 1, 1, 1);
+    context.fillStyle = '#3399ff99'; context.fillRect(2, 1, 1, 1);
+    context.fillStyle = '#ff9f3299'; context.fillRect(3, 1, 1, 1);
     return canvas.toDataURL('image/png').split(',')[1];
   }), 'base64');
   const api = async (_method, path) => path.includes('.png')
     ? (path.includes('/0/0.png') ? fixture : null) : { tiles: [{ x: 0, y: 0 }, { x: 0, y: 1 }] };
   const binding = { sid: 'managed', sceneIds: ['series.tif'] };
-  assert.equal(await countSeriesLabels(page, api, binding, 'series.tif'), 1);
+  assert.equal(await countSeriesLabels(page, api, binding, 'series.tif'), 3);
+  assert.equal(await countSeriesLabels(page, api, binding, 'series.tif', '#3399ff'), 1);
+  assert.equal(await countSeriesLabels(page, api, binding, 'series.tif', '#ff9f32'), 1);
+  assert.equal(await countSeriesLabels(page, api, binding, 'series.tif', '#000000'), 1);
+  assert.equal(await countSeriesLabels(page, api, binding, 'series.tif', '#44aa44'), 0);
   await assert.rejects(countSeriesLabels(page, api, binding, 'foreign.tif'), /outside the managed series/);
   await demo.park();
   // Check the same preview markup the recorder emits, including proportional mobile sizing.

@@ -12,8 +12,9 @@ five workflow highlights, more tool details, and invitation and sign-in links.
 Smart Fill, Rivers & Roads Pen, Sync labelling, Change detection, and experimental Propagate Labels each have a real, silent
 demonstration video with a local poster, playback controls, and a full-size link.
 The three wide workflows use 16:9 frames and the full content width; the two close-up
-tool videos use larger 4:3 frames. Each starts with a one-second glimpse of the result,
-followed by real app interactions with short captions. Videos load only when played.
+tool videos use larger 4:3 frames. Most start with a one-second glimpse of the result,
+followed by real app interactions with short captions. Propagate starts with a clean
+image and shows every example being drawn before the predictions. Videos load only when played.
 Three poster previews on the homepage link directly to the demos. See [the recording notes](docs/app-videos.md).
 
 The [video recorder](videos/README.md) contains the repeatable demonstration scripts imported
