@@ -10,7 +10,7 @@ These assets are integrated locally; this document does not indicate deployment.
 | Feature | Asset in assets/videos/ | Dimensions | Duration | Size |
 | --- | --- | --- | --- | --- |
 | Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 17.8 s | 6.1 MB |
-| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 15.5 s | 1.8 MB |
+| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 17.4 s | 2.4 MB |
 | Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 24.6 s | 6.5 MB |
 | Change detection | change-detection.mp4 | 1600 × 900 (16:9) | 17.2 s | 6.5 MB |
 | Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 33.4 s | 4.2 MB |
@@ -38,12 +38,13 @@ workflows were exercised successfully on that deployed build.
 
 - Smart Fill fills forest locally and across the viewport, then adds the pond as
   Water. Generated regions require human review.
-- Rivers & Roads Pen follows the arterial roads marked in the user's review: down
-  to the junction, then around the broad northeast bend. A 16 px brush (twice the
+- Rivers & Roads Pen follows only the main road marked in the latest review: from
+  the southwest, around the bend and east along the straight section, excluding
+  the diagonal side road. The framing keeps that full route visible. A 16 px brush (twice the
   earlier width) marks a broad search area with a quick stroke: 100 ms per path
   segment instead of 320 ms. A 2.4-second preview hold and caption distinguish the
-  automatically detected road from the guide. Trace and Fit width apply 49,732 m²
-  (496 pixels). Suggested boundaries still require review.
+  automatically detected road from the guide. Trace and Fit width apply 73,295 m²
+  (731 pixels). Suggested boundaries still require review.
 - Sync labelling first labels Water, then switches to Agriculture and a finer mask
   to label two field regions across the same three coastal dates. Saved Water counts
   were 159,261, 192,288 and 101,856 pixels; Agriculture counts were 8,729, 6,343 and
@@ -87,7 +88,7 @@ or selected with FFMPEG_PATH.
 Selected source directories under ignored videos/output/:
 
 - 2026-11-02T09-47-27-780Z-v2-smart-fill
-- 2026-11-02T11-48-10-366Z-v2-rivers-roads
+- 2026-11-02T11-55-27-310Z-v2-rivers-roads
 - 2026-11-02T10-34-21-912Z-v2-time-series
 - 2026-11-02T09-55-08-487Z-v2-change-detection
 - 2026-11-02T10-35-55-787Z-v2-propagate

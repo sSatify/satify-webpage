@@ -92,19 +92,20 @@ export async function runSmart(demo) {
   await demo.hold(2500);
 }
 
-// Follow the arterial roads marked in the review: down to the junction, then
-// around the broad northeast bend, avoiding the parallel residential streets.
-export const roadPath = [[.32156,.50635],[.34344,.52302],[.36531,.53917],[.38667,.55479],
-  [.4075,.57042],[.42938,.58448],[.44083,.5699],[.45229,.55427],[.46531,.5376],
-  [.4799,.52198],[.49604,.50844],[.51427,.49594],[.53563,.48552],[.55906,.47615],
-  [.58406,.4699],[.61531,.46521]];
+// Follow only the main road marked in the latest review: from the southwest,
+// around its sweeping bend and east along the straight section, without the side road.
+export const roadPath = [[.38667,.63604],[.40229,.61365],[.41687,.59281],[.42938,.57823],
+  [.44083,.56573],[.45229,.55063],[.46531,.535],[.4799,.52042],[.49604,.5074],
+  [.51427,.49542],[.53563,.48552],[.55906,.47615],[.58406,.4699],[.61531,.46521],
+  [.645,.46156],[.67833,.45844],[.70958,.45583],[.74083,.45375],
+  [.77208,.45219],[.78771,.45167]];
 
 export async function prepareRoads(page, context) {
   await page.setViewportSize({ width: 1360, height: 1000 });
   await tidy(page);
   await chooseClass(page, 'Built-up');
   const frame = await frameScene(page, context.scene, { ...toolsFraming,
-    focus: [.55, .46], zoom: 2, subjectAt: [.62, .55] });
+    focus: [.55, .46], zoom: 2, subjectAt: [.58, .48] });
   await page.getByRole('button', { name: 'Rivers & roads pen', exact: true }).click();
   await placeToolPanel(page, frame);
   const size = page.locator('.editor-tool-hint input[type=text]');
