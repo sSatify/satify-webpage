@@ -10,7 +10,7 @@ These assets are integrated locally; this document does not indicate deployment.
 | Feature | Asset in assets/videos/ | Dimensions | Duration | Size |
 | --- | --- | --- | --- | --- |
 | Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 17.8 s | 6.1 MB |
-| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 20.9 s | 2.5 MB |
+| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 26.6 s | 3.0 MB |
 | Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 12.5 s | 2.7 MB |
 | Change detection | change-detection.mp4 | 1600 × 900 (16:9) | 17.2 s | 6.5 MB |
 | Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 22.4 s | 2.8 MB |
@@ -37,9 +37,10 @@ workflows were exercised successfully on that deployed build.
 
 - Smart Fill fills forest locally and across the viewport, then adds the pond as
   Water. Generated regions require human review.
-- Rivers & Roads Pen follows a curved road using Trace and Fit width, then applies
-  the result (59,759 m²). The suggested trace includes nearby streets; it is not a
-  claim of perfect road boundaries.
+- Rivers & Roads Pen follows the arterial roads marked in the user's review: down
+  to the junction, then around the broad northeast bend. An 8 px brush with Trace
+  and Fit width applies 49,632 m² (495 pixels). The result follows the main roads;
+  suggested boundaries still require review.
 - Sync labelling re-evaluates a Smart Fill seed on three dates of the same coastal
   area. Persisted label counts were 159,261, 192,288 and 101,856 pixels. Both target
   operations reported success and changed tiles.
@@ -80,7 +81,7 @@ or selected with FFMPEG_PATH.
 Selected source directories under ignored videos/output/:
 
 - 2026-11-02T09-47-27-780Z-v2-smart-fill
-- 2026-11-02T09-59-41-096Z-v2-rivers-roads
+- 2026-11-02T10-24-11-791Z-v2-rivers-roads
 - 2026-11-02T09-54-06-747Z-v2-time-series
 - 2026-11-02T09-55-08-487Z-v2-change-detection
 - 2026-11-02T09-58-17-448Z-v2-propagate

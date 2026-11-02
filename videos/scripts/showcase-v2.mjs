@@ -92,8 +92,12 @@ export async function runSmart(demo) {
   await demo.hold(2500);
 }
 
-export const roadPath = [[.36844,.57302],[.39188,.54438],[.42313,.51833],[.45958,.4975],
-  [.49604,.48188],[.5325,.47094],[.57417,.46573],[.62625,.46],[.67833,.45583],[.74083,.45063]];
+// Follow the arterial roads marked in the review: down to the junction, then
+// around the broad northeast bend, avoiding the parallel residential streets.
+export const roadPath = [[.32156,.50635],[.34344,.52302],[.36531,.53917],[.38667,.55479],
+  [.4075,.57042],[.42938,.58448],[.44083,.5699],[.45229,.55427],[.46531,.5376],
+  [.4799,.52198],[.49604,.50844],[.51427,.49594],[.53563,.48552],[.55906,.47615],
+  [.58406,.4699],[.61531,.46521]];
 
 export async function prepareRoads(page, context) {
   await page.setViewportSize({ width: 1360, height: 1000 });
@@ -104,7 +108,7 @@ export async function prepareRoads(page, context) {
   await page.getByRole('button', { name: 'Rivers & roads pen', exact: true }).click();
   await placeToolPanel(page, frame);
   const size = page.locator('.editor-tool-hint input[type=text]');
-  await size.fill('12 px'); await size.press('Enter');
+  await size.fill('8 px'); await size.press('Enter');
   await page.getByRole('radio', { name: /^Trace:/ }).click();
   await page.getByRole('checkbox', { name: 'Fit width', exact: true }).check();
   await page.getByText('Draw along a river or road.', { exact: true }).waitFor({ timeout: 120_000 });
