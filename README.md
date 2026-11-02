@@ -8,11 +8,13 @@ while the page is open; an explicit choice overrides it and is remembered locall
 The homepage introduces the invitation-only Satify app, its labelling workflow, and how to request access.
 Remote sensing imagery is the general term used for the app's satellite, drone, and aerial imagery support.
 The header's "The app" link and homepage promotion lead to `app/`, with a workspace screenshot,
-three workflow highlights, more tool details, and invitation and sign-in links.
-Smart Fill, time-series change detection, and Pen & Fill gaps each have a real, silent
+five workflow highlights, more tool details, and invitation and sign-in links.
+Smart Fill, Rivers & Roads Pen, Sync labelling, Change detection, and experimental Propagate Labels each have a real, silent
 demonstration video with a local poster, playback controls, and a full-size link.
-The comparison video uses a wide 16:10 frame and the full content width; the two close-up
-tool videos use 10:9 frames. Videos load only when played. See [the recording notes](docs/app-videos.md).
+The three wide workflows use 16:9 frames and the full content width; the two close-up
+tool videos use larger 4:3 frames. Each starts with a one-second glimpse of the result,
+followed by real app interactions with short captions. Videos load only when played.
+Three poster previews on the homepage link directly to the demos. See [the recording notes](docs/app-videos.md).
 
 The [video recorder](videos/README.md) contains the repeatable demonstration scripts imported
 from `tool_videos_mp`. Its scenes, browser login, dependencies, and generated recordings remain

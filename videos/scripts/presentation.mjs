@@ -62,7 +62,9 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
   }
   async function click(locator, { x = 0.5, y = 0.5 } = {}) {
     await locator.waitFor({ state: 'visible' });
-    if (!await locator.isEnabled()) throw new Error('The demonstration control is not ready.');
+    // Wait for enabled controls and verify that no floating panel intercepts
+    // the intended click before moving the recorded pointer.
+    await locator.click({ trial: true });
     const box = await locator.boundingBox();
     if (frame && (box.x < frame.clip.x || box.y < frame.clip.y
       || box.x + box.width > frame.clip.x + frame.clip.width
@@ -99,7 +101,7 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
       const body = response.request().postDataJSON();
       if (Math.abs(body.x - x * image.width) > 2 || Math.abs(body.y - y * image.height) > 2
         || body.by_label !== (scope !== 'Local') || ('viewport' in body) !== (scope !== 'Global')) {
-        throw new Error(`Smart Fill did not target the expected ${scope} region.`);
+        throw new Error(`Smart Fill did not target the expected ${scope} region: expected ${x * image.width},${y * image.height}; received ${body.x},${body.y}; by_label=${body.by_label}; viewport=${'viewport' in body}.`);
       }
     },
     async park() {

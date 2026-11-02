@@ -1,6 +1,23 @@
 # Repeatable tool videos
 
-This folder contains portable demonstration data, project setup, and website
+The current five-video showcase is implemented in `scripts/showcase-v2.mjs`.
+It records Smart Fill and Rivers & Roads Pen at 1280 × 960, and Sync labelling,
+Change detection and experimental Propagate Labels at 1600 × 900. Each silent clip
+opens with a one-second result preview, then shows real app interaction with short
+captions. See [selected recordings and reproduction](../docs/app-videos.md) for
+the exact deployed build, managed projects, run IDs and verification notes.
+
+After installing dependencies and preparing the managed projects, use
+`npm run showcase -- smart-fill` (or `rivers-roads`, `time-series`,
+`change-detection`, `propagate`). This entry point targets the development app
+and uses saved project ownership records. Run recordings sequentially. FFmpeg must
+be on PATH, installed locally as `ffmpeg-static`, or configured through `FFMPEG_PATH`.
+
+The remaining scenario descriptions and dated status entries below document the
+earlier three-video recorder, retained for reference and project setup.
+Its dimensions and storyboards do not describe the five selected website videos.
+
+This folder contains portable demonstration data, project setup, and earlier website
 showcases for Pen, Smart Fill, and time-series change detection. The scripts operate the real SATIFY
 editor at `https://app.satify.tech` by default, or `https://app-dev.satify.tech`
 with `--env dev`, and export silent videos for a 500 × 450

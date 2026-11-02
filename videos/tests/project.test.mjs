@@ -15,7 +15,8 @@ const report = { hard_errors: [], scenes: [{ id: 'demo-scene.tif', metadata_sugg
 const binding = () => ({ schemaVersion: 1, origin: config.baseUrl, sid: 'ours', setupKey: setupKey(config, scene),
   stage: 'ready', sceneId: 'prepared-scene', import: importDraft(report, scene, config) });
 
-function server({ projects = [], uploaded = false, finished = false, running = false, failed = false } = {}) {
+function server({ projects = [], uploaded = false, finished = false, running = false, failed = false,
+  manifest = baseline(config, scene) } = {}) {
   const calls = [];
   const api = async (method, path, options = {}) => {
     calls.push({ method, path, options });
@@ -23,7 +24,7 @@ function server({ projects = [], uploaded = false, finished = false, running = f
     if (route === '/session/list') return { sessions: projects };
     if (route === '/imports/detect') return structuredClone(report);
     if (route === '/session/new') { projects.push({ sid: 'ours', name: config.projectName }); return { sid: 'ours' }; }
-    if (route === '/session/switch') return { sid: 'ours', manifest_revision: 7, manifest: baseline(config, scene) };
+    if (route === '/session/switch') return { sid: 'ours', manifest_revision: 7, manifest };
     if (route === '/session/preparation-admission') return { status: 'active' };
     if (route === '/session/manifest' || route === '/session/metadata-repair') return { ok: true };
     if (route === '/session/bands') { uploaded = true; return { ok: true }; }
@@ -105,6 +106,18 @@ test('reset deletes only reserved-layer tiles after switching to the saved proje
   const write = mutations.at(-1);
   assert.match(write.path, /sid=ours&base_revision=7/);
   assert.equal(write.options.data.editor.selectedDrawingLayer, DRAWING_LAYER);
+});
+
+test('reset preserves display settings for the masks retained in the editor', async () => {
+  const manifest = baseline(config, scene);
+  manifest.editor.maskLayerNameDisplayOrder = ['Mask Layer 1 demo'];
+  const mask = { visible: false, opacity: 42, isLayer: false };
+  manifest.editor.layerNameDrawerSettings['Mask Layer 1 demo'] = mask;
+  const fixture = server({ projects: [{ sid: 'ours', name: config.projectName }], manifest });
+  await resetProject({ ...args(fixture), state: binding() });
+  const saved = fixture.calls.at(-1).options.data.editor;
+  assert.deepEqual(saved.maskLayerNameDisplayOrder, ['Mask Layer 1 demo']);
+  assert.deepEqual(saved.layerNameDrawerSettings['Mask Layer 1 demo'], mask);
 });
 
 test('calibration is explicit, roles/channel identity preserved, processing level not invented', () => {

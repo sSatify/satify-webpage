@@ -186,7 +186,11 @@ export async function resetProject({ api, config, scene, state }) {
   const desired = baseline(config, scene, state.sceneId);
   const manifest = { ...current.manifest, ...desired,
     upload: { ...current.manifest?.upload, ...desired.upload },
-    editor: { ...current.manifest?.editor, ...desired.editor },
+    editor: { ...current.manifest?.editor, ...desired.editor,
+      // Keep settings for existing source/mask layers when resetting our labels.
+      // The Layers panel expects each retained mask to have display settings.
+      layerNameDrawerSettings: { ...current.manifest?.editor?.layerNameDrawerSettings,
+        ...desired.editor.layerNameDrawerSettings } },
   };
   await api('PUT', `/session/manifest?${sidQuery}&base_revision=${current.manifest_revision}`, { data: manifest });
 }

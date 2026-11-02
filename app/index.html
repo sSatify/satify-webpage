@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Explore the SATIFY app: Smart Fill, time-series change detection, and precise Pen tools. Turn satellite, drone, and aerial imagery into labels. Request an invitation.">
+    <meta name="description" content="See five SATIFY labelling workflows: Smart Fill, rivers and roads, synchronized dates, change detection, and experimental label propagation.">
     <meta name="theme-color" content="#203c31">
     <title>The SATIFY app — Give your imagery meaning</title>
     <link rel="icon" href="../assets/satify-logo.svg" type="image/svg+xml">
@@ -63,72 +63,114 @@
     </section>
     <nav class="app-jump-nav wrap" aria-label="App highlights">
         <a href="#smart-fill"><span>01</span> Smart Fill</a>
-        <a href="#time-series"><span>02</span> Time series</a>
-        <a href="#pen"><span>03</span> Pen &amp; Fill gaps</a>
+        <a href="#rivers-roads"><span>02</span> Rivers &amp; roads pen</a>
+        <a href="#time-series"><span>03</span> Sync labelling</a>
+        <a href="#change-detection"><span>04</span> Change detection</a>
+        <a href="#propagate"><span>05</span> Propagate labels</a>
     </nav>
     <section class="app-highlights wrap" id="highlights" aria-labelledby="highlights-heading">
         <div class="section-heading">
             <div><p class="eyebrow">LESS REPETITION. MORE DISCOVERY.</p>
-                <h2 id="highlights-heading">Three ways to move your work forward.</h2></div>
-            <p>See the tools at work.<br>Three short demos. Play at your own pace.</p>
+                <h2 id="highlights-heading">Less repetition. More possibility.</h2></div>
+            <p>See the tools at work.<br>Five short demos. Play at your own pace.</p>
         </div>
         <article class="app-highlight" id="smart-fill" aria-labelledby="smart-fill-heading">
             <div class="highlight-copy">
                 <p class="eyebrow">01 / Smart Fill</p>
-                <h3 id="smart-fill-heading">Choose the region. Choose the reach.</h3>
-                <p>Preview suggested regions, then choose how far your labels reach. Fill one connected area with Local, matching pixels in the current view, or matching pixels across the whole image.</p>
-                <ol><li>Compare suggested regions over the forest.</li><li>Move from Local to In viewport and Global.</li><li>Zoom out to review the labels beyond the original view.</li></ol>
-                <p class="highlight-note">The dashed outline shows the original editor viewport.</p>
+                <h3 id="smart-fill-heading">A few clicks. A landscape labelled.</h3>
+                <p>Preview suggested regions and turn them into labels. Fill a connected area, extend your selection to matching regions, and add the details that matter.</p>
+                <ol><li>Preview the forest before you commit.</li><li>Label matching regions together.</li><li>Add water as a separate class.</li></ol>
+
             </div>
             <figure class="highlight-media" data-highlight="smart-fill">
-                <video controls playsinline preload="none" width="600" height="540"
+                <video controls playsinline preload="none" width="1280" height="960"
                        poster="../assets/videos/smart-fill.webp" aria-label="Smart Fill demonstration"
                        aria-describedby="smart-fill-caption">
                     <source src="../assets/videos/smart-fill.mp4" type="video/mp4">
                     <a href="../assets/videos/smart-fill.mp4">Open the Smart Fill video</a>.
                 </video>
-                <figcaption id="smart-fill-caption">Smart Fill · A real forest-labelling workflow. Silent video.<br>
-                    <a href="../assets/videos/smart-fill.mp4" target="_blank" rel="noopener">Open full-size video (new tab)</a>
+                <figcaption id="smart-fill-caption">From imagery to forest and water labels. Silent video.<br>
+                    <a href="../assets/videos/smart-fill.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
+                </figcaption>
+            </figure>
+        </article>
+        <article class="app-highlight" id="rivers-roads" aria-labelledby="rivers-roads-heading">
+            <div class="highlight-copy">
+                <p class="eyebrow">02 / Rivers &amp; roads pen</p>
+                <h3 id="rivers-roads-heading">Follow the bend.</h3>
+                <p>Guide the tool along a river or road. Review the line it finds inside your stroke, then add it to your labels.</p>
+                <ol><li>Draw along the feature you want.</li><li>Review the path against the imagery.</li><li>Apply the line as a label.</li></ol>
+
+            </div>
+            <figure class="highlight-media" data-highlight="rivers-roads">
+                <video controls playsinline preload="none" width="1280" height="960"
+                       poster="../assets/videos/rivers-roads.webp" aria-label="Rivers &amp; roads pen demonstration"
+                       aria-describedby="rivers-roads-caption">
+                    <source src="../assets/videos/rivers-roads.mp4" type="video/mp4">
+                    <a href="../assets/videos/rivers-roads.mp4">Open the Rivers &amp; roads pen video</a>.
+                </video>
+                <figcaption id="rivers-roads-caption">A guided stroke becomes a traced feature. Silent video.<br>
+                    <a href="../assets/videos/rivers-roads.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
                 </figcaption>
             </figure>
         </article>
         <article class="app-highlight app-highlight--wide" id="time-series" aria-labelledby="time-series-heading">
             <div class="highlight-copy">
-                <p class="eyebrow">02 / Time series &amp; change detection</p>
-                <h3 id="time-series-heading">Turn change into labels.</h3>
-                <p>Compare imagery of the same place across three dates. Switch to change detection, narrow the range of NDVI change, and apply the selected pixels as labels to the current image.</p>
-                <ol><li>Compare the landscape with a shared view across dates.</li><li>Select a range of NDVI decrease between August and September.</li><li>Apply the selection as Open ground labels and review the result.</li></ol>
-                <p class="highlight-note">A selected range is a starting point for review, not a ground-truth land-cover classification.</p>
+                <p class="eyebrow">03 / Sync labelling</p>
+                <h3 id="time-series-heading">One action. Several dates.</h3>
+                <p>Work across dates in a shared view. With Sync labelling, Smart Fill uses each image’s own data to find the region around your chosen point.</p>
+                <ol><li>Choose the dates to work on together.</li><li>Preview the fill across the selected images.</li><li>Apply and review the labels on each date.</li></ol>
+
             </div>
             <figure class="highlight-media" data-highlight="time-series">
-                <video controls playsinline preload="none" width="1440" height="900"
-                       poster="../assets/videos/change-detection.webp" aria-label="Time series &amp; change detection demonstration"
+                <video controls playsinline preload="none" width="1600" height="900"
+                       poster="../assets/videos/time-series.webp" aria-label="Sync labelling demonstration"
                        aria-describedby="time-series-caption">
-                    <source src="../assets/videos/change-detection.mp4" type="video/mp4">
-                    <a href="../assets/videos/change-detection.mp4">Open the Time series &amp; change detection video</a>.
+                    <source src="../assets/videos/time-series.mp4" type="video/mp4">
+                    <a href="../assets/videos/time-series.mp4">Open the Sync labelling video</a>.
                 </video>
-                <figcaption id="time-series-caption">Time series &amp; change detection · Coastal farmland across three dates. Silent video.<br>
-                    <a href="../assets/videos/change-detection.mp4" target="_blank" rel="noopener">Open full-size video (new tab)</a>
+                <figcaption id="time-series-caption">Smart Fill across three dates of the same place. Silent video.<br>
+                    <a href="../assets/videos/time-series.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
                 </figcaption>
             </figure>
         </article>
-        <article class="app-highlight" id="pen" aria-labelledby="pen-heading">
+        <article class="app-highlight app-highlight--wide" id="change-detection" aria-labelledby="change-detection-heading">
             <div class="highlight-copy">
-                <p class="eyebrow">03 / Pen &amp; Fill gaps</p>
-                <h3 id="pen-heading">Make every detail count.</h3>
-                <p>Trace a boundary with the Pen, then fill the area inside it. Change brush size for the tight bends and use Fill gaps to paint unlabelled pixels while preserving your existing labels.</p>
-                <ol><li>Draw the yellow boundary with two brush sizes.</li><li>Choose Water and switch to a wider brush.</li><li>Fill the blue interior without overwriting the yellow outline.</li></ol>
-                <p class="highlight-note">Precise manual tools complement model-assisted labelling.</p>
+                <p class="eyebrow">04 / Change detection</p>
+                <h3 id="change-detection-heading">See the change. Make it a label.</h3>
+                <p>Compare two dates, explore their index difference, and select the change you want to label. Adjust the range while you review the result on the maps.</p>
+                <ol><li>Compare the same place across two dates.</li><li>Select a range of vegetation-index decrease.</li><li>Turn the selected change into labels.</li></ol>
+                <p class="highlight-note">An index change is a starting point for interpretation. Review the imagery to decide what it means.</p>
             </div>
-            <figure class="highlight-media" data-highlight="pen">
-                <video controls playsinline preload="none" width="600" height="540"
-                       poster="../assets/videos/pen.webp" aria-label="Pen &amp; Fill gaps demonstration"
-                       aria-describedby="pen-caption">
-                    <source src="../assets/videos/pen.mp4" type="video/mp4">
-                    <a href="../assets/videos/pen.mp4">Open the Pen &amp; Fill gaps video</a>.
+            <figure class="highlight-media" data-highlight="change-detection">
+                <video controls playsinline preload="none" width="1600" height="900"
+                       poster="../assets/videos/change-detection.webp" aria-label="Change detection demonstration"
+                       aria-describedby="change-detection-caption">
+                    <source src="../assets/videos/change-detection.mp4" type="video/mp4">
+                    <a href="../assets/videos/change-detection.mp4">Open the Change detection video</a>.
                 </video>
-                <figcaption id="pen-caption">Pen &amp; Fill gaps · A boundary and its interior, labelled separately. Silent video.<br>
-                    <a href="../assets/videos/pen.mp4" target="_blank" rel="noopener">Open full-size video (new tab)</a>
+                <figcaption id="change-detection-caption">A range of NDVI change becomes a reviewable label. Silent video.<br>
+                    <a href="../assets/videos/change-detection.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
+                </figcaption>
+            </figure>
+        </article>
+        <article class="app-highlight app-highlight--wide" id="propagate" aria-labelledby="propagate-heading">
+            <div class="highlight-copy">
+                <p class="eyebrow">05 / Propagate labels <span class="experimental-badge">Experimental</span></p>
+                <h3 id="propagate-heading">Teach it a little. Label a lot.</h3>
+                <p>Provide examples of your classes and let the tool predict unlabelled areas. Adjust the confidence threshold to leave uncertain pixels for your review.</p>
+                <ol><li>Start with representative labelled examples.</li><li>Preview predictions for the unlabelled areas.</li><li>Choose a confidence threshold and apply.</li></ol>
+                <p class="highlight-note">Experimental · Available in LAB mode on the development app.</p>
+            </div>
+            <figure class="highlight-media" data-highlight="propagate">
+                <video controls playsinline preload="none" width="1600" height="900"
+                       poster="../assets/videos/propagate.webp" aria-label="Propagate labels demonstration (experimental)"
+                       aria-describedby="propagate-caption">
+                    <source src="../assets/videos/propagate.mp4" type="video/mp4">
+                    <a href="../assets/videos/propagate.mp4">Open the Propagate labels video</a>.
+                </video>
+                <figcaption id="propagate-caption">Learning from your examples. Experimental preview. Silent video.<br>
+                    <a href="../assets/videos/propagate.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
                 </figcaption>
             </figure>
         </article>
@@ -139,10 +181,9 @@
             <div class="section-heading"><div><p class="eyebrow">THE DETAILS ARE STILL YOURS</p>
                 <h2 class="panel-title" id="toolkit-heading">Smart assistance. <span>Hands-on control.</span></h2></div></div>
             <div class="app-overview"><ul class="app-features">
-                    <li><strong>Semi-Supervised Learning</strong>
-                        <p class="app-feature-summary">Try Smart Fill and refine the model on the fly.</p>
-                        <p>Interact directly with AI-assisted segmentation, provide feedback, and fine-tune the model in
-                            real time to continuously improve predictions as you work.</p>
+                    <li><strong>Regions ready to review</strong>
+                        <p class="app-feature-summary">Preview, label, and refine with Smart Fill.</p>
+                        <p>Use generated regions to speed up annotation, then refine the labels with the tools and classes that fit your project.</p>
                     </li>
                     <li><strong>Old but Gold</strong>
                         <p class="app-feature-summary">Classic tools for precise annotation.</p>

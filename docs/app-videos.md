@@ -1,75 +1,109 @@
 # App showcase recordings
 
-The app page implements [issue #216](https://github.com/sSatify/issue-tracker/issues/216)
-with three real recordings for [issue #217](https://github.com/sSatify/issue-tracker/issues/217).
-The recordings were made on 26 October 2026 against `app-dev.satify.tech`.
+Five fresh recordings for [#216](https://github.com/sSatify/issue-tracker/issues/216)
+and [#217](https://github.com/sSatify/issue-tracker/issues/217), recorded on 2 November
+2026 against app-dev.satify.tech. Work continues on `codex/app-showcase-videos`.
+These assets are integrated locally; this document does not indicate deployment.
 
-## Published assets (local, not deployed)
+## Selected videos
 
-| Highlight | Video | Dimensions | Duration | Approximate size |
+| Feature | Asset in assets/videos/ | Dimensions | Duration | Size |
 | --- | --- | --- | --- | --- |
-| Smart Fill | `assets/videos/smart-fill.mp4` | 600 × 540 (10:9) | 24.5 s | 2.3 MB |
-| Time series & change detection | `assets/videos/change-detection.mp4` | 1440 × 900 (16:10) | 21.3 s | 7.9 MB |
-| Pen & Fill gaps | `assets/videos/pen.mp4` | 600 × 540 (10:9) | 29.4 s | 0.73 MB |
+| Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 17.8 s | 6.1 MB |
+| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 20.9 s | 2.5 MB |
+| Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 12.5 s | 2.7 MB |
+| Change detection | change-detection.mp4 | 1600 × 900 (16:9) | 17.2 s | 6.5 MB |
+| Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 22.4 s | 2.8 MB |
 
-Each MP4 is silent H.264, with a local WebP poster. Native controls, inline playback,
-`preload="none"`, written workflow descriptions, and a full-size link are provided.
-There is no autoplay, third-party embed, tracking, or additional browser storage.
-The two close-up videos retain the native recording resolution instead of the smaller
-500 × 450 export. The comparison gets the full content width, capped at 1120 CSS pixels.
-The videos keep their intrinsic proportions on narrow screens and support fullscreen.
+Each silent H.264 MP4 has a WebP poster. A one-second still of the result opens
+each clip, followed by real-time app interaction with a visible pointer and short
+captions. No predicted labels or processing results are simulated. Source datasets
+are prepared before capture. Propagate begins with Forest and Water examples;
+the Built-up examples are drawn during the clip.
 
-The existing branch defines Pen rather than Rivers & Roads, so this pass uses Pen as
-the third highlight. The comparison clip demonstrates NDVI range selection and applying
-labels; it does not demonstrate Sync labelling. The page copy describes the recorded
-workflow. Basemap attribution is retained in the comparison and provided below the demos.
+The close-ups use larger players beside their descriptions. The three wide
+workflows use the full content width, capped at 1120 CSS pixels. All players have
+native controls, inline playback, preload="none", accessible descriptions and a
+full-size link. There is no autoplay. The homepage has three poster links into the
+app page. Propagate is marked experimental and available in LAB mode on the
+development app. Fullscreen helps inspect comparison controls on phones.
 
-## Recording source and reproduction
+## Provenance and interpretation
 
-The tools in [videos/](../videos/README.md) came from the website repository's
-`tool_videos_mp` branch at `22509dc8f47dd89acfe8caeeb20990b6ae94327b`.
-The showcase and recording work is saved on `codex/app-showcase-videos` for further iteration.
-The tooling was imported without merging the original video branch.
-The recorder retains its safeguards for project ownership, reserved drawing-layer resets,
-verified source imagery, and time-series cleanup. The comparison applies labels, verifies
-the response, then undoes its own operation and checks that the drawing layer is empty.
+Feature selection was checked against develop commit
+`11bda0740497e0d37aa57f5ba1dc4459b6129ae1`. The recordings use the deployed development
+app **v2.5.15-dev.0065+867515e**, earlier than that source commit. All five selected
+workflows were exercised successfully on that deployed build.
 
-This pass adapts the old label control names to the current class names, widens the
-comparison crop, and scrolls Apply into view before checking the recorded bounds.
-The final comparison selected an NDVI decrease boundary of approximately −0.2 and
-labelled 12,172 pixels. This is a demo selection, not validated ground-truth land cover.
+- Smart Fill fills forest locally and across the viewport, then adds the pond as
+  Water. Generated regions require human review.
+- Rivers & Roads Pen follows a curved road using Trace and Fit width, then applies
+  the result (59,759 m²). The suggested trace includes nearby streets; it is not a
+  claim of perfect road boundaries.
+- Sync labelling re-evaluates a Smart Fill seed on three dates of the same coastal
+  area. Persisted label counts were 159,261, 192,288 and 101,856 pixels. Both target
+  operations reported success and changed tiles.
+- Change detection selects an NDVI decrease range near −0.2 and applies 13,584 pixels
+  using the existing Open ground class. An index difference is not validated ground
+  truth; the page asks viewers to interpret it with the imagery.
+- Propagate learns from Forest, Water and Built-up examples, previews predictions,
+  and applies 248,487 new pixels after adjusting confidence to about 82%. Confidence
+  and the displayed hold-out score are model diagnostics, not overall accuracy.
 
-From `videos/`, with Node, Playwright's browser, FFmpeg and FFprobe installed:
+## Reproduction
+
+See [the recorder guide](../videos/README.md) for dependencies, login and project setup.
+The new recorder targets the development app and existing managed projects
+`SATIFY website showcase 2026-10-26 tools` and
+`SATIFY website showcase 2026-10-26 time series`. It requires their saved ownership
+records under ignored `videos/.state/`; it will not adopt arbitrary projects.
+For a fresh checkout, prepare new managed projects through the setup CLI, then
+update the project-name mapping in `showcase-v2.mjs`.
+
+From videos/, with Node 22+, Playwright's browser and FFmpeg installed:
 
 ```powershell
-node scripts/cli.mjs login --env dev
-node scripts/cli.mjs record smart-fill --env dev --project 'SATIFY website showcase 2026-10-26 tools'
-node scripts/cli.mjs record change-detection --env dev --project 'SATIFY website showcase 2026-10-26 time series'
-node scripts/cli.mjs record pen --env dev --project 'SATIFY website showcase 2026-10-26 tools'
+npm run showcase -- smart-fill
+npm run showcase -- rivers-roads
+npm run showcase -- time-series
+npm run showcase -- change-detection
+npm run showcase -- propagate
 ```
 
-The project names above are managed by this checkout's ignored `.state/` directory.
-Keep that state to reuse the projects. A different checkout must choose fresh project
-names if it has no saved ownership records. Never copy login credentials into tracked files.
+Run these sequentially. The recorder locks each managed project, resets only the
+reserved tools drawing layer, and preserves mask display settings and other layers.
+Time-series operations require empty demonstration layers, undo their own applied
+labels, and verify all three dates are empty afterward. Authentication and raw
+captures stay ignored. FFmpeg can be on PATH, installed locally as ffmpeg-static,
+or selected with FFMPEG_PATH.
 
-Source runs (under ignored `videos/output/`):
+Selected source directories under ignored videos/output/:
 
-- `2026-10-26T14-33-53-284Z-smart-fill`: selected `smart-fill-unscaled.mp4`.
-- `2026-10-26T14-39-42-433Z-change-detection`: selected `change-detection.mp4`.
-- `2026-10-26T14-41-28-059Z-pen`: selected `pen-unscaled.mp4`.
+- 2026-11-02T09-47-27-780Z-v2-smart-fill
+- 2026-11-02T09-59-41-096Z-v2-rivers-roads
+- 2026-11-02T09-54-06-747Z-v2-time-series
+- 2026-11-02T09-55-08-487Z-v2-change-detection
+- 2026-11-02T09-58-17-448Z-v2-propagate
 
-WebP posters were encoded from each run's `poster.png`. Recordings and manifests in
-`output/` are diagnostic/reproduction material; only the selected videos and posters in
-`assets/videos/` enter the website build. Dataset details and checksums are in
-`videos/assets/release.json` and the recording manifests.
+Each contains its MP4, final poster.png, before frame, capture and recording
+manifest. WebP posters use FFmpeg scale=960:-2, quality 86. Only selected MP4s and
+WebPs in assets/videos/ enter the website build. Dataset provenance and checksums
+remain in videos/assets/release.json and the scene manifests.
+
+The reusable recorder originally came from website branch tool_videos_mp at
+22509dc8f47dd89acfe8caeeb20990b6ae94327b. The old three-video scenarios remain for
+reference, but their Pen clip and former exports are no longer used by the site.
 
 ## Verification
 
-All 34 Node tests, the browser/export/responsive smoke test, and the saved-login browser
-check passed. The three scenarios completed against the real dev app. Sampled frames and
-final posters were reviewed; Pen preserves its yellow boundary with a solid blue interior.
-The site check covers MP4 and poster paths, and the static build includes the app and media
-while excluding the recording tools, scene datasets, browser state, and raw captures.
+All five actual-app scenarios completed; comparison operations also verified their
+saved labels and successful Undo cleanup. Posters and sampled frames were reviewed.
+Media probes verified H.264, silent streams, dimensions and durations. All 35 Node
+tests, the browser recording/export smoke test, site checks and the static build
+passed. Browser QA played all five selected videos to completion, checked desktop
+and mobile layouts at 1440, 768, 390 and 320 pixels, verified homepage links and found
+no page errors. Light and dark layouts were reviewed. Builds exclude scene datasets,
+recording tools and browser state.
 
-For future replacements, keep the HTML dimensions consistent with the actual video,
-update the poster and copy, and rerun the website checks plus desktop/mobile playback.
+When replacing a clip, update its poster and HTML dimensions together, review the
+result at its actual display size, and rerun playback and responsive checks.
