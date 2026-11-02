@@ -108,7 +108,7 @@ export async function prepareRoads(page, context) {
   await page.getByRole('button', { name: 'Rivers & roads pen', exact: true }).click();
   await placeToolPanel(page, frame);
   const size = page.locator('.editor-tool-hint input[type=text]');
-  await size.fill('8 px'); await size.press('Enter');
+  await size.fill('16 px'); await size.press('Enter');
   await page.getByRole('radio', { name: /^Trace:/ }).click();
   await page.getByRole('checkbox', { name: 'Fit width', exact: true }).check();
   await page.getByText('Draw along a river or road.', { exact: true }).waitFor({ timeout: 120_000 });
@@ -116,17 +116,17 @@ export async function prepareRoads(page, context) {
 }
 
 export async function runRoads(demo) {
-  await demo.caption('Guide a stroke along the road.');
+  await demo.caption('Guide a broad stroke along the road.');
   await demo.hold(700);
   await demo.move(await demo.point(...roadPath[0]), 650);
   await demo.page.mouse.down();
-  try { for (const point of roadPath.slice(1)) await demo.move(await demo.point(...point), 320); }
+  try { for (const point of roadPath.slice(1)) await demo.move(await demo.point(...point), 100); }
   finally { await demo.page.mouse.up(); }
   const apply = demo.page.locator('.editor-tool-hint').getByRole('button', { name: 'Apply', exact: true });
   await demo.page.getByText(/^Adds [\d,.]+ m²/).waitFor({ timeout: 120_000 });
   await demo.park();
-  await demo.caption('Review the path and its width.');
-  await demo.hold(1800);
+  await demo.caption('SATIFY detects the road inside your stroke.');
+  await demo.hold(2400);
   const saved = demo.page.waitForResponse(r => r.request().method() === 'POST' && r.url().includes('/lines/apply'), { timeout: 120_000 });
   const [response] = await Promise.all([saved, demo.click(apply)]);
   if (!response.ok()) throw new Error('The road could not be labelled.');
