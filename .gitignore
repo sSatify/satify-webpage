@@ -3,3 +3,5 @@
 dist/
 node_modules/
 
+# Personal agent instructions
+/AGENTS.local.md
