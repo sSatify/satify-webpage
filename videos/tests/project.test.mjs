@@ -27,12 +27,16 @@ function server({ projects = [], uploaded = false, finished = false, running = f
     if (route === '/session/switch') return { sid: 'ours', manifest_revision: 7, manifest };
     if (route === '/session/preparation-admission') return { status: 'active' };
     if (route === '/session/manifest' || route === '/session/metadata-repair') return { ok: true };
-    if (route === '/session/bands') { uploaded = true; return { ok: true }; }
+    if (route === '/session/bands/v2') { uploaded = true; return { ok: true }; }
     if (route === '/session/metadata-repair/process') {
       assert.ok(uploaded, 'Preparation must follow upload'); finished = !failed; return { ok: true };
     }
     if (route === '/session/compute-progress') return { finished, running, failed };
     if (route === '/session/scenes') return { scenes: [{ id: 'prepared-scene', ready: true, band_count: 3 }] };
+    if (route === '/session/editor-save/layer-state') return { manifest_revision: '7', tiles: [{ x: 0, y: 1, revision: '2' }, { x: 1, y: 1, revision: '3' }, { x: 3, y: 2, revision: '4', deleted: true }] };
+    if (route === '/session/editor-mutation/state') return { revision: '5', manifest_revision: '7' };
+    if (route === '/session/editor-save/manifest-state') return { manifest, revision: '7' };
+    if (route === '/session/editor-save' || route === '/session/editor-mutation') return { operation_id: options.data.operation_id, revision: '6', ok: true };
     if (route.startsWith('/session/labeltiles/') && method === 'GET') return { tiles: [{ x: 0, y: 1 }, { x: 1, y: 1 }] };
     if (route.startsWith('/session/labeltiles/') && method === 'DELETE') return { ok: true };
     if (route.startsWith('/session/layers/') && method === 'DELETE') return { ok: true };
@@ -98,14 +102,25 @@ test('reset deletes only reserved-layer tiles after switching to the saved proje
   const mutations = fixture.calls.filter(c => c.method !== 'GET');
   assert.equal(mutations[0].path, '/session/switch');
   assert.deepEqual(mutations[0].options.data, { sid: 'ours' });
-  for (const call of mutations.filter(c => c.method === 'DELETE')) {
-    assert.ok(call.path.startsWith(`/session/labeltiles/prepared-scene/${encodeURIComponent(DRAWING_LAYER)}/`)
-      || call.path === `/session/layers/${encodeURIComponent(`prepared-scene__${DRAWING_LAYER}`)}`);
+  assert.ok(mutations.every(c => c.method === 'POST'), 'No retired PUT or DELETE writes');
+  const tileWrites = mutations.filter(c => c.options.data.kind === 'tile');
+  assert.equal(tileWrites.length, 2, 'Deleted tile tombstones are not rewritten');
+  for (const { options: { data } } of tileWrites) {
+    assert.equal(data.sid, 'ours');
+    assert.equal(data.folder, 'prepared-scene');
+    assert.equal(data.layer, DRAWING_LAYER);
+    assert.equal(data.png_base64, null);
+    assert.equal(data.manifest_revision, '7');
   }
-  assert.ok(mutations.some(c => c.path === `/session/layers/${encodeURIComponent(`prepared-scene__${DRAWING_LAYER}`)}`));
+  assert.deepEqual(tileWrites.map(c => c.options.data.base_revision), ['2', '3']);
+  const removal = mutations.find(c => c.options.data.action === 'layer-delete').options.data;
+  assert.equal(removal.folder, 'prepared-scene');
+  assert.equal(removal.layer, DRAWING_LAYER);
+  assert.equal(removal.base_revision, '5');
   const write = mutations.at(-1);
-  assert.match(write.path, /sid=ours&base_revision=7/);
-  assert.equal(write.options.data.editor.selectedDrawingLayer, DRAWING_LAYER);
+  assert.equal(write.path, '/session/editor-save');
+  assert.equal(write.options.data.base_revision, '7');
+  assert.equal(write.options.data.manifest.editor.selectedDrawingLayer, DRAWING_LAYER);
 });
 
 test('reset preserves display settings for the masks retained in the editor', async () => {
@@ -115,9 +130,19 @@ test('reset preserves display settings for the masks retained in the editor', as
   manifest.editor.layerNameDrawerSettings['Mask Layer 1 demo'] = mask;
   const fixture = server({ projects: [{ sid: 'ours', name: config.projectName }], manifest });
   await resetProject({ ...args(fixture), state: binding() });
-  const saved = fixture.calls.at(-1).options.data.editor;
+  const saved = fixture.calls.at(-1).options.data.manifest.editor;
   assert.deepEqual(saved.maskLayerNameDisplayOrder, ['Mask Layer 1 demo']);
   assert.deepEqual(saved.layerNameDrawerSettings['Mask Layer 1 demo'], mask);
+});
+
+test('reset stops on a stale tile instead of clearing newer edits or saving its manifest', async () => {
+  const fixture = server({ projects: [{ sid: 'ours', name: config.projectName }] });
+  const api = async (method, path, options) => {
+    if (path === '/session/editor-save' && options?.data.kind === 'tile') throw new Error('revision conflict');
+    return fixture.api(method, path, options);
+  };
+  await assert.rejects(resetProject({ ...args(fixture), api, state: binding() }), /revision conflict/);
+  assert.ok(!fixture.calls.some(c => c.options.data?.action === 'layer-delete' || c.options.data?.kind === 'manifest'));
 });
 
 test('calibration is explicit, roles/channel identity preserved, processing level not invented', () => {

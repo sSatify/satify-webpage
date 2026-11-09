@@ -7,14 +7,33 @@ open with a one-second result preview. Propagate instead starts clean and shows 
 example strokes before prediction; its website poster also shows the clean image.
 Sync labelling demonstrates both Water and Agriculture across three dates.
 All clips show real app interaction with short captions.
+Recordings use dark mode, explicitly overriding any saved app theme before startup.
+The showcase recorder verifies the dark theme before capture and records it in the manifest.
 See [selected recordings and reproduction](../docs/app-videos.md) for
 the exact deployed build, managed projects, run IDs and verification notes.
 
 After installing dependencies and preparing the managed projects, use
 `npm run showcase -- smart-fill` (or `rivers-roads`, `time-series`,
-`change-detection`, `propagate`). This entry point targets the development app
-and uses saved project ownership records. Run recordings sequentially. FFmpeg must
+`change-detection`, `propagate`). This entry point defaults to the production app,
+`https://app.satify.tech`, and prints the selected origin before recording.
+It uses saved project ownership records specific to that origin. Run recordings sequentially. FFmpeg must
 be on PATH, installed locally as `ffmpeg-static`, or configured through `FFMPEG_PATH`.
+
+The production showcase uses these dedicated managed projects. Prepare them once after login:
+
+```powershell
+npm run login -- --env prod
+npm run setup -- --env prod --dataset tools --project "SATIFY website showcase 2026-11-09 tools"
+npm run setup -- --env prod --dataset time-series --project "SATIFY website showcase 2026-11-09 time series"
+```
+
+Setup uploads through the versioned source API. Resets use explicit tile revisions,
+durable save/removal receipts, and only the reserved drawing layer in a verified managed project.
+The showcase waits for all editor saves before accepting a capture. Comparison demos undo
+their own operations and check the saved counts on all dates afterward.
+
+Development recordings require an explicit `--env dev` and, for historical projects,
+`--project "SATIFY website showcase 2026-10-26 tools"` (or `time series`). They are not used for the website.
 
 The remaining scenario descriptions and dated status entries below document the
 earlier three-video recorder, retained for reference and project setup.

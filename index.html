@@ -22,7 +22,7 @@
         <a class="brand" href="./" aria-label="SATIFY home"><img src="assets/satify-logo.svg" width="42" height="42"
                                                                  alt=""><span>SATIFY<span class="brand-caption">Pixels. Insights. Discoveries.</span></span></a>
         <div class="header-tools">
-            <nav aria-label="Main navigation"><a href="#how-it-works">The mission</a><a href="app/">The app</a><a
+            <nav aria-label="Main navigation"><a href="#how-it-works">The mission</a><a href="#the-app">The app</a><a
                     href="#contact">Contact</a></nav>
             <button class="theme-toggle pixel-button secondary" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"
                     title="Switch to dark theme" hidden>
@@ -50,7 +50,7 @@
             <div class="hero-actions"><a class="pixel-button primary"
                                          href="mailto:info@satify.tech?subject=SATIFY%20invitation%20request">Request an
                 invitation</a>
-                <a class="pixel-button secondary" href="app/">Discover the app</a></div>
+                <a class="pixel-button secondary" href="#the-app">Discover the app</a></div>
         </div>
         <figure class="world-console">
             <div class="console-top"><span><span class="status-dot"
@@ -204,18 +204,19 @@
         </div>
     </section>
     <section class="app-section wrap" id="the-app" aria-labelledby="app-heading">
-        <div class="app-card app-teaser">
-            <div class="app-teaser-copy panel-copy">
-                <p class="eyebrow">YOUR IMAGERY. YOUR WORKSPACE.</p>
-                <h2 class="panel-title" id="app-heading">The SATIFY app. <span>Give your imagery meaning.</span></h2>
-                <p>From satellite, drone, and aerial imagery to labels you can work with.
-                    Fill regions with Smart Fill, follow rivers and roads, and label several dates together.
-                    Smart assistance speeds up the repetitive work while you stay in control of the details.</p>
-                <a class="pixel-button primary" href="app/">Discover the app <span aria-hidden="true">→</span></a>
-                <p class="app-sign-in">Access by invitation. Already have an account?
-                    <a href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Sign in</a>.</p>
+        <div class="app-card">
+            <div class="section-heading">
+                <div><p class="eyebrow">YOUR IMAGERY. YOUR WORKSPACE.</p>
+                    <h2 class="panel-title" id="app-heading">The SATIFY app. <span>Give your imagery meaning.</span>
+                    </h2></div>
             </div>
-            <figure class="app-preview">
+            <div class="app-overview">
+                <p class="app-intro">Work with satellite, drone, and aerial imagery using the tool that fits each task.
+                    Fill a model-suggested region, fine-tune the model in real time to improve its predictions, label
+                    similar pixels, or draw the details yourself. Our adaptive, model-assisted workflow helps you label
+                    and analyse complex areas in fewer steps, reducing repetitive manual work while maintaining full
+                    control over every label. Spend less time annotating and more time reviewing and refining the results.</p>
+                <figure class="app-preview">
                     <button class="app-preview-open" type="button" aria-haspopup="dialog"
                             aria-controls="app-screenshot-panel"
                             aria-label="Enlarge the SATIFY app screenshot">
@@ -226,14 +227,54 @@
                         Select the screenshot for a closer look.
                     </figcaption>
                 </figure>
-
+                <ul class="app-features">
+                    <li><strong>Semi-Supervised Learning</strong>
+                        <p class="app-feature-summary">Try Smart Fill and refine the model on the fly.</p>
+                        <p>Interact directly with AI-assisted segmentation, provide feedback, and fine-tune the model in
+                            real time to continuously improve predictions as you work.</p>
+                    </li>
+                    <li><strong>Old but Gold</strong>
+                        <p class="app-feature-summary">Classic tools for precise annotation.</p>
+                        <p>Use traditional image annotation tools such as the pen, bucket fill, and polygons to label
+                            exactly what you want, down to the smallest detail.</p>
+                    </li>
+                    <li><strong>Easy View</strong>
+                        <p class="app-feature-summary">Reveal features through multiple image representations.</p>
+                        <p>Switch seamlessly between normalisations, spectral bands, and false-colour composites to uncover
+                            patterns and features that may be difficult to identify in standard imagery.</p>
+                    </li>
+                    <li><strong>Local or Global</strong>
+                        <p class="app-feature-summary">Choose your reach.</p>
+                        <p>With either fill tool, use Local to target a single connected region or Global to identify and
+                            label similar areas across the entire image.</p>
+                    </li>
+                    <li class="app-feature-final"><strong>One-Click Refinement</strong>
+                        <p class="app-feature-summary">Enhance label quality with classical image analysis.</p>
+                        <p>Apply proven image processing techniques with a single click to smooth boundaries, remove
+                            artefacts, and improve the accuracy and consistency of your annotations.</p>
+                    </li>
+                </ul>
+            </div>
         </div>
-
-        <div class="app-demo-links" aria-label="Watch the app at work">
-            <a href="app/#smart-fill"><img src="assets/videos/smart-fill.webp" width="1280" height="960" loading="lazy" alt=""><span class="demo-link-copy"><strong>A few clicks. A landscape labelled.</strong><span>Smart Fill · Watch the demo ↗</span></span></a>
-            <a href="app/#rivers-roads"><img src="assets/videos/rivers-roads.webp" width="1280" height="960" loading="lazy" alt=""><span class="demo-link-copy"><strong>Follow the bend.</strong><span>Rivers &amp; roads pen · Watch the demo ↗</span></span></a>
-            <a href="app/#time-series"><img src="assets/videos/time-series.webp" width="1600" height="900" loading="lazy" alt=""><span class="demo-link-copy"><strong>One action. Several dates.</strong><span>Sync labelling · Watch the demo ↗</span></span></a>
-        </div>
+        <aside class="app-invitation" aria-labelledby="invitation-heading">
+            <img class="invitation-art" src="assets/pixel-heroine-dragon.png" width="1536" height="1024" loading="lazy"
+                 alt="A female pixel-art explorer looks across a green valley with rivers and waterfalls as a dragon flies above the distant mountains.">
+            <div class="app-invitation-copy panel-copy">
+                <p class="eyebrow">ACCESS BY INVITATION</p>
+                <h3 class="panel-title" id="invitation-heading">Your next quest. <span>Starts here.</span></h3>
+                <p>Bring your imagery, your questions, and the classes that matter to your project.
+                    Turn the features you see into labels you can work with.</p>
+                <p>Want to get started? Request an invitation! Tell us what you’re working on and what you’d like to label
+                    when you request access.</p>
+            </div>
+            <div class="app-invitation-actions">
+                <a class="pixel-button primary"
+                   href="mailto:info@satify.tech?subject=SATIFY%20invitation%20request">Request an invitation</a>
+                <p class="app-sign-in">Already have an account?
+                    <a href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Sign in to the app</a>
+                </p>
+            </div>
+        </aside>
     </section>
     <section class="contact wrap" id="contact" aria-labelledby="contact-heading">
         <div class="contact-card">

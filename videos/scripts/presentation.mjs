@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { isMutationResponse, isTileResponse } from './editor-api.mjs';
 
 export async function waitForCanvas(page) {
   const canvas = page.locator('.ol-paint-host').first();
@@ -80,8 +81,7 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
     async settle() { await waitForCanvas(page); },
     async stroke(points, duration) {
       await move(await this.point(...points[0]), 600);
-      const saved = page.waitForResponse(response => response.request().method() === 'PUT'
-        && response.url().includes('/labeltiles/'), { timeout: 30_000 });
+      const saved = page.waitForResponse(isTileResponse, { timeout: 30_000 });
       const drawing = (async () => {
         await page.mouse.down();
         try {
@@ -92,13 +92,19 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
       if (!response.ok()) throw new Error('The Pen stroke could not be saved.');
     },
     async fill(x, y, scope = 'Local') {
-      const saved = page.waitForResponse(response => response.request().method() === 'POST'
-        && response.url().includes('/session/fill/'), { timeout: 30_000 });
+      const saved = page.waitForResponse(response => isMutationResponse(response, 'fill') || isTileResponse(response), { timeout: 30_000 });
       const [response] = await Promise.all([saved, (async () => {
         await page.mouse.down(); await page.waitForTimeout(100); await page.mouse.up();
       })()]);
       if (!response.ok()) throw new Error('The Smart Fill region could not be saved.');
-      const body = response.request().postDataJSON();
+      // Local/Viewport Smart Fill now paints its real preview in the client and
+      // durably saves native tiles. Global still returns a fill mutation receipt.
+      if (isTileResponse(response)) {
+        const selected = page.getByRole('radio', { name: scope === 'Local' ? /^Local:/ : /^(In viewport|Viewport):/ });
+        if (scope === 'Global' || await selected.getAttribute('aria-checked') !== 'true') throw new Error('The Smart Fill scope changed.');
+        return;
+      }
+      const body = response.request().postDataJSON().body;
       if (Math.abs(body.x - x * image.width) > 2 || Math.abs(body.y - y * image.height) > 2
         || body.by_label !== (scope !== 'Local') || ('viewport' in body) !== (scope !== 'Global')) {
         throw new Error(`Smart Fill did not target the expected ${scope} region: expected ${x * image.width},${y * image.height}; received ${body.x},${body.y}; by_label=${body.by_label}; viewport=${'viewport' in body}.`);

@@ -2,18 +2,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { once } from 'node:events';
-import { mkdtemp, rm } from 'node:fs/promises';
+import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { connect, launch } from '../scripts/runtime.mjs';
 
-test('saved login and refreshed bearer auth survive closing the setup page', async () => {
+test('dark recording overrides a saved light theme and preserves refreshed authentication', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'satify-video-auth-'));
   let expectedToken = 'fixture-first';
   const server = createServer((request, response) => {
     if (request.url === '/data-store') {
       response.writeHead(200, { 'Content-Type': 'text/html' });
       response.end(`<script>
+        document.documentElement.dataset.theme = localStorage.getItem('theme');
         document.cookie = 'fixtureSession=present; path=/';
         fetch('/satify-api/session/list', { headers: { Authorization: 'Bearer ${expectedToken}' } });
       </script>`);
@@ -31,7 +32,15 @@ test('saved login and refreshed bearer auth survive closing the setup page', asy
     viewport: { width: 1000, height: 900 } };
   let runtime;
   try {
+    await writeFile(config.authFile, JSON.stringify({ cookies: [], origins: [{
+      origin: config.baseUrl, localStorage: [{ name: 'theme', value: 'light' }],
+    }] }));
     runtime = await launch(config);
+    const page = await runtime.context.newPage();
+    await page.goto(config.baseUrl + '/data-store');
+    assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
+    assert.equal(await page.evaluate(() => matchMedia('(prefers-color-scheme: dark)').matches), true);
+    await page.close();
     await connect(runtime, config);
     assert.equal(runtime.context.pages().length, 0);
     assert.deepEqual(await runtime.api('GET', '/session/list'), { sessions: [] });

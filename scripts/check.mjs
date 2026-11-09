@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve, dirname } from 'node:path';
 
@@ -17,11 +18,21 @@ for (const page of pages) {
     const [path, fragment] = value.split('#');
     let target = path ? resolve(dirname(page), path) : resolve(page);
     if ((await stat(target)).isDirectory()) target = resolve(target, 'index.html');
+    if (page !== 'app/index.html') assert.notEqual(target, resolve('app/index.html'), `${page}: the test showcase must stay unlisted`);
     if (fragment) assert.match(await readFile(target, 'utf8'), new RegExp(`id="${fragment}"`), `${page}: valid fragment ${value}`);
     links++;
   }
 }
 const css = await readFile('styles.css', 'utf8');
+const recordings = JSON.parse(await readFile('assets/videos/recordings.json', 'utf8'));
+assert.deepEqual(recordings.map(recording => recording.scenario).sort(), ['change-detection', 'propagate', 'rivers-roads', 'smart-fill', 'time-series']);
+for (const recording of recordings) {
+  assert.equal(recording.origin, 'https://app.satify.tech', `${recording.scenario}: production recording`);
+  assert.equal(recording.theme, 'dark', `${recording.scenario}: dark recording`);
+  const bytes = await readFile(`assets/videos/${recording.scenario}.mp4`);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), recording.sha256, `${recording.scenario}: selected video matches its provenance`);
+}
+assert.match(await readFile('app/index.html', 'utf8'), /<meta name="robots" content="noindex">/, 'The test showcase must opt out of search indexing');
 for (const [, asset] of css.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) {
   if (asset.startsWith('#')) {
     assert((await readFile('index.html', 'utf8')).includes(`id="${asset.slice(1)}"`), `Valid SVG paint reference: ${asset}`);

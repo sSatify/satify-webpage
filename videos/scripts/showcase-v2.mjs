@@ -3,11 +3,13 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
-import { configuration, launch, connect, readJson, root } from './runtime.mjs';
+import { parseArgs } from 'node:util';
+import { configuration, launch, connect, readJson, root, recordingTheme } from './runtime.mjs';
 import { resetProject, validateBinding } from './project.mjs';
 import { frameScene, placeToolPanel } from './framing.mjs';
 import { presentation, waitForCanvas } from './presentation.mjs';
 import { countSeriesLabels } from './series-recording.mjs';
+import { isMutationResponse, waitForMutation, trackEditorWrites } from './editor-api.mjs';
 
 export const toolsFraming = { width: 1280, height: 960, viewportWidth: 1360,
   cropX: 80, cropTop: 0, cropBottom: 0, focus: [.5, .5], zoom: 1.05,
@@ -22,9 +24,9 @@ export async function tidy(page, { collapse = true } = {}) {
   }
   const basemap = page.getByTitle('Hide the baselayer', { exact: true });
   if (await basemap.isVisible()) await basemap.click();
-  const hide = page.getByRole('button', { name: /^Hide settings and (classes|labels)$/ });
+  const hide = page.getByRole('button', { name: /^(Hide workspace|Hide settings and (classes|labels))$/ });
   if (await hide.isVisible()) await hide.click();
-  const classes = page.getByTitle('Collapse classes', { exact: true });
+  const classes = page.getByTitle(/^Collapse classes(?: \(.*\))?$/);
   if (collapse && await classes.isVisible()) await classes.click();
 }
 
@@ -38,7 +40,7 @@ export async function chooseClass(page, name, demo) {
     await demo.hold(400);
     await demo.click(picker.getByRole('button', { name, exact: true }));
     await picker.waitFor({ state: 'hidden' });
-    await page.getByRole('button', { name: `Current class: ${name}`, exact: true }).waitFor();
+    await page.getByTitle(/^Show classes(?: \(.*\))?$/).filter({ hasText: name }).waitFor();
     return;
   }
   const box = await page.locator('.ol-paint-host').first().boundingBox();
@@ -75,7 +77,7 @@ export async function runSmart(demo) {
   await demo.park();
   await demo.hold(900);
   await demo.caption('Fill matching regions together.');
-  await demo.click(demo.page.getByRole('radio', { name: /^In viewport:/ }));
+  await demo.click(demo.page.getByRole('radio', { name: /^(In viewport|Viewport):/ }));
   await demo.move(await demo.point(.64, .77), 650);
   await demo.hold(750);
   await demo.fill(.64, .77, 'In viewport');
@@ -128,7 +130,7 @@ export async function runRoads(demo) {
   await demo.park();
   await demo.caption('SATIFY detects the road inside your stroke.');
   await demo.hold(2400);
-  const saved = demo.page.waitForResponse(r => r.request().method() === 'POST' && r.url().includes('/lines/apply'), { timeout: 120_000 });
+  const saved = waitForMutation(demo.page, 'lines');
   const [response] = await Promise.all([saved, demo.click(apply)]);
   if (!response.ok()) throw new Error('The road could not be labelled.');
   await demo.page.getByText(/^Added [\d,.]+ m²/).waitFor({ timeout: 60_000 });
@@ -195,7 +197,7 @@ export async function runSync(demo, context) {
     const before = await counts();
     await demo.move({ x: box.x + box.width * x, y: box.y + box.height * y }, 700);
     await demo.hold(1500);
-    const synced = demo.page.waitForResponse(r => r.request().method() === 'POST' && r.url().endsWith('/timeseries/sync'), { timeout: 120_000 });
+    const synced = waitForMutation(demo.page, 'sync');
     await demo.page.mouse.down(); await demo.hold(100); await demo.page.mouse.up();
     context.undoStates.push(before);
     context.applied = true;
@@ -214,7 +216,10 @@ export async function runSync(demo, context) {
   const picker = demo.page.getByRole('dialog', { name: /^Select or create (class|label)$/ });
   await demo.click(picker.getByRole('button', { name: 'Agriculture', exact: true }));
   // A finer mask separates individual fields while retaining each date's own boundaries.
-  await demo.click(demo.page.getByRole('slider', { name: 'Source mask', exact: true }), { x: 5 / 15 });
+  const sourceMask = demo.page.getByRole('slider', { name: 'Source mask', exact: true });
+  await demo.click(sourceMask, { x: .02 });
+  await sourceMask.press('Home');
+  for (let index = 0; index < 5; index++) await sourceMask.press('ArrowRight');
   if (Number(await demo.page.getByRole('slider', { name: 'Source mask', exact: true }).inputValue()) !== 5) throw new Error('Expected the field-scale source mask.');
   await demo.caption('Label fields using each date’s own imagery.');
   await fill(.46, .50);
@@ -267,7 +272,7 @@ export async function runChange(demo, context) {
   await demo.hold(1400);
   await demo.caption('Turn the selected change into labels.');
   await demo.page.getByRole('button', { name: 'Apply to image', exact: true }).evaluate(el => el.scrollIntoView({ block: 'center' }));
-  const saved = demo.page.waitForResponse(r => r.request().method() === 'POST' && r.url().includes('/change/convey'), { timeout: 120_000 });
+  const saved = waitForMutation(demo.page, 'convey');
   const [response] = await Promise.all([saved, demo.click(demo.page.getByRole('button', { name: 'Apply to image', exact: true }))]);
   if (!response.ok()) throw new Error('Change labelling failed.');
   const result = await response.json();
@@ -320,7 +325,7 @@ export async function preparePropagate(page, context) {
     panelAt: [.16,.08], restAt: [.18,.025] };
   await page.getByRole('button', { name: 'Pen', exact: true }).click();
   await placeToolPanel(page, frame);
-  const size = page.getByRole('textbox', { name: 'Pen size', exact: true });
+  const size = page.locator('.editor-tool-hint').getByRole('textbox', { name: /^(Pen size|Size)$/ });
   await size.fill('5 px'); await size.press('Enter');
   await page.getByRole('radio', { name: 'Paint', exact: true }).click();
   await chooseClass(page, 'Forest');
@@ -359,7 +364,7 @@ export async function runPropagate(demo, context) {
   const confidence = panel.getByRole('slider', { name: 'Minimum confidence', exact: true });
   await demo.click(confidence, { x: .80 });
   await demo.hold(1500);
-  const saved = demo.page.waitForResponse(r => r.request().method() === 'POST' && r.url().includes('/propagate/apply'), { timeout: 120_000 });
+  const saved = waitForMutation(demo.page, 'propagate');
   const [response] = await Promise.all([saved, demo.click(apply)]);
   if (!response.ok()) throw new Error('Predictions could not be applied.');
   const result = await response.json();
@@ -377,12 +382,20 @@ export const definitions = {
   propagate: { dataset: 'tools', title: 'Teach it a little. Label a lot.', prepare: preparePropagate, run: runPropagate, resultPreview: false },
 };
 
-export async function openManaged(name) {
+export async function showcaseConfiguration(name, options = {}) {
   const definition = definitions[name];
   if (!definition) throw new Error(`Unknown showcase: ${name}`);
-  const config = await configuration({ env: 'dev', dataset: definition.dataset,
-    project: `SATIFY website showcase 2026-10-26 ${definition.dataset === 'tools' ? 'tools' : 'time series'}` });
-  const state = await readJson(config.stateFile);
+  return configuration({ env: options.env ?? 'prod', dataset: definition.dataset,
+    project: options.project ?? `SATIFY website showcase 2026-11-09 ${definition.dataset === 'tools' ? 'tools' : 'time series'}` });
+}
+
+export async function openManaged(name, options = {}) {
+  const definition = definitions[name];
+  const config = await showcaseConfiguration(name, options);
+  console.log(`Target: ${config.baseUrl} · Project: ${config.projectName} · Theme: ${recordingTheme}`);
+  const state = await readJson(config.stateFile, null);
+  if (!state) throw new Error('Prepare a recorder-owned project for this origin and project name before recording. See videos/README.md.');
+  if (state.origin !== config.baseUrl || state.stage !== 'ready') throw new Error('The managed project is not ready for this recording origin.');
   const scene = await readJson(resolve(root, config.scene ?? config.scenes[2]));
   const lockPath = resolve(config.stateDir, 'run.lock');
   let lock;
@@ -409,7 +422,8 @@ export async function openManaged(name) {
     const project = await response.json();
     if (!response.ok() || project.sid !== state.sid) throw new Error('Wrong demonstration project.');
     await page.locator('.ol-paint-host').first().waitFor();
-    return { runtime, config, scene, state, page, manifest: project.manifest,
+    const appVersion = (await page.locator('body').innerText()).match(/\bv\d+\.\d+\.\d+[^\s]*/)?.[0] ?? 'unknown';
+    return { runtime, config, scene, state, page, appVersion, manifest: project.manifest,
       async release() { try { await runtime.close(); } finally { await lock.close(); await unlink(lockPath); } } };
   } catch (error) {
     try { if (runtime) await runtime.close(); }
@@ -435,29 +449,34 @@ export function encode(directory, name, frame, { resultPreview = true } = {}) {
   return target;
 }
 
-export async function recordShowcase(name) {
+export async function recordShowcase(name, options = {}) {
   const definition = definitions[name];
-  const context = await openManaged(name);
+  const context = await openManaged(name, options);
   const { page, runtime } = context;
   const directory = resolve(root, 'output', new Date().toISOString().replace(/[:.]/g, '-') + '-v2-' + name);
   await mkdir(directory, { recursive: true });
   const results = [];
-  page.on('response', async response => {
+  const writesFinished = trackEditorWrites(page);
+  const pendingResults = [];
+  page.on('response', response => {
     const request = response.request();
-    if (request.method() !== 'POST' || !/\/session\/(fill|lines\/apply|change\/convey|propagate\/apply|timeseries\/sync)/.test(response.url())) return;
-    try {
+    const operation = request.method() === 'POST' && /\/session\/editor-mutation(?:\/v[23])?$/.test(new URL(response.url()).pathname)
+      ? request.postDataJSON()?.action : null;
+    if (!['fill', 'lines', 'convey', 'propagate', 'sync'].includes(operation) || !isMutationResponse(response, operation)) return;
+    pendingResults.push((async () => {
       const body = await response.json();
-      const requestBody = request.postDataJSON();
-      results.push({ route: new URL(response.url()).pathname, status: response.status(),
+      const requestBody = request.postDataJSON().body;
+      results.push({ route: new URL(response.url()).pathname, action: operation, status: response.status(),
         label: requestBody?.label_hex ?? requestBody?.label_color,
         pixelsWritten: body.pixels_written, changedTiles: body.changed?.length,
         targets: body.results?.flatMap(op => op.per_target?.map(t => ({ status: t.status, changedTiles: t.changed_tiles?.length })) ?? []) });
-    } catch { /* non-JSON diagnostics */ }
+    })().catch(error => { results.push({ action: operation, status: 0, error: error.message }); }));
   });
   let recording = false;
   let demo;
   try {
     const frame = await definition.prepare(page, context);
+    await page.locator(`html[data-theme="${recordingTheme}"].dark`).waitFor();
     demo = await presentation(page, context.scene, frame);
     await page.locator('#video-caption').evaluate(el => {
       el.style.font = '600 30px/1.3 system-ui, sans-serif';
@@ -470,13 +489,21 @@ export async function recordShowcase(name) {
     await page.screencast.start({ path: resolve(directory, 'capture.webm'), size: frame.viewport, fps: 30 });
     recording = true;
     await definition.run(demo, context);
+    await writesFinished();
     await page.screencast.stop(); recording = false;
     await page.screenshot({ path: resolve(directory, 'poster.png'), clip: frame.clip });
-    if (results.some(r => r.status >= 400)) throw new Error('An editor operation failed.');
+    await Promise.all(pendingResults);
+    if (results.some(r => r.status === 0 || r.status >= 400)) throw new Error('An editor operation failed.');
     await definition.cleanup?.(demo, context);
+    await writesFinished();
+    if (definition.dataset === 'tools') {
+      context.verifiedCounts = [await countSeriesLabels(page, runtime.api,
+        { ...context.state, sceneIds: [context.state.sceneId] }, context.state.sceneId)];
+      if (context.verifiedCounts[0] <= 0) throw new Error('The tool demonstration did not save any labels.');
+    }
     const mp4 = encode(directory, name, frame, definition);
     await writeFile(resolve(directory, 'recording.json'), JSON.stringify({
-      scenario: name, title: definition.title, origin: context.config.baseUrl,
+      scenario: name, title: definition.title, origin: context.config.baseUrl, theme: recordingTheme, appVersion: context.appVersion,
       recordedAt: new Date().toISOString(), frame, sourceSha256: context.scene.sha256, verifiedLabelCounts: context.verifiedCounts,
       verifiedClasses: context.verifiedClasses,
       editorial: definition.resultPreview === false
@@ -497,5 +524,7 @@ export async function recordShowcase(name) {
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
-  recordShowcase(process.argv[2]).catch(error => { console.error(error.stack); process.exitCode = 1; });
+  const { values, positionals } = parseArgs({ allowPositionals: true,
+    options: { env: { type: 'string' }, project: { type: 'string' } } });
+  recordShowcase(positionals[0], values).catch(error => { console.error(error.stack); process.exitCode = 1; });
 }

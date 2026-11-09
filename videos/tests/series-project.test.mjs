@@ -29,10 +29,10 @@ function fixture() {
       })) };
       case '/session/new': sessions.push({ sid: 'ours', name: config.projectName }); return { sid: 'ours' };
       case '/session/switch': return { sid: 'ours', manifest_revision: 8 };
-      case '/session/manifest':
+      case '/session/editor-save': return { operation_id: options.data.operation_id, revision: '9' };
       case '/session/metadata-repair': return { ok: true };
       case '/session/preparation-admission': return { status: 'active' };
-      case '/session/bands': uploads.push(options.multipart.file.name); return { ok: true };
+      case '/session/bands/v2': uploads.push(options.multipart.file.name); return { ok: true };
       case '/session/metadata-repair/process':
         assert.deepEqual(options.data.scene_ids, assets.map(a => a.scene.file));
         assert.equal(uploads.length, 3); finished = true; return { ok: true };

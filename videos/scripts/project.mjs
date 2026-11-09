@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
+import { deleteLegacyLayer, saveEditor } from './editor-api.mjs';
 
 // The editor initializes this layer on every load (displayed as "Raster labels").
 // It is reserved for the recorder ONLY inside the dedicated managed project.
@@ -116,16 +117,15 @@ export async function setupProject({ api, config, scene, bytes, state, save, log
   const sidQuery = `sid=${segment(state.sid)}`;
   if (state.stage === 'created') {
     const current = await api('POST', '/session/switch', { data: { sid: state.sid } });
-    await api('PUT', `/session/manifest?${sidQuery}&base_revision=${current.manifest_revision}`, {
-      data: baseline(config, scene),
-    });
+    await saveEditor(api, { sid: state.sid, kind: 'manifest', base_revision: String(current.manifest_revision),
+      manifest: baseline(config, scene) });
     await api('PUT', '/session/metadata-repair', { data: { sid: state.sid, ...state.import } });
     await poll(async () => {
       const admission = await api('POST', '/session/preparation-admission', { data: { sid: state.sid } });
       return admission.status === 'active';
     }, config.timeoutMs, 'a preparation slot', wait);
     log('Uploading the verified scene to the managed demonstration project…');
-    await api('POST', `/session/bands?${sidQuery}&bands=${scene.bands.length}`, {
+    await api('POST', `/session/bands/v2?${sidQuery}&bands=${scene.bands.length}`, {
       multipart: { file: { name: scene.file, mimeType: 'image/tiff', buffer: bytes } },
     });
     state.stage = 'uploaded';
@@ -172,25 +172,29 @@ export async function resetProject({ api, config, scene, state }) {
   if (current.sid !== state.sid) throw new Error('The server switched to an unexpected project.');
   const { scenes } = await api('GET', `/session/scenes?sid=${segment(state.sid)}`);
   if (scenes.length !== 1 || scenes[0].id !== state.sceneId) throw new Error('The managed project scene changed; no drawing was reset.');
-  const layerPath = `/session/labeltiles/${segment(state.sceneId)}/${segment(DRAWING_LAYER)}`;
   const sidQuery = `sid=${segment(state.sid)}`;
   // No project deletion or blanket layer deletion: only this tool's reserved layer.
-  const { tiles } = await api('GET', `${layerPath}?${sidQuery}`);
+  const { tiles, manifest_revision } = await api('GET', `/session/editor-save/layer-state?${sidQuery}&folder=${segment(state.sceneId)}&layer=${segment(DRAWING_LAYER)}`);
   for (const { x, y } of tiles) {
     if (!Number.isInteger(x) || !Number.isInteger(y) || x < 0 || y < 0) throw new Error('Invalid label tile coordinates.');
-    await api('DELETE', `${layerPath}/${x}/${y}.png?${sidQuery}`);
+  }
+  for (const { x, y, revision, deleted } of tiles) {
+    if (deleted) continue;
+    await saveEditor(api, { sid: state.sid, kind: 'tile', folder: state.sceneId, layer: DRAWING_LAYER,
+      x, y, base_revision: revision, manifest_revision, png_base64: null });
   }
   // Remove the same layer's legacy PNG too, otherwise editor restore can bring
   // back old pixels after its native tiles were cleared. Masks are untouched.
-  await api('DELETE', `/session/layers/${segment(`${state.sceneId}__${DRAWING_LAYER}`)}`);
+  await deleteLegacyLayer(api, state.sid, state.sceneId, DRAWING_LAYER);
+  const latest = await api('GET', `/session/editor-save/manifest-state?${sidQuery}`);
   const desired = baseline(config, scene, state.sceneId);
-  const manifest = { ...current.manifest, ...desired,
-    upload: { ...current.manifest?.upload, ...desired.upload },
-    editor: { ...current.manifest?.editor, ...desired.editor,
+  const manifest = { ...latest.manifest, ...desired,
+    upload: { ...latest.manifest?.upload, ...desired.upload },
+    editor: { ...latest.manifest?.editor, ...desired.editor,
       // Keep settings for existing source/mask layers when resetting our labels.
       // The Layers panel expects each retained mask to have display settings.
-      layerNameDrawerSettings: { ...current.manifest?.editor?.layerNameDrawerSettings,
+      layerNameDrawerSettings: { ...latest.manifest?.editor?.layerNameDrawerSettings,
         ...desired.editor.layerNameDrawerSettings } },
   };
-  await api('PUT', `/session/manifest?${sidQuery}&base_revision=${current.manifest_revision}`, { data: manifest });
+  await saveEditor(api, { sid: state.sid, kind: 'manifest', base_revision: latest.revision, manifest });
 }

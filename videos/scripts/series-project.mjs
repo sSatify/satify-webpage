@@ -1,4 +1,5 @@
 import { baseline, detectionInput, hash, importDraft, poll } from './project.mjs';
+import { saveEditor } from './editor-api.mjs';
 
 export function seriesKey(config, assets) {
   return hash(JSON.stringify(['time-series', assets.map(({ scene }) =>
@@ -84,9 +85,8 @@ export async function setupSeriesProject({ api, config, assets, state, save, log
   if (state.stage === 'created') {
     const current = await api('POST', '/session/switch', { data: { sid: state.sid } });
     if (current.sid !== state.sid) throw new Error('The server switched to an unexpected project.');
-    await api('PUT', `/session/manifest?${query}&base_revision=${current.manifest_revision}`, {
-      data: baseline(config, assets[0].scene),
-    });
+    await saveEditor(api, { sid: state.sid, kind: 'manifest', base_revision: String(current.manifest_revision),
+      manifest: baseline(config, assets[0].scene) });
     for (const draft of state.imports) {
       await api('PUT', '/session/metadata-repair', { data: { sid: state.sid, ...draft } });
     }
@@ -94,7 +94,7 @@ export async function setupSeriesProject({ api, config, assets, state, save, log
       if (state.uploadedFiles.includes(scene.file)) continue;
       await admission();
       log(`Uploading ${scene.displayName}…`);
-      await api('POST', `/session/bands?${query}&bands=${scene.bands.length}`, {
+      await api('POST', `/session/bands/v2?${query}&bands=${scene.bands.length}`, {
         multipart: { file: { name: scene.file, mimeType: 'image/tiff', buffer: bytes } },
       });
       state.uploadedFiles.push(scene.file);

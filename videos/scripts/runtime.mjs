@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { hash } from './project.mjs';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
+export const recordingTheme = 'dark';
 export async function readJson(path, fallback) {
   try { return JSON.parse(await readFile(path, 'utf8')); }
   catch (error) { if (error.code === 'ENOENT' && fallback !== undefined) return fallback; throw error; }
@@ -52,7 +53,12 @@ export async function launch(config, { login = false, headed = false } = {}) {
   // Omit deviceScaleFactor with a null viewport (Playwright disallows that pair).
   const context = await browser.newContext({ storageState,
     ...(login ? { viewport: null } : { viewport: config.viewport, deviceScaleFactor: 1 }),
-    locale: 'en-US', timezoneId: 'Europe/Berlin', colorScheme: 'light' });
+    locale: 'en-US', timezoneId: 'Europe/Berlin', colorScheme: recordingTheme });
+  // A saved app preference takes precedence over prefers-color-scheme. Set it
+  // before app initialization so every capture uses the same real UI theme.
+  await context.addInitScript(({ origin, theme }) => {
+    if (window.location.origin === origin) localStorage.setItem('theme', theme);
+  }, { origin: config.baseUrl, theme: recordingTheme });
   context.setDefaultTimeout(30_000);
   const apiBase = config.baseUrl + config.apiPath;
   let authorization;
