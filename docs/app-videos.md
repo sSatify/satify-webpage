@@ -17,16 +17,19 @@ Development trial captures remain ignored and are not selected for the website.
 
 | Feature | Asset in assets/videos/ | Dimensions | Duration | Size |
 | --- | --- | --- | --- | --- |
-| Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 17.2 s | 6.2 MB |
-| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 18.8 s | 2.4 MB |
-| Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 25.4 s | 6.7 MB |
-| Change detection | change-detection.mp4 | 1600 × 900 (16:9) | 18.4 s | 6.6 MB |
-| Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 26.4 s | 3.6 MB |
+| Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 33.9 s | 13.9 MB |
+| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 16.5 s | 1.9 MB |
+| Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 23.8 s | 6.1 MB |
+| Change detection | change-detection.mp4 | 1600 × 900 (16:9) | 17.5 s | 6.6 MB |
+| Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 26.6 s | 3.6 MB |
 
 Each silent H.264 MP4 has a WebP poster. A one-second still of the result opens
 most clips, followed by real-time app interaction with a visible pointer and short
-captions. No predicted labels or processing results are simulated. Source datasets
-are prepared before capture. Propagate has no result preview: it starts with a
+captions. Captions use bold 40 px text, a high-contrast panel and a 14% bottom inset,
+bringing them toward the centre and above the playback controls. Smart Fill uses
+mode titles with a smaller explanatory line. No predicted labels or processing results are simulated.
+Source datasets are prepared before capture. Smart Fill starts chronologically with Local,
+without a result-preview intro. Propagate also has no result preview: it starts with a
 clean image and shows every Forest, Water and Built-up example being drawn before
 prediction. Its website poster also uses the clean before frame.
 
@@ -44,8 +47,13 @@ All five selected workflows were exercised successfully on the production app **
 The recorder prints the chosen origin before opening a managed project and saves
 the observed app version, origin and verified theme in each recording manifest.
 
-- Smart Fill fills forest locally and across the viewport, then adds the pond as
-  Water. Generated regions require human review.
+- Smart Fill compares Local, Viewport and Global using the same forest point, class
+  and source mask from clean starts. Undo is verified before each new mode.
+  The first view is zoomed in; after Viewport and Global, real zoom-out gestures reveal
+  the image beyond a dashed outline of the previous viewport. Viewport leaves the
+  outside unlabelled; Global includes matching regions there. Saved counts were
+  9,994 (Local), 26,070 (Viewport) and 78,332 (Global). The recorder rejects a capture
+  unless each mode demonstrably expands the saved extent. Generated regions require human review.
 - Rivers & Roads Pen follows only the main road marked in the latest review: from
   the southwest, around the bend and east along the straight section, excluding
   the diagonal side road. The framing keeps that full route visible. A 16 px brush (twice the
@@ -63,7 +71,7 @@ the observed app version, origin and verified theme in each recording manifest.
   using the existing Open ground class. An index difference is not validated ground
   truth; the page asks viewers to interpret it with the imagery.
 - Propagate shows all Forest, Water and Built-up examples being drawn, learns from
-  them, previews predictions, and applies 247,561 new pixels after adjusting confidence to about 82%. Confidence
+  them, previews predictions, and applies 247,576 new pixels after adjusting confidence to about 82%. Confidence
   and the displayed hold-out score are model diagnostics, not overall accuracy.
 
 ## Reproduction
@@ -96,11 +104,11 @@ or selected with FFMPEG_PATH.
 
 Selected source directories under ignored videos/output/:
 
-- 2026-11-09T14-20-05-126Z-v2-smart-fill
-- 2026-11-09T14-20-36-025Z-v2-rivers-roads
-- 2026-11-09T14-22-08-600Z-v2-time-series
-- 2026-11-09T14-22-51-898Z-v2-change-detection
-- 2026-11-09T14-23-26-787Z-v2-propagate
+- 2026-11-09T14-48-57-084Z-v2-smart-fill
+- 2026-11-09T14-46-06-582Z-v2-rivers-roads
+- 2026-11-09T14-46-34-859Z-v2-time-series
+- 2026-11-09T14-47-16-040Z-v2-change-detection
+- 2026-11-09T14-47-51-805Z-v2-propagate
 
 Each contains its MP4, final poster.png, before frame, capture and recording
 manifest. WebP posters use FFmpeg scale=960:-2, quality 86. Propagate's website
@@ -118,7 +126,7 @@ reference, but their Pen clip and former exports are no longer used by the site.
 All five production scenarios completed; comparison operations verified their
 saved labels and successful Undo cleanup. Posters and sampled frames were reviewed.
 Full FFmpeg decoding verified H.264, silent streams, dimensions and durations.
-All 43 Node/browser tests, site checks, IDE error inspections and the static build
+All 45 Node/browser tests, site checks, IDE error inspections and the static build
 passed. Browser QA played all five selected production videos to completion without
 media errors. The homepage and its built HTML match `origin/main` exactly; checks
 reject public-page links to the unlisted showcase and require its `noindex` metadata.

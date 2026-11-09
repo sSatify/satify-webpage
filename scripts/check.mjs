@@ -32,6 +32,9 @@ for (const recording of recordings) {
   const bytes = await readFile(`assets/videos/${recording.scenario}.mp4`);
   assert.equal(createHash('sha256').update(bytes).digest('hex'), recording.sha256, `${recording.scenario}: selected video matches its provenance`);
 }
+const modes = recordings.find(recording => recording.scenario === 'smart-fill').verifiedModes;
+assert(modes && modes.Local > 0 && modes['In viewport'] > modes.Local && modes.Global > modes['In viewport'],
+  'Smart Fill must demonstrate three distinct saved scopes');
 assert.match(await readFile('app/index.html', 'utf8'), /<meta name="robots" content="noindex">/, 'The test showcase must opt out of search indexing');
 for (const [, asset] of css.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) {
   if (asset.startsWith('#')) {

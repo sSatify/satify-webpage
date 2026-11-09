@@ -15,7 +15,8 @@ Smart Fill, Rivers & Roads Pen, Sync labelling, Change detection, and experiment
 demonstration video with a local poster, playback controls, and a full-size link.
 The three wide workflows use 16:9 frames and the full content width; the two close-up
 tool videos use larger 4:3 frames. Most start with a one-second glimpse of the result,
-followed by real app interactions with short captions. Propagate starts with a clean
+followed by real app interactions with prominent captions. Smart Fill starts with Local
+and compares all three scopes, zooming out to reveal the viewport boundary. Propagate starts with a clean
 image and shows every example being drawn before the predictions. Videos load only when played.
 See [the recording notes](docs/app-videos.md).
 

@@ -61,7 +61,8 @@ export async function prepareSmart(page, context) {
   await page.setViewportSize({ width: 1360, height: 1000 });
   await tidy(page);
   await chooseClass(page, 'Forest');
-  const frame = await frameScene(page, context.scene, toolsFraming);
+  const frame = await frameScene(page, context.scene, { ...toolsFraming,
+    focus: [.5, .5], zoom: 2, subjectAt: [.58, .43], panelAt: [.84, .07] });
   await page.getByRole('button', { name: 'Smart fill', exact: true }).click();
   await placeToolPanel(page, frame);
   await selectMask(page, 5);
@@ -69,29 +70,56 @@ export async function prepareSmart(page, context) {
   return frame;
 }
 
-export async function runSmart(demo) {
-  await demo.caption('Preview the region.');
-  await demo.move(await demo.point(.64, .77), 700);
-  await demo.hold(1100);
-  await demo.fill(.64, .77);
+export async function runSmart(demo, context) {
+  const { page, frame } = demo;
+  const state = { ...context.state, sceneIds: [context.state.sceneId] };
+  const count = () => countSeriesLabels(page, context.runtime.api, state, state.sceneId);
+  const anchor = { x: frame.clip.x + frame.clip.width * .5, y: frame.clip.y + frame.clip.height * .5 };
+  context.verifiedModes = {};
+  async function fill(mode, title, detail) {
+    await demo.caption(title, 900, detail);
+    await demo.move(await demo.point(.19, .43), 650);
+    await demo.hold(1000);
+    await demo.fill(.19, .43, mode);
+    await demo.park();
+    await context.writesFinished();
+    context.verifiedModes[mode] = await count();
+    await demo.hold(1600);
+  }
+  async function undo() {
+    await demo.caption('Same scene. Same starting point.', 600);
+    // Activate the actual Undo control without moving the recorded pointer to
+    // the toolbar outside this camera crop. User key bindings may differ.
+    await page.getByRole('button', { name: 'Undo', exact: true }).press('Enter');
+    for (let n = 0; n < 40; n++) {
+      if (await count() === 0) return;
+      await demo.hold(250);
+    }
+    throw new Error('The comparison fill could not be undone.');
+  }
+  await fill('Local', 'LOCAL', 'One connected region.');
+  await undo();
+  await demo.click(page.getByRole('radio', { name: /^(In viewport|Viewport):/ }));
+  await fill('In viewport', 'VIEWPORT', 'Matching regions inside the current view.');
+  const previousViewport = await demo.zoomAt(.5, anchor);
   await demo.park();
-  await demo.hold(900);
-  await demo.caption('Fill matching regions together.');
-  await demo.click(demo.page.getByRole('radio', { name: /^(In viewport|Viewport):/ }));
-  await demo.move(await demo.point(.64, .77), 650);
-  await demo.hold(750);
-  await demo.fill(.64, .77, 'In viewport');
+  await demo.viewportOutline(previousViewport);
+  await demo.caption('VIEWPORT', 2600, 'Outside the previous view stays unlabelled.');
+  await page.screenshot({ path: resolve(context.directory, 'viewport-result.png'), clip: frame.clip });
+  await undo();
+  await demo.viewportOutline(null);
+  await demo.zoomAt(2, anchor);
+  await demo.click(page.getByRole('radio', { name: /^Global:/ }));
+  await fill('Global', 'GLOBAL', 'Matching regions across the whole image.');
+  const globalViewport = await demo.zoomAt(.5, anchor);
   await demo.park();
-  await demo.hold(900);
-  await chooseClass(demo.page, 'Water', demo);
-  await demo.click(demo.page.getByRole('radio', { name: /^Local:/ }));
-  await demo.caption('Add the details that matter.');
-  await demo.move(await demo.point(.59, .635), 650);
-  await demo.hold(650);
-  await demo.fill(.59, .635);
-  await demo.park();
-  await demo.caption('A few clicks. A landscape labelled.');
-  await demo.hold(2500);
+  await demo.viewportOutline(globalViewport);
+  await demo.caption('GLOBAL', 3200, 'Matching regions beyond the previous view are labelled too.');
+  await page.screenshot({ path: resolve(context.directory, 'global-result.png'), clip: frame.clip });
+  const modes = context.verifiedModes;
+  if (!(modes.Local > 0 && modes['In viewport'] > modes.Local && modes.Global > modes['In viewport'])) {
+    throw new Error('The three scopes did not demonstrate different saved extents.');
+  }
 }
 
 // Follow only the main road marked in the latest review: from the southwest,
@@ -375,7 +403,7 @@ export async function runPropagate(demo, context) {
 }
 
 export const definitions = {
-  'smart-fill': { dataset: 'tools', title: 'A few clicks. A landscape labelled.', prepare: prepareSmart, run: runSmart },
+  'smart-fill': { dataset: 'tools', title: 'Local. Viewport. Global.', prepare: prepareSmart, run: runSmart, resultPreview: false },
   'rivers-roads': { dataset: 'tools', title: 'Follow the bend.', prepare: prepareRoads, run: runRoads },
   'change-detection': { dataset: 'time-series', title: 'See the change. Make it a label.', prepare: prepareChange, run: runChange, cleanup: cleanupSeries },
   'time-series': { dataset: 'time-series', title: 'One action. Several dates.', prepare: prepareSync, run: runSync, cleanup: cleanupSeries },
@@ -455,8 +483,10 @@ export async function recordShowcase(name, options = {}) {
   const { page, runtime } = context;
   const directory = resolve(root, 'output', new Date().toISOString().replace(/[:.]/g, '-') + '-v2-' + name);
   await mkdir(directory, { recursive: true });
+  context.directory = directory;
   const results = [];
   const writesFinished = trackEditorWrites(page);
+  context.writesFinished = writesFinished;
   const pendingResults = [];
   page.on('response', response => {
     const request = response.request();
@@ -478,11 +508,14 @@ export async function recordShowcase(name, options = {}) {
     const frame = await definition.prepare(page, context);
     await page.locator(`html[data-theme="${recordingTheme}"].dark`).waitFor();
     demo = await presentation(page, context.scene, frame);
-    await page.locator('#video-caption').evaluate(el => {
-      el.style.font = '600 30px/1.3 system-ui, sans-serif';
-      el.style.padding = '12px 22px'; el.style.borderRadius = '5px';
-      el.style.background = '#142c24f0'; el.style.border = '1px solid #a4d69e';
-    });
+    await page.locator('#video-caption').evaluate((el, clip) => {
+      el.style.font = '700 40px/1.2 system-ui, sans-serif';
+      el.style.padding = '16px 26px'; el.style.borderRadius = '6px';
+      el.style.bottom = `${innerHeight - clip.y - clip.height + Math.round(clip.height * .14)}px`;
+      el.style.maxWidth = `${Math.round(clip.width * .84)}px`;
+      el.style.background = '#0b201af5'; el.style.border = '2px solid #b9e4b0';
+      el.style.boxShadow = '0 3px 18px #0008';
+    }, frame.clip);
     await demo.park();
     await waitForCanvas(page);
     await page.screenshot({ path: resolve(directory, 'before.png'), clip: frame.clip });
@@ -506,7 +539,10 @@ export async function recordShowcase(name, options = {}) {
       scenario: name, title: definition.title, origin: context.config.baseUrl, theme: recordingTheme, appVersion: context.appVersion,
       recordedAt: new Date().toISOString(), frame, sourceSha256: context.scene.sha256, verifiedLabelCounts: context.verifiedCounts,
       verifiedClasses: context.verifiedClasses,
-      editorial: definition.resultPreview === false
+      verifiedModes: context.verifiedModes,
+      editorial: name === 'smart-fill'
+        ? 'Local, Viewport and Global from clean starts; real zoom gestures reveal the previous viewport boundary. Silent; no simulated results.'
+        : definition.resultPreview === false
         ? 'Clean image followed by all example strokes and predictions in chronological order. Silent; no simulated results.'
         : 'One-second result preview followed by real app interaction. Silent; no simulated results.', results,
     }, null, 2));

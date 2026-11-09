@@ -3,10 +3,14 @@
 The current five-video showcase is implemented in `scripts/showcase-v2.mjs`.
 It records Smart Fill and Rivers & Roads Pen at 1280 × 960, and Sync labelling,
 Change detection and experimental Propagate Labels at 1600 × 900. Most silent clips
-open with a one-second result preview. Propagate instead starts clean and shows all
+open with a one-second result preview. Smart Fill instead compares Local, Viewport and
+Global from clean starts, zooming out to show the previous viewport boundary and
+the unlabelled area beyond it. Saved counts must increase across the three modes.
+Propagate starts clean and shows all
 example strokes before prediction; its website poster also shows the clean image.
 Sync labelling demonstrates both Water and Agriculture across three dates.
-All clips show real app interaction with short captions.
+All clips show real app interaction with short captions. The showcase captions are
+bold 40 px, with a high-contrast panel inset 14% from the bottom of the recording.
 Recordings use dark mode, explicitly overriding any saved app theme before startup.
 The showcase recorder verifies the dark theme before capture and records it in the manifest.
 See [selected recordings and reproduction](../docs/app-videos.md) for

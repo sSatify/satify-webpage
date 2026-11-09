@@ -77,7 +77,7 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
     await page.waitForTimeout(120);
   }
   return {
-    page, image, move, click,
+    page, image, frame, move, click,
     async settle() { await waitForCanvas(page); },
     async stroke(points, duration) {
       await move(await this.point(...points[0]), 600);
@@ -102,13 +102,16 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
       if (isTileResponse(response)) {
         const selected = page.getByRole('radio', { name: scope === 'Local' ? /^Local:/ : /^(In viewport|Viewport):/ });
         if (scope === 'Global' || await selected.getAttribute('aria-checked') !== 'true') throw new Error('The Smart Fill scope changed.');
-        return;
+        return { savedAs: 'tile' };
       }
       const body = response.request().postDataJSON().body;
-      if (Math.abs(body.x - x * image.width) > 2 || Math.abs(body.y - y * image.height) > 2
+      // The real fit/zoom/pan gestures can round the camera by a few native
+      // pixels. Keep the target check tight while allowing that camera rounding.
+      if (Math.abs(body.x - x * image.width) > 4 || Math.abs(body.y - y * image.height) > 4
         || body.by_label !== (scope !== 'Local') || ('viewport' in body) !== (scope !== 'Global')) {
         throw new Error(`Smart Fill did not target the expected ${scope} region: expected ${x * image.width},${y * image.height}; received ${body.x},${body.y}; by_label=${body.by_label}; viewport=${'viewport' in body}.`);
       }
+      return { savedAs: 'mutation', viewport: body.viewport ?? null };
     },
     async park() {
       if (frame?.restOnPanel) {
@@ -147,17 +150,27 @@ export async function presentation(page, image = { width: 510, height: 510 }, fr
         outline.id = 'video-viewport-outline';
         outline.style.cssText = `position:fixed;left:${box.x}px;top:${box.y}px;width:${box.width}px;height:${box.height}px;box-sizing:border-box;border:2px dashed #ffdd55;pointer-events:none;z-index:2147483645`;
         const label = document.createElement('span');
-        label.textContent = 'Original viewport';
-        label.style.cssText = 'position:absolute;left:0;bottom:-24px;white-space:nowrap;background:#111e;color:#ffdd55;font:16px/20px sans-serif;padding:1px 5px;border-radius:3px';
+        label.textContent = 'Previous viewport';
+        label.style.cssText = 'position:absolute;left:0;top:-28px;white-space:nowrap;background:#111e;color:#ffdd55;font:700 20px/24px sans-serif;padding:1px 7px;border-radius:3px';
         outline.append(label);
         document.body.append(outline);
       }, box);
     },
     // Captions accompany the action; only explicit result holds add screen time.
-    async caption(text, hold = 0) {
-      await page.locator('#video-caption').evaluate((element, text) => {
-        element.textContent = text; element.hidden = !text;
-      }, text);
+    async caption(text, hold = 0, detail = '') {
+      await page.locator('#video-caption').evaluate((element, { text, detail }) => {
+        element.replaceChildren();
+        const title = document.createElement('div');
+        title.textContent = text;
+        element.append(title);
+        if (detail) {
+          const explanation = document.createElement('div');
+          explanation.textContent = detail;
+          explanation.style.cssText = 'font-size:.68em;font-weight:500;line-height:1.35;margin-top:7px';
+          element.append(explanation);
+        }
+        element.hidden = !text;
+      }, { text, detail });
       if (hold > 0) await page.waitForTimeout(hold);
     },
     async choose(name) {

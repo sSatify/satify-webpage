@@ -4,64 +4,69 @@
     "origin": "https://app.satify.tech",
     "appVersion": "v3.0.0",
     "theme": "dark",
-    "recordedAt": "2026-11-09T14:20:32.287Z",
-    "run": "2026-11-09T14-20-05-126Z-v2-smart-fill",
+    "recordedAt": "2026-11-09T14:49:43.738Z",
+    "run": "2026-11-09T14-48-57-084Z-v2-smart-fill",
     "width": 1280,
     "height": 960,
-    "duration": 17.17,
-    "bytes": 6204988,
-    "sha256": "984596f69dcf80cc6a0d34c17c3cb42e4b75423b8754be883c035e6a1e677c7e"
+    "duration": 33.93,
+    "bytes": 13915029,
+    "sha256": "fde9216cf4fa7801394dbc06f6910674e1aee49507b0c74b11c1f0f719dfdc5d",
+    "verifiedModes": {
+      "Local": 9994,
+      "In viewport": 26070,
+      "Global": 78332
+    }
   },
   {
     "scenario": "rivers-roads",
     "origin": "https://app.satify.tech",
     "appVersion": "v3.0.0",
     "theme": "dark",
-    "recordedAt": "2026-11-09T14:21:04.475Z",
-    "run": "2026-11-09T14-20-36-025Z-v2-rivers-roads",
+    "recordedAt": "2026-11-09T14:46:31.363Z",
+    "run": "2026-11-09T14-46-06-582Z-v2-rivers-roads",
     "width": 1280,
     "height": 960,
-    "duration": 18.83,
-    "bytes": 2426339,
-    "sha256": "be765b599c172662fa034c4d12d6333d56bea20dc7c3e22548f81ae68b840e07"
+    "duration": 16.53,
+    "bytes": 1854707,
+    "sha256": "28d2633e66f703796810e8655729f832d0b29d823fbfd4d1ff0fc431f9606265"
   },
   {
     "scenario": "time-series",
     "origin": "https://app.satify.tech",
     "appVersion": "v3.0.0",
     "theme": "dark",
-    "recordedAt": "2026-11-09T14:22:49.206Z",
-    "run": "2026-11-09T14-22-08-600Z-v2-time-series",
+    "recordedAt": "2026-11-09T14:47:12.979Z",
+    "run": "2026-11-09T14-46-34-859Z-v2-time-series",
     "width": 1600,
     "height": 900,
-    "duration": 25.4,
-    "bytes": 6672750,
-    "sha256": "bb2172c41f1907fba75ddc0cd45d3eebd18bb58ed05b19bb606225cffec3dc32"
+    "duration": 23.77,
+    "bytes": 6128214,
+    "sha256": "5b38e977a436b198a6e03b1727477ec1dca35e7ffb7d5979a53b4cbfc54ba090"
   },
   {
     "scenario": "change-detection",
     "origin": "https://app.satify.tech",
     "appVersion": "v3.0.0",
     "theme": "dark",
-    "recordedAt": "2026-11-09T14:23:23.360Z",
-    "run": "2026-11-09T14-22-51-898Z-v2-change-detection",
+    "recordedAt": "2026-11-09T14:47:48.267Z",
+    "run": "2026-11-09T14-47-16-040Z-v2-change-detection",
     "width": 1600,
     "height": 900,
-    "duration": 18.43,
-    "bytes": 6552436,
-    "sha256": "0f404a70aaa17f6bb1392f29c9fc1d53b932cd6b8fba9f67b9e5624bc0f6d9ce"
+    "duration": 17.47,
+    "bytes": 6609344,
+    "sha256": "f161eaf7f6867a021f81c4a1c5164f157f229fdeb78c5ef42ec30d58da2cbbc4"
   },
   {
     "scenario": "propagate",
     "origin": "https://app.satify.tech",
     "appVersion": "v3.0.0",
     "theme": "dark",
-    "recordedAt": "2026-11-09T14:24:03.595Z",
-    "run": "2026-11-09T14-23-26-787Z-v2-propagate",
+    "recordedAt": "2026-11-09T14:48:28.192Z",
+    "run": "2026-11-09T14-47-51-805Z-v2-propagate",
     "width": 1600,
     "height": 900,
-    "duration": 26.43,
-    "bytes": 3629148,
-    "sha256": "18ed83288f54f6a5d7b6894b65c3b6b72d868dcf9a4286f7812d8f4949634f4c"
+    "duration": 26.63,
+    "bytes": 3585266,
+    "sha256": "5555a600c1376646d0f163079131002102b63152b49d90eb25f02048443e63e4"
   }
 ]
