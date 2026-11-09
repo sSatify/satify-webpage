@@ -8,7 +8,7 @@ try {
   // Follow the system until a theme is selected on this page.
 }
 
-document.querySelectorAll('.app-preview-open, .game-preview-open').forEach(screenshotTrigger => {
+document.querySelectorAll('.app-preview-open').forEach(screenshotTrigger => {
   const screenshotPanel = document.getElementById(screenshotTrigger.getAttribute('aria-controls'));
   if (!screenshotPanel) return;
   screenshotTrigger.addEventListener('click', () => {
