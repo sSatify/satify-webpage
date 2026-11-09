@@ -106,7 +106,6 @@ p {
 .panel-copy>p:not(.eyebrow),
 .section-heading>p:not(.eyebrow),
 .app-preview figcaption,
-.game-preview figcaption,
 .app-sign-in,
 .legal-content p,
 .legal-content address,
@@ -333,30 +332,12 @@ h1 span {
   --button-shade: #a58b46;
 }
 
-.access-note {
-  font-size: 11px;
-  margin-top: 24px;
-  color: var(--muted);
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-wrap: wrap
-}
-
-.access-note a {
-  font-weight: bold
-}
-
 .status-dot {
   display: inline-block;
   width: 6px;
   height: 6px;
   background: var(--green);
   flex-shrink: 0
-}
-
-.access-note .status-dot {
-  margin-right: 2px
 }
 
 .world-console {
@@ -673,7 +654,6 @@ h1 span {
 
 .app-card,
 .app-invitation,
-.game-card,
 .contact-card,
 .supporters-card {
   --panel-padding: 40px;
@@ -788,8 +768,7 @@ h1 span {
   font-weight: bold;
 }
 
-.app-preview,
-.game-preview {
+.app-preview {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -805,13 +784,7 @@ h1 span {
   }
 }
 
-.game-preview {
-  padding: 32px;
-  border-left: 1px solid var(--line);
-}
-
-.app-preview-open,
-.game-preview-open {
+.app-preview-open {
   display: block;
   width: 100%;
   padding: 0;
@@ -821,14 +794,12 @@ h1 span {
   box-shadow: 5px 5px 0 var(--frame-shadow);
 }
 
-.app-preview img,
-.game-preview img {
+.app-preview img {
   width: 100%;
   height: auto;
 }
 
-.app-preview figcaption,
-.game-preview figcaption {
+.app-preview figcaption {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.6;
@@ -855,19 +826,6 @@ html.screenshot-open {
   background: #07110ee0;
 }
 
-.game-screenshot-panel {
-  /* Match the portrait image to the space left below the popup header. */
-  width: min(1004px, calc(100% - 32px), calc(64dvh - 48px));
-  min-width: min(320px, calc(100% - 32px));
-  height: calc(100dvh - 32px);
-  overflow: hidden;
-}
-
-.game-screenshot-panel[open] {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-}
-
 .screenshot-panel-header {
   display: flex;
   align-items: center;
@@ -892,16 +850,9 @@ html.screenshot-open {
   object-fit: contain;
 }
 
-.game-screenshot-panel > img {
-  min-height: 0;
-  height: 100%;
-  max-height: none;
-}
-
 @media(max-width:800px) {
   .app-card,
   .app-invitation,
-  .game-card,
   .contact-card,
   .supporters-card {
     --panel-padding: 24px;
@@ -911,11 +862,6 @@ html.screenshot-open {
   }
   .app-feature-final {
     width: 100%;
-  }
-  .game-preview {
-    padding: 24px;
-    border-left: 0;
-    border-top: 1px solid var(--line);
   }
   .app-section {
     padding-block: 0 44px;
@@ -1040,48 +986,13 @@ h3.panel-title {
   max-width: none
 }
 
-.game-section {
-  padding-bottom: 62px
-}
-
-.game-card {
-  display: grid;
-  grid-template-columns: 1.1fr .9fr;
-}
-
-.game-copy,
 .contact-copy {
   align-self: center;
   padding: var(--panel-padding);
 }
 
-.game-copy>p:not(.eyebrow) {
-  max-width: 560px;
-}
-
-.game-action,
 .contact-copy .pixel-button {
   margin-top: 26px
-}
-
-.game-sticker {
-  display: block;
-  width: min(100%, 270px);
-  margin-inline: auto;
-  transition: transform .15s;
-}
-
-.game-sticker:hover {
-  transform: translateY(-3px);
-}
-
-.game-sticker img {
-  width: 100%;
-  height: auto;
-}
-
-.game-preview-open {
-  width: min(100%, 360px);
 }
 
 .contact {
@@ -1606,9 +1517,6 @@ h3.panel-title {
     padding: 10px 13px;
     gap: 16px
   }
-  .access-note {
-    font-size: 10px
-  }
   .console-top {
     font-size: 7px;
     padding-inline: 5px
@@ -1616,9 +1524,6 @@ h3.panel-title {
   .map-legend {
     gap: 9px;
     font-size: 9px
-  }
-  .game-copy {
-    padding: 32px
   }
   .footer-tagline {
     display: none
@@ -1681,9 +1586,6 @@ h3.panel-title {
     font-size: 14px;
     padding: 12px 20px
   }
-  .access-note {
-    font-size: 11px
-  }
   .console-top {
     font-size: 9px
   }
@@ -1719,15 +1621,6 @@ h3.panel-title {
   }
   .step-top {
     margin-bottom: 12px
-  }
-  .game-card {
-    grid-template-columns: 1fr
-  }
-  .game-copy>p:not(.eyebrow) {
-    max-width: none
-  }
-  .game-section {
-    padding-bottom: 44px
   }
   .contact {
     padding-bottom: 44px
@@ -1801,10 +1694,6 @@ h3.panel-title {
   }
   .desktop-break {
     display: none
-  }
-  .access-note {
-    font-size: 10px;
-    gap: 4px
   }
   .console-top {
     font-size: 7px;

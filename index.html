@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description"
-          content="Turn remote sensing imagery into labelled data with the SATIFY app. Work with satellite, drone, and aerial imagery. Request an invitation or try our free game.">
+          content="Turn remote sensing imagery into labelled data with the SATIFY app. Work with satellite, drone, and aerial imagery. Request an invitation.">
     <meta name="theme-color" content="#203c31">
     <title>SATIFY — Pixels. Insights. Discoveries.</title>
     <link rel="icon" href="assets/satify-logo.svg" type="image/svg+xml">
@@ -22,8 +22,8 @@
         <a class="brand" href="./" aria-label="SATIFY home"><img src="assets/satify-logo.svg" width="42" height="42"
                                                                  alt=""><span>SATIFY<span class="brand-caption">Pixels. Insights. Discoveries.</span></span></a>
         <div class="header-tools">
-            <nav aria-label="Main navigation"><a href="#how-it-works">The mission</a><a href="app/">The app</a><a
-                    href="#the-game">The game</a><a href="#contact">Contact</a></nav>
+            <nav aria-label="Main navigation"><a href="#how-it-works">The mission</a><a href="#the-app">The app</a><a
+                    href="#contact">Contact</a></nav>
             <button class="theme-toggle pixel-button secondary" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"
                     title="Switch to dark theme" hidden>
                 <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
@@ -50,9 +50,7 @@
             <div class="hero-actions"><a class="pixel-button primary"
                                          href="mailto:info@satify.tech?subject=SATIFY%20invitation%20request">Request an
                 invitation</a>
-                <a class="pixel-button secondary" href="app/">Discover the app</a></div>
-            <p class="access-note"><span aria-hidden="true" class="status-dot"></span>
-                <a href="#the-game">Or try our free game first.</a></p>
+                <a class="pixel-button secondary" href="#the-app">Discover the app</a></div>
         </div>
         <figure class="world-console">
             <div class="console-top"><span><span class="status-dot"
@@ -228,41 +226,34 @@
                         Select the screenshot for a closer look.
                     </figcaption>
                 </figure>
-
-        </div>
-
-        <div class="app-demo-links" aria-label="Watch the app at work">
-            <a href="app/#smart-fill"><img src="assets/videos/smart-fill.webp" width="1280" height="960" loading="lazy" alt=""><span class="demo-link-copy"><strong>A few clicks. A landscape labelled.</strong><span>Smart Fill · Watch the demo ↗</span></span></a>
-            <a href="app/#rivers-roads"><img src="assets/videos/rivers-roads.webp" width="1280" height="960" loading="lazy" alt=""><span class="demo-link-copy"><strong>Follow the bend.</strong><span>Rivers &amp; roads pen · Watch the demo ↗</span></span></a>
-            <a href="app/#time-series"><img src="assets/videos/time-series.webp" width="1600" height="900" loading="lazy" alt=""><span class="demo-link-copy"><strong>One action. Several dates.</strong><span>Sync labelling · Watch the demo ↗</span></span></a>
-        </div>
-    </section>
-    <section class="game-section wrap" id="the-game" aria-labelledby="game-heading">
-        <div class="game-card">
-            <div class="game-copy panel-copy"><p class="eyebrow">LEARN BY PLAYING · SATIFY — The Game</p>
-                <h2 class="panel-title" id="game-heading">Take the challenge. <span>Play the game.</span></h2>
-                <p>Not sure if SATIFY is right for you? Try the game for free, without an account or invitation.
-                    It introduces the app’s labelling workflow
-                    through playful challenges, with fewer tools and less complexity to get in your way.</p>
-                <p>Explore real remote sensing imagery, spot features, and use model-assisted tools to label them.
-                    Compare views from different dates and see how landscapes change. Build confidence with the
-                    concepts before bringing your own imagery and classes into the app.</p>
-                <div class="game-action"><a class="game-sticker" href="https://game.satify.tech/" target="_blank"
-                                            rel="noopener noreferrer" aria-label="Play SATIFY — The Game in a new tab">
-                    <img src="assets/satify-game-sticker.png" width="768" height="527" loading="lazy"
-                         alt="Sharp eyes? Let’s play! SATIFY — The Game.">
-                </a>
-                </div>
+                <ul class="app-features">
+                    <li><strong>Semi-Supervised Learning</strong>
+                        <p class="app-feature-summary">Try Smart Fill and refine the model on the fly.</p>
+                        <p>Interact directly with AI-assisted segmentation, provide feedback, and fine-tune the model in
+                            real time to continuously improve predictions as you work.</p>
+                    </li>
+                    <li><strong>Old but Gold</strong>
+                        <p class="app-feature-summary">Classic tools for precise annotation.</p>
+                        <p>Use traditional image annotation tools such as the pen, bucket fill, and polygons to label
+                            exactly what you want, down to the smallest detail.</p>
+                    </li>
+                    <li><strong>Easy View</strong>
+                        <p class="app-feature-summary">Reveal features through multiple image representations.</p>
+                        <p>Switch seamlessly between normalisations, spectral bands, and false-colour composites to uncover
+                            patterns and features that may be difficult to identify in standard imagery.</p>
+                    </li>
+                    <li><strong>Local or Global</strong>
+                        <p class="app-feature-summary">Choose your reach.</p>
+                        <p>With either fill tool, use Local to target a single connected region or Global to identify and
+                            label similar areas across the entire image.</p>
+                    </li>
+                    <li class="app-feature-final"><strong>One-Click Refinement</strong>
+                        <p class="app-feature-summary">Enhance label quality with classical image analysis.</p>
+                        <p>Apply proven image processing techniques with a single click to smooth boundaries, remove
+                            artefacts, and improve the accuracy and consistency of your annotations.</p>
+                    </li>
+                </ul>
             </div>
-            <figure class="game-preview">
-                <button class="game-preview-open" type="button" aria-haspopup="dialog"
-                        aria-controls="game-screenshot-panel"
-                        aria-label="Enlarge the SATIFY game screenshot">
-                    <img src="assets/satify-game-mobile.jpeg" width="968" height="1512" loading="lazy"
-                         alt="SATIFY game comparing remote sensing imagery from 2026 and 2016, with agriculture labels, area measurements, and labelling tools.">
-                </button>
-                <figcaption>SATIFY — The Game on mobile.<br>Select the screenshot for a closer look.</figcaption>
-            </figure>
         </div>
     </section>
     <section class="contact wrap" id="contact" aria-labelledby="contact-heading">
@@ -289,15 +280,6 @@
     </div>
     <img src="assets/satify-app-workspace.jpeg" width="1704" height="953" loading="lazy"
          alt="SATIFY app workspace showing colour-infrared remote sensing imagery, yellow built-up labels, Smart Fill controls, and the settings panel.">
-</dialog>
-<dialog class="screenshot-panel game-screenshot-panel" id="game-screenshot-panel"
-        aria-labelledby="game-screenshot-title">
-    <div class="screenshot-panel-header">
-        <h2 id="game-screenshot-title">SATIFY — The Game</h2>
-        <button class="screenshot-panel-close pixel-button primary" type="button" autofocus>Close</button>
-    </div>
-    <img src="assets/satify-game-mobile.jpeg" width="968" height="1512" loading="lazy"
-         alt="SATIFY game comparing remote sensing imagery from 2026 and 2016, with agriculture labels, area measurements, and labelling tools.">
 </dialog>
 <footer class="site-footer">
     <div class="footer-inner wrap"><a class="brand footer-brand" href="./" aria-label="SATIFY home"><img

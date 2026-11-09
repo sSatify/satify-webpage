@@ -17,10 +17,6 @@ followed by real app interactions with short captions. Propagate starts with a c
 image and shows every example being drawn before the predictions. Videos load only when played.
 Three poster previews on the homepage link directly to the demos. See [the recording notes](docs/app-videos.md).
 
-The [video recorder](videos/README.md) contains the repeatable demonstration scripts imported
-from `tool_videos_mp`. Its scenes, browser login, dependencies, and generated recordings remain
-Git-ignored. Website builds exclude the tooling; only reviewed media in `assets/` is published.
-The free game introduces the labelling concepts without requiring an account or invitation.
 
 ## License
 
@@ -48,7 +44,7 @@ and [privacy notice](https://www.satify.tech/privacy/) on 22 September 2026. Cha
   information.
 - IONOS email, app, game, account, retention, and consent provisions preserved.
 - The new website uses no analytics or website-set cookies; the optional theme choice is saved in local storage
-  (`satify-theme`), as described in the privacy notice; links to the app and game lead to their separate services.
+  (`satify-theme`), as described in the privacy notice; links to the app lead to its separate service.
 
 The new hosting text describes the planned GitHub Pages deployment. The existing public website notice must stay with
 the existing host until that website is switched. Recheck the notice if hosting or tracking behavior changes.
@@ -75,12 +71,10 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
   [docs/invitation-heroine-dragon.md](docs/invitation-heroine-dragon.md).
 - Contact illustration: `assets/pixel-quest-giver.png`, an adventurer meeting a quest giver over a map.
   Created with the built-in image-generation tool; the full prompt is in [docs/contact-artwork.md](docs/contact-artwork.md).
-- Game promotion screenshot: `assets/satify-game-mobile.jpeg`, supplied by Marco on 24 September 2026.
-  It shows the Satify game comparing remote sensing imagery from 2026 and 2016, with agriculture labels and area measurements. The original
-  screenshot is displayed without retouching and opens in an on-page panel, using the same Close button,
-  Escape, and outside-click behaviour as the app screenshot. The interactive hero uses its own aerial and pixel-art image pair.
-- Game sticker: `assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
-  The "Let’s play!" sticker links to the game from its promotion panel.
+- Retained game assets (currently unused): `assets/satify-game-mobile.jpeg`, supplied by Marco on 24 September 2026,
+  and `assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
+  The screenshot shows the Satify game comparing remote sensing imagery from 2026 and 2016, with agriculture labels
+  and area measurements. The interactive hero uses its own aerial and pixel-art image pair.
 - App workspace screenshot: `assets/satify-app-workspace.jpeg`, supplied by Marco on 24 September 2026.
   Displayed without retouching in the homepage app section and dedicated app page, with an enlarged on-page panel that closes using its Close button,
   Escape, or a click outside the panel. It shows colour-infrared imagery, built-up labels,
