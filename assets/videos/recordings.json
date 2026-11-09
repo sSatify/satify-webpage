@@ -22,13 +22,26 @@
     "origin": "https://app.satify.tech",
     "appVersion": "v3.0.0",
     "theme": "dark",
-    "recordedAt": "2026-11-09T14:46:31.363Z",
-    "run": "2026-11-09T14-46-06-582Z-v2-rivers-roads",
+    "recordedAt": "2026-11-09T15:38:37.801Z",
+    "run": "2026-11-09T15-37-42-339Z-forest-road-trial",
     "width": 1280,
     "height": 960,
-    "duration": 16.53,
-    "bytes": 1854707,
-    "sha256": "28d2633e66f703796810e8655729f832d0b29d823fbfd4d1ff0fc431f9606265"
+    "duration": 19.37,
+    "bytes": 2972372,
+    "sha256": "94ffc97cd63cf41a24c038517399dbfa59a23c62e6e334230de69c93fc990751",
+    "sourceScene": "dw_-64.3106956299_49.8925498786-20190820",
+    "sourceSha256": "96fa9a12c763f4ce2fb267df0814a57a2e390f772c573e76c84311c2d4c979ce",
+    "selectedExport": "forest-road-trial-faster.mp4",
+    "verifiedPixels": 581,
+    "maxGuideError": 0.40852974398951736,
+    "tracePlaybackRate": 2.4,
+    "sourceTraceWindowSeconds": [
+      2,
+      17.5
+    ],
+    "measuredTraceSeconds": 6.4,
+    "captionHoldsUnchanged": true,
+    "previewWorkaround": "fresh-editor-page-after-calibration"
   },
   {
     "scenario": "time-series",
