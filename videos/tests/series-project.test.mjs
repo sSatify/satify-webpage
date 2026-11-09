@@ -137,7 +137,7 @@ test('time-series profile has separate project state, shared origin login and ve
   const series = await configuration({ dataset: 'time-series' });
   assert.notEqual(tools.stateFile, series.stateFile);
   assert.equal(tools.authFile, series.authFile);
-  assert.equal(tools.scene, 'assets/demo-scene.json');
+  assert.equal(tools.scene, 'assets/city-scene.json');
   assert.equal(series.scene, undefined);
   const selected = [];
   for (const path of series.scenes) {

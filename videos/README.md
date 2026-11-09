@@ -39,6 +39,79 @@ their own operations and check the saved counts on all dates afterward.
 Development recordings require an explicit `--env dev` and, for historical projects,
 `--project "SATIFY website showcase 2026-10-26 tools"` (or `time series`). They are not used for the website.
 
+## Separate forest-road trial
+
+The prepared local bundles are `assets/city-scene.tif` with `assets/city-scene.json`
+(the urban/forest tools scene) and `assets/forest-scene.tif` with
+`assets/forest-scene.json` (the new forest-road scene). Both manifests are tracked;
+the TIFFs are ignored. The forest TIFF is prepared locally using the command below
+and is not yet included in the downloadable dataset release. Earlier cache copies
+and recording outputs retain their historical names.
+
+The owner-supplied `dw_-64.3106956299_49.8925498786-20190820` scene has a separate
+production project, `SATIFY forest road trial 2019-08-20 2026-11-09`. The reviewed
+export from this project is now selected as `assets/videos/rivers-roads.mp4`.
+New captures stay in `output/` until reviewed and explicitly selected for the site.
+
+`scripts/prepare-road-scene.py` stacks the twelve original bands without resampling,
+verifies decoded values, grid, CRS and types, and verifies that source hashes did not
+change. It handles the long Google Drive shortcut path on Windows. Rasterio 1.5.2
+was used in the ignored `.cache/scene-tools` environment. From `videos/`:
+
+```powershell
+python -m venv .cache/scene-tools
+& .cache/scene-tools/Scripts/python.exe -m pip install rasterio==1.5.2
+& .cache/scene-tools/Scripts/python.exe scripts/prepare-road-scene.py "<source scene folder>" --output assets/forest-scene.tif
+node scripts/test-forest-road.mjs
+```
+
+The trial reuses the production login and reserves only its own project's drawing
+layer. It uses the existing test-data calibration convention (scale 0.0001, offset 0);
+the original band samples are preserved and no product processing level is invented.
+Settings match the supplied screenshot: 79.9 m brush, Draw, Trace, Preserve curvature
+0.85, Fit width on, +1 px buffer, Replace existing off, and a purple Road class.
+The northwestern road is traced through both S-bends to the owner's red mark.
+Native pixel centres are listed in `roadPixels`. Before capture, an unapplied UI
+guide measures the camera transform and Escape discards it. The recorded guide
+must stay within 0.65 native pixels of the reviewed path and reach its endpoint;
+the script stops before Apply if either check fails.
+
+The earlier alignment-review capture is under `output/2026-11-09T15-27-37-628Z-forest-road-trial/`,
+including the preview, applied result, 39.47-second MP4 and `trial.json` with the
+actual mutation and saved-pixel check. It saved 581 road pixels (58,165 m² shown
+by the app); maximum guide deviation was 0.41 native pixels. Review included
+decoded frames across the entire video and a source/result comparison using the
+downloaded saved label tile. All 105 sampled road centres between native rows
+29 and 133 are labelled; the tool trims the stroke caps. The endpoint falls at
+the red mark in the reference screenshot. The earlier 347/380-pixel trials were
+offset and are superseded by this capture.
+
+The subsequent clean-start recording is in
+`output/2026-11-09T15-37-42-339Z-forest-road-trial/`. After Escape discards the
+calibration guide, the recorder opens a fresh editor page, restores the camera and
+tool settings, and starts capture there. This avoids production v3.0.0 briefly
+showing the discarded guide at the start of the next stroke. It changes no app
+rendering code. The actual app fix is being investigated separately on develop.
+
+The movement budget is halved to 25 ms/native pixel. Because input and capture
+overhead varies with workstation load, the selected export additionally speeds
+only the tracing interval by 2.4; caption holds retain their original duration.
+`forest-road-trial-faster.mp4` has a measured 6.4-second trace, versus 25.9 seconds
+in the earlier recording. It preserves the same 581-pixel
+saved result and 0.41-pixel maximum guide deviation. Review covered 78 consecutive
+onset frames, decoded frames throughout the final video, and the applied result.
+`review-faster.json` records the selected export timing. `review.json` describes
+the intermediate 12.8-second version. From `videos/`,
+the selected source recording can be exported again with:
+
+```powershell
+$roadRun = 'output/2026-11-09T15-37-42-339Z-forest-road-trial'
+& node_modules/ffmpeg-static/ffmpeg.exe -hide_banner -loglevel error -y -i "$roadRun/forest-road-trial.mp4" -filter_complex '[0:v]trim=end=2.0,setpts=PTS-STARTPTS[head];[0:v]trim=start=2.0:end=17.5,setpts=(PTS-STARTPTS)/2.4[trace];[0:v]trim=start=17.5,setpts=PTS-STARTPTS[tail];[head][trace][tail]concat=n=3:v=1:a=0,fps=30,format=yuv420p[out]' -map '[out]' -an -c:v libx264 -crf 19 -pix_fmt yuv420p -movflags +faststart "$roadRun/forest-road-trial-faster.mp4"
+```
+
+Recheck the tracing interval and visible speed after recording a new take; these
+export boundaries refer only to this selected capture.
+
 The remaining scenario descriptions and dated status entries below document the
 earlier three-video recorder, retained for reference and project setup.
 Its dimensions and storyboards do not describe the five selected website videos.
@@ -110,7 +183,7 @@ The following checks were completed in the original application repository
 before migration. They describe the local stack at that time, not verification
 against the current published application:
 
-- All 12 bands in `assets/demo-scene.tif` have decoded pixels identical to their
+- All 12 bands in `assets/city-scene.tif` have decoded pixels identical to their
   source TIFFs, with the same dimensions, data type, CRS and transform.
 - The current router recognised every band, accepted the generated metadata and
   upload, and converted the scene successfully in an isolated container.
@@ -185,12 +258,15 @@ npm run fetch-assets
 Use `-- --dataset tools` for just the urban forest scene or `-- --dataset time-series`
 for the three coastal scenes. Valid cached files are reused without network access;
 every JSON and TIFF is checked against the SHA-256 and size in `assets/release.json`.
-Scene JSON files are downloaded and verified first; their image references and
-checksums must agree with that lock before any imagery is downloaded.
+Scene JSON files are verified first; their image references and checksums must
+agree with that lock before any imagery is downloaded. `city-scene.json` is tracked
+in Git; its TIFF is downloaded from the existing `demo-scene.tif` release asset
+and stored locally as `city-scene.tif`. The coastal JSON files remain release downloads.
 Downloads are staged under temporary filenames and only installed after verification.
 Interrupted or invalid downloads are discarded. If a local JSON or TIFF differs, it is kept
 and the command stops; `npm run fetch-assets -- --force` explicitly restores the
-published copies. The standalone downloader needs only Node.js, not Playwright.
+published downloads. Restore missing or modified tracked city metadata from Git.
+The standalone downloader needs only Node.js, not Playwright.
 
 This repository and its release are public, so downloads need no account. For a
 private dataset repository, the downloader can use `GH_TOKEN` / `GITHUB_TOKEN`, or
@@ -273,7 +349,7 @@ application build is needed for this workflow.
 The following describes the original single-scene `tools` dataset. The separate
 time-series dataset and its setup are described below.
 
-Setup verifies the TIFF against `assets/demo-scene.json`, detects its bands through
+Setup verifies the TIFF against `assets/city-scene.json`, detects its bands through
 the router, creates the named project, saves its ID, supplies calibration and
 labels, obtains a preparation slot, uploads once and waits for scene/mask
 preparation. Successful reruns reuse the prepared scene. Checkpoints retain the
@@ -314,10 +390,10 @@ independently verified. Do not use it to illustrate differences between B8 and B
 
 This urban/forest scene replaces the initial northern forest/lake example.
 The new project name keeps its setup identity separate from that earlier scene. The bundle
-uses the neutral filenames `demo-scene.tif` and `demo-scene.json`; the manifest identifies the
+uses the filenames `city-scene.tif` and `city-scene.json`; the manifest identifies the
 actual source scene and its hashes.
 
-`demo-scene.json` contains source hashes, decoded-pixel hashes, output hash, band
+`city-scene.json` contains source hashes, decoded-pixel hashes, output hash, band
 order, georeferencing and conversion-tool version. No original absolute path is
 needed to record: the bundled TIFF is the complete portable input.
 

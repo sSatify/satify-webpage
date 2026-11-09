@@ -5,11 +5,11 @@ import { baseline, detectionInput, DRAWING_LAYER, hash, importDraft, resetProjec
 
 const config = { baseUrl: 'http://localhost:3030', projectName: 'Tool demos', timeoutMs: 30,
   calibration: { scale: 0.0001, offset: 0 }, labels: [{ id: 1, labelName: 'Forest', color: '#44aa44' }] };
-const scene = { sha256: 'sample', file: 'demo-scene.tif', bytes: 20, width: 510, height: 510,
+const scene = { sha256: 'sample', file: 'city-scene.tif', bytes: 20, width: 510, height: 510,
   bands: [{ index: 1, name: 'B2' }, { index: 2, name: 'B3' }, { index: 3, name: 'B4' }] };
-const report = { hard_errors: [], scenes: [{ id: 'demo-scene.tif', metadata_suggestion: {
+const report = { hard_errors: [], scenes: [{ id: 'city-scene.tif', metadata_suggestion: {
   sensor: 'sentinel-2', product_level: null,
-  bands: scene.bands.map(b => ({ file_path: 'demo-scene.tif', file_name: 'demo-scene.tif', channel_index: b.index,
+  bands: scene.bands.map(b => ({ file_path: 'city-scene.tif', file_name: 'city-scene.tif', channel_index: b.index,
     suggested_name: b.name, roles: ['blue', 'green', 'red'].slice(b.index - 1, b.index), measurement_type: 'unknown' })),
 } }] };
 const binding = () => ({ schemaVersion: 1, origin: config.baseUrl, sid: 'ours', setupKey: setupKey(config, scene),
@@ -157,8 +157,8 @@ test('calibration is explicit, roles/channel identity preserved, processing leve
 });
 
 test('bundled asset matches its manifest and tampering is rejected', async () => {
-  const manifest = JSON.parse(await readFile(new URL('../assets/demo-scene.json', import.meta.url), 'utf8'));
-  const asset = new URL('../assets/demo-scene.tif', import.meta.url);
+  const manifest = JSON.parse(await readFile(new URL('../assets/city-scene.json', import.meta.url), 'utf8'));
+  const asset = new URL('../assets/city-scene.tif', import.meta.url);
   assert.equal(hash(await verifyAsset(manifest, asset)), manifest.sha256);
   await assert.rejects(verifyAsset({ ...manifest, sha256: 'wrong' }, asset), /does not match/);
 });

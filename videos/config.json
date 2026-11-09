@@ -2,7 +2,7 @@
   "baseUrl": "https://app.satify.tech",
   "apiPath": "/satify-api",
   "projectName": "SATIFY tool demonstrations - urban forest",
-  "scene": "assets/demo-scene.json",
+  "scene": "assets/city-scene.json",
   "selectedLabel": "Water",
   "calibration": {
     "scale": 0.0001,

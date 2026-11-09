@@ -1,0 +1,3 @@
+# Scene metadata is checksummed; preserve its bytes across Windows checkouts.
+/videos/assets/city-scene.json text eol=lf
+/videos/assets/forest-scene.json text eol=lf

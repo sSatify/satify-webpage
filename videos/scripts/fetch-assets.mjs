@@ -54,6 +54,8 @@ export async function ensureAssets(manifestPaths, { root = toolRoot, force = fal
   for (const item of release.files) {
     if (!item || typeof item.path !== 'string' || !/^assets\/(?:[\w.-]+\/)*[\w.-]+\.(?:json|tif)$/.test(item.path)
       || typeof item.file !== 'string' || !/^[\w.-]+\.(?:json|tif)$/.test(item.file)
+      || (item.releaseFile !== undefined && !/^[\w.-]+\.(?:json|tif)$/.test(item.releaseFile))
+      || (item.source !== undefined && item.source !== 'repository')
       || item.path.split('/').at(-1) !== item.file || !/^[a-f0-9]{64}$/.test(item.sha256)
       || !Number.isSafeInteger(item.bytes) || item.bytes <= 0 || locked.has(item.path) || names.has(item.file)
       || item.path === 'assets/release.json') throw new Error('Invalid or duplicate release file entry.');
@@ -101,7 +103,10 @@ export async function ensureAssets(manifestPaths, { root = toolRoot, force = fal
 
   async function ensureFile({ manifest, destination }) {
     const cached = await matches(destination, manifest);
-    if (cached && !force) { log(`Verified cached ${manifest.file}`); return; }
+    if (cached && (!force || manifest.source === 'repository')) { log(`Verified cached ${manifest.file}`); return; }
+    if (manifest.source === 'repository') {
+      throw new Error(`${manifest.file} is missing or modified. Restore this tracked scene manifest from Git.`);
+    }
     if (cached === false && !force) {
       throw new Error(`${manifest.file} differs from its manifest. Local data was kept. Use npm run fetch-assets -- --force to restore the published version.`);
     }
@@ -109,7 +114,7 @@ export async function ensureAssets(manifestPaths, { root = toolRoot, force = fal
     const temporary = `${destination}.download-${randomUUID()}`;
     try {
       log(`Downloading ${manifest.file} from ${release.tag}…`);
-      const response = await responseFor(manifest.file);
+      const response = await responseFor(manifest.releaseFile ?? manifest.file);
       let bytes = 0;
       const hash = createHash('sha256');
       await pipeline(Readable.fromWeb(response.body), new Transform({

@@ -189,7 +189,7 @@ def prepare(source: Path, output: Path, *, replace: bool = False,
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("source", type=Path, help="Directory containing B1.tif ... B12.tif (without B10).")
-    parser.add_argument("--output", type=Path, default=ROOT / "assets" / "demo-scene.tif")
+    parser.add_argument("--output", type=Path, default=ROOT / "assets" / "city-scene.tif")
     parser.add_argument("--replace", action="store_true", help="Replace an existing generated bundle after verification.")
     parser.add_argument("--window", type=int, nargs=4, metavar=("X", "Y", "WIDTH", "HEIGHT"),
                         help="Crop a source pixel window without resampling.")

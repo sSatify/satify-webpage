@@ -57,6 +57,29 @@ test('rejects corrupt, short, oversized and interrupted downloads without publis
   }
 });
 
+test('renamed scene uses tracked metadata and the original pinned release image, including forced downloads', async t => {
+  const options = await fixture(t);
+  const scene = Buffer.from(JSON.stringify({ file: 'city-scene.tif', bytes: bytes.length, sha256: digest }));
+  await writeFile(join(options.root, 'assets/city-scene.json'), scene);
+  await writeFile(join(options.root, 'assets/release.json'), JSON.stringify({ schemaVersion: 2,
+    repository: 'test/repo', tag: 'demo-data-v2', manifests: ['assets/city-scene.json'], files: [
+      { ...pin('assets/city-scene.json', scene), source: 'repository' },
+      { ...pin('assets/city-scene.tif', bytes), releaseFile: 'scene.tif' },
+    ] }));
+  const urls = [];
+  const fetchImpl = async url => { urls.push(url); return new Response(bytes); };
+  await ensureAssets(undefined, { ...options, fetchImpl });
+  await ensureAssets(undefined, { ...options, force: true, fetchImpl });
+  assert.deepEqual(urls, Array(2).fill('https://github.com/test/repo/releases/download/demo-data-v2/scene.tif'));
+  assert.deepEqual(await readFile(join(options.root, 'assets/city-scene.tif')), bytes);
+  for (const missing of [false, true]) {
+    if (missing) await rm(join(options.root, 'assets/city-scene.json'));
+    else await writeFile(join(options.root, 'assets/city-scene.json'), 'modified');
+    await assert.rejects(ensureAssets(undefined, { ...options, force: true,
+      fetchImpl: () => { throw new Error('Unexpected network access'); } }), /Restore.*from Git/);
+  }
+});
+
 test('keeps modified local data unless forced, and preserves it if forced download fails', async t => {
   const options = await fixture(t), custom = Buffer.from('local modified data');
   await writeFile(cached(options), custom);

@@ -3,23 +3,25 @@
   "repository": "sSatify/satify-webpage",
   "tag": "demo-data-v2",
   "manifests": [
-    "assets/demo-scene.json",
+    "assets/city-scene.json",
     "assets/time-series/coast-2021-09-01.json",
     "assets/time-series/coast-2022-08-15.json",
     "assets/time-series/coast-2022-09-04.json"
   ],
   "files": [
     {
-      "path": "assets/demo-scene.json",
-      "file": "demo-scene.json",
-      "bytes": 5375,
-      "sha256": "f877729063679fad8657d618df3ccec72a0dd6a7e547d69b7b698c8883583c7f"
+      "path": "assets/city-scene.json",
+      "file": "city-scene.json",
+      "bytes": 5255,
+      "sha256": "b0170d9f13cb2912c8981d10fe98e93b82e94fb777997e32f87b3923ce06c68a",
+      "source": "repository"
     },
     {
-      "path": "assets/demo-scene.tif",
-      "file": "demo-scene.tif",
+      "path": "assets/city-scene.tif",
+      "file": "city-scene.tif",
       "bytes": 8465843,
-      "sha256": "2218875887218c60ae41fe6051a778cfcd80b964f2a4bd9777cfe2da9aa535ae"
+      "sha256": "2218875887218c60ae41fe6051a778cfcd80b964f2a4bd9777cfe2da9aa535ae",
+      "releaseFile": "demo-scene.tif"
     },
     {
       "path": "assets/time-series/coast-2021-09-01.json",
