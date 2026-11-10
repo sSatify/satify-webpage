@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="See five SATIFY labelling workflows: Smart Fill, rivers and roads, synchronized dates, change detection, and experimental label propagation.">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#203c31">
+    <title>The SATIFY app — Give your imagery meaning</title>
+    <link rel="icon" href="../assets/satify-logo.svg" type="image/svg+xml">
+    <link rel="preload" href="../assets/fonts/silkscreen-regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="../assets/fonts/departure-mono.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="../theme.js"></script>
+    <link rel="stylesheet" href="../styles.css">
+    <script src="../site.js" defer></script>
+</head>
+<body class="app-page">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+    <div class="header-inner wrap">
+        <a class="brand" href="../" aria-label="SATIFY home"><img src="../assets/satify-logo.svg" width="42" height="42"
+                                                                 alt=""><span>SATIFY<span class="brand-caption">Pixels. Insights. Discoveries.</span></span></a>
+        <div class="header-tools">
+            <nav aria-label="Main navigation"><a href="../#how-it-works">The mission</a><a href="../#the-app">The app</a><a href="../#contact">Contact</a></nav>
+            <button class="theme-toggle pixel-button secondary" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"
+                    title="Switch to dark theme" hidden>
+                <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+                    <path class="theme-sun"
+                          d="M8 0h4v3H8zM8 17h4v3H8zM0 8h3v4H0zM17 8h3v4h-3zM3 3h3v3H3zM14 3h3v3h-3zM3 14h3v3H3zM14 14h3v3h-3zM6 6h8v8H6z"/>
+                    <path class="theme-moon" d="M8 1h4v3H8v8h8V8h3v7h-3v3H5v-3H2V5h3V2h3z"/>
+                </svg>
+                <span class="theme-label">Light</span></button>
+        </div>
+    </div>
+</header>
+<main id="main">
+    <section class="app-hero wrap" aria-labelledby="app-title">
+        <div class="app-hero-copy">
+            <p class="eyebrow">MEET THE SATIFY APP</p>
+            <h1 id="app-title">Your imagery.<br><span>With meaning.</span></h1>
+            <p class="intro">From the first label to the finer details.</p>
+            <p class="app-hero-description">Explore satellite, drone, and aerial imagery in one workspace.
+                Let smart tools help you label regions, compare dates, and trace the features that matter.
+                You guide the process and refine the result.</p>
+            <div class="hero-actions">
+                <a class="pixel-button primary" href="#get-access">Request an invitation</a>
+                <a class="pixel-button secondary" href="#highlights">Explore the highlights</a>
+            </div>
+            <p class="app-sign-in">Already have access? <a href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Sign in to the app</a></p>
+        </div>
+        <figure class="app-preview">
+                    <button class="app-preview-open" type="button" aria-haspopup="dialog"
+                            aria-controls="app-screenshot-panel"
+                            aria-label="Enlarge the SATIFY app screenshot">
+                        <img src="../assets/satify-app-workspace.jpeg" width="1704" height="953" loading="lazy"
+                             alt="SATIFY app workspace showing colour-infrared remote sensing imagery, yellow built-up labels, Smart Fill controls, and the settings panel.">
+                    </button>
+                    <figcaption>The SATIFY app: imagery, labels, and editing tools in one workspace.
+                        Select the screenshot for a closer look.
+                    </figcaption>
+                </figure>
+
+    </section>
+    <nav class="app-jump-nav wrap" aria-label="App highlights">
+        <a href="#smart-fill"><span>01</span> Smart Fill</a>
+        <a href="#rivers-roads"><span>02</span> Rivers &amp; roads pen</a>
+        <a href="#time-series"><span>03</span> Sync labelling</a>
+        <a href="#change-detection"><span>04</span> Change detection</a>
+        <a href="#propagate"><span>05</span> Propagate labels</a>
+    </nav>
+    <section class="app-highlights wrap" id="highlights" aria-labelledby="highlights-heading">
+        <div class="section-heading">
+            <div><p class="eyebrow">LESS REPETITION. MORE DISCOVERY.</p>
+                <h2 id="highlights-heading">Less repetition. More possibility.</h2></div>
+            <p>See the tools at work.<br>Five short demos. Play at your own pace.</p>
+        </div>
+        <article class="app-highlight" id="smart-fill" aria-labelledby="smart-fill-heading">
+            <div class="highlight-copy">
+                <p class="eyebrow">01 / Smart Fill</p>
+                <h3 id="smart-fill-heading">A few clicks. A landscape labelled.</h3>
+                <p>Choose how far Smart Fill reaches. Local fills one connected region, Viewport fills matching regions in your current view, and Global finds matching regions across the whole image.</p>
+                <ol><li>Compare all three modes from the same starting point.</li><li>Zoom out to see where Viewport stops.</li><li>See Global label matching areas beyond that boundary.</li></ol>
+
+            </div>
+            <figure class="highlight-media" data-highlight="smart-fill">
+                <video controls playsinline preload="none" width="1280" height="960"
+                       poster="../assets/videos/smart-fill.webp" aria-label="Smart Fill demonstration"
+                       aria-describedby="smart-fill-caption">
+                    <source src="../assets/videos/smart-fill.mp4" type="video/mp4">
+                    <a href="../assets/videos/smart-fill.mp4">Open the Smart Fill video</a>.
+                </video>
+                <figcaption id="smart-fill-caption">Local, Viewport and Global, compared on the same scene. Silent video.<br>
+                    <a href="../assets/videos/smart-fill.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
+                </figcaption>
+            </figure>
+        </article>
+        <article class="app-highlight" id="rivers-roads" aria-labelledby="rivers-roads-heading">
+            <div class="highlight-copy">
+                <p class="eyebrow">02 / Rivers &amp; roads pen</p>
+                <h3 id="rivers-roads-heading">Follow the bend.</h3>
+                <p>Guide a broad stroke along a river or road. SATIFY detects the line inside it and fits its width to the imagery. Review the result, then add it to your labels.</p>
+                <ol><li>Quickly mark the area with a wide brush.</li><li>Review the automatically detected path and width.</li><li>Apply the line as a label.</li></ol>
+
+            </div>
+            <figure class="highlight-media" data-highlight="rivers-roads">
+                <video controls playsinline preload="none" width="1280" height="960"
+                       poster="../assets/videos/rivers-roads.webp" aria-label="Rivers &amp; roads pen demonstration"
+                       aria-describedby="rivers-roads-caption">
+                    <source src="../assets/videos/rivers-roads.mp4" type="video/mp4">
+                    <a href="../assets/videos/rivers-roads.mp4">Open the Rivers &amp; roads pen video</a>.
+                </video>
+                <figcaption id="rivers-roads-caption">Trace a winding road and review the detected label. Silent video.<br>
+                    <a href="../assets/videos/rivers-roads.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
+                </figcaption>
+            </figure>
+        </article>
+        <article class="app-highlight app-highlight--wide" id="time-series" aria-labelledby="time-series-heading">
+            <div class="highlight-copy">
+                <p class="eyebrow">03 / Sync labelling</p>
+                <h3 id="time-series-heading">One action. Several dates.</h3>
+                <p>Label water and agricultural fields across dates in a shared view. With Sync labelling, Smart Fill uses each image’s own data to find the region around your chosen point.</p>
+                <ol><li>Label Water across the three dates.</li><li>Switch to Agriculture and select the fields.</li><li>Review both classes on each date.</li></ol>
+
+            </div>
+            <figure class="highlight-media" data-highlight="time-series">
+                <video controls playsinline preload="none" width="1600" height="900"
+                       poster="../assets/videos/time-series.webp" aria-label="Sync labelling demonstration"
+                       aria-describedby="time-series-caption">
+                    <source src="../assets/videos/time-series.mp4" type="video/mp4">
+                    <a href="../assets/videos/time-series.mp4">Open the Sync labelling video</a>.
+                </video>
+                <figcaption id="time-series-caption">Water and Agriculture, labelled across three dates. Silent video.<br>
+                    <a href="../assets/videos/time-series.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
+                </figcaption>
+            </figure>
+        </article>
+        <article class="app-highlight app-highlight--wide" id="change-detection" aria-labelledby="change-detection-heading">
+            <div class="highlight-copy">
+                <p class="eyebrow">04 / Change detection</p>
+                <h3 id="change-detection-heading">See the change. Make it a label.</h3>
+                <p>Compare two dates, explore their index difference, and select the change you want to label. Adjust the range while you review the result on the maps.</p>
+                <ol><li>Compare the same place across two dates.</li><li>Select a range of vegetation-index decrease.</li><li>Turn the selected change into labels.</li></ol>
+                <p class="highlight-note">An index change is a starting point for interpretation. Review the imagery to decide what it means.</p>
+            </div>
+            <figure class="highlight-media" data-highlight="change-detection">
+                <video controls playsinline preload="none" width="1600" height="900"
+                       poster="../assets/videos/change-detection.webp" aria-label="Change detection demonstration"
+                       aria-describedby="change-detection-caption">
+                    <source src="../assets/videos/change-detection.mp4" type="video/mp4">
+                    <a href="../assets/videos/change-detection.mp4">Open the Change detection video</a>.
+                </video>
+                <figcaption id="change-detection-caption">A range of NDVI change becomes a reviewable label. Silent video.<br>
+                    <a href="../assets/videos/change-detection.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
+                </figcaption>
+            </figure>
+        </article>
+        <article class="app-highlight app-highlight--wide" id="propagate" aria-labelledby="propagate-heading">
+            <div class="highlight-copy">
+                <p class="eyebrow">05 / Propagate labels <span class="experimental-badge">Experimental</span></p>
+                <h3 id="propagate-heading">Teach it a little. Label a lot.</h3>
+                <p>Provide examples of your classes and let the tool predict unlabelled areas. Adjust the confidence threshold to leave uncertain pixels for your review.</p>
+                <ol><li>Draw Forest, Water and Built-up examples on a clean image.</li><li>Preview predictions for the unlabelled areas.</li><li>Choose a confidence threshold and apply.</li></ol>
+                <p class="highlight-note">Experimental · Review predictions before applying.</p>
+            </div>
+            <figure class="highlight-media" data-highlight="propagate">
+                <video controls playsinline preload="none" width="1600" height="900"
+                       poster="../assets/videos/propagate.webp" aria-label="Propagate labels demonstration (experimental)"
+                       aria-describedby="propagate-caption">
+                    <source src="../assets/videos/propagate.mp4" type="video/mp4">
+                    <a href="../assets/videos/propagate.mp4">Open the Propagate labels video</a>.
+                </video>
+                <figcaption id="propagate-caption">From a clean image to drawn examples and predictions. Experimental. Silent video.<br>
+                    <a href="../assets/videos/propagate.mp4" target="_blank" rel="noopener">Watch full size <span class="sr-only">(new tab)</span> ↗</a>
+                </figcaption>
+            </figure>
+        </article>
+        <p class="media-attribution">Basemap in the demos: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>.</p>
+    </section>
+    <section class="app-section wrap" aria-labelledby="toolkit-heading">
+        <div class="app-card">
+            <div class="section-heading"><div><p class="eyebrow">THE DETAILS ARE STILL YOURS</p>
+                <h2 class="panel-title" id="toolkit-heading">Smart assistance. <span>Hands-on control.</span></h2></div></div>
+            <div class="app-overview"><ul class="app-features">
+                    <li><strong>Regions ready to review</strong>
+                        <p class="app-feature-summary">Preview, label, and refine with Smart Fill.</p>
+                        <p>Use generated regions to speed up annotation, then refine the labels with the tools and classes that fit your project.</p>
+                    </li>
+                    <li><strong>Old but Gold</strong>
+                        <p class="app-feature-summary">Classic tools for precise annotation.</p>
+                        <p>Use traditional image annotation tools such as the pen, bucket fill, and polygons to label
+                            exactly what you want, down to the smallest detail.</p>
+                    </li>
+                    <li><strong>Easy View</strong>
+                        <p class="app-feature-summary">Reveal features through multiple image representations.</p>
+                        <p>Switch seamlessly between normalisations, spectral bands, and false-colour composites to uncover
+                            patterns and features that may be difficult to identify in standard imagery.</p>
+                    </li>
+                    <li><strong>Local or Global</strong>
+                        <p class="app-feature-summary">Choose your reach.</p>
+                        <p>With either fill tool, use Local to target a single connected region or Global to identify and
+                            label similar areas across the entire image.</p>
+                    </li>
+                    <li class="app-feature-final"><strong>One-Click Refinement</strong>
+                        <p class="app-feature-summary">Enhance label quality with classical image analysis.</p>
+                        <p>Apply proven image processing techniques with a single click to smooth boundaries, remove
+                            artefacts, and improve the accuracy and consistency of your annotations.</p>
+                    </li>
+                </ul>
+</div>
+        </div>
+        <aside class="app-invitation" id="get-access" aria-labelledby="invitation-heading">
+            <img class="invitation-art" src="../assets/pixel-heroine-dragon.png" width="1536" height="1024" loading="lazy"
+                 alt="A female pixel-art explorer looks across a green valley with rivers and waterfalls as a dragon flies above the distant mountains.">
+            <div class="app-invitation-copy panel-copy">
+                <p class="eyebrow">ACCESS BY INVITATION</p>
+                <h3 class="panel-title" id="invitation-heading">Your next quest. <span>Starts here.</span></h3>
+                <p>Bring your imagery, your questions, and the classes that matter to your project.
+                    Turn the features you see into labels you can work with.</p>
+                <p>Want to get started? Request an invitation! Tell us what you’re working on and what you’d like to label
+                    when you request access.</p>
+            </div>
+            <div class="app-invitation-actions">
+                <a class="pixel-button primary"
+                   href="mailto:info@satify.tech?subject=SATIFY%20invitation%20request">Request an invitation</a>
+                <p class="app-sign-in">Already have an account?
+                    <a href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Sign in to the app</a>
+                </p>
+            </div>
+        </aside>
+
+    </section>
+</main>
+<dialog class="screenshot-panel" id="app-screenshot-panel" aria-labelledby="app-screenshot-title">
+    <div class="screenshot-panel-header">
+        <h2 id="app-screenshot-title">The SATIFY app</h2>
+        <button class="screenshot-panel-close pixel-button primary" type="button" autofocus>Close</button>
+    </div>
+    <img src="../assets/satify-app-workspace.jpeg" width="1704" height="953" loading="lazy"
+         alt="SATIFY app workspace showing colour-infrared remote sensing imagery, yellow built-up labels, Smart Fill controls, and the settings panel.">
+</dialog>
+<footer class="site-footer">
+    <div class="footer-inner wrap"><a class="brand footer-brand" href="../" aria-label="SATIFY home"><img
+            src="../assets/satify-logo.svg" width="30" height="30" alt=""><span>SATIFY</span></a><span
+            class="footer-tagline">Pixels. Insights. Discoveries.</span>
+        <nav aria-label="Legal"><a href="../imprint/">Imprint</a><a href="../privacy/">Privacy Notice</a></nav>
+        <small>© 2026 SATIFY</small></div>
+</footer>
+</body>
+</html>

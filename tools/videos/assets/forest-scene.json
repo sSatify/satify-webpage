@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "source_scene": "dw_-64.3106956299_49.8925498786-20190820",
+  "displayName": "Forest scene 2019-08-20",
+  "file": "forest-scene.tif",
+  "sha256": "96fa9a12c763f4ce2fb267df0814a57a2e390f772c573e76c84311c2d4c979ce",
+  "bytes": 7042049,
+  "width": 510,
+  "height": 510,
+  "crs_wkt": "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"EPSG\",\"4326\"]]",
+  "geotransform": [
+    -64.34625308731819,
+    0.00013944100948311747,
+    0,
+    49.91545681356227,
+    0,
+    -0.00008983111749910169
+  ],
+  "data_type": "float64",
+  "bands": [
+    {
+      "index": 1,
+      "name": "B1",
+      "source_file": "B1.tif",
+      "source_sha256": "ea22930614dd7fd5d1c9bfc38bfcefcafbba14467f0f1dbb59b3bd906645e93e",
+      "pixels_sha256": "56cef050f4861f24f485de4368ac2f930ac540aa2c0476b7640ace419bb5f2f6"
+    },
+    {
+      "index": 2,
+      "name": "B2",
+      "source_file": "B2.tif",
+      "source_sha256": "8ef1db969a1769b72b645934435aadb428729bb0927d35d50be9b087349f218e",
+      "pixels_sha256": "ab6b4a9d5e4a30788c438cd47c56ead794ad13ec5c14c4e28f3ababbf4138ae1"
+    },
+    {
+      "index": 3,
+      "name": "B3",
+      "source_file": "B3.tif",
+      "source_sha256": "db90c12fc707baee57861f8db1128bcd2de41c77599676317b79369631f6321b",
+      "pixels_sha256": "839993071592ce06ca63a61340a2155673266643a024862e5860ac87c8cfd0e5"
+    },
+    {
+      "index": 4,
+      "name": "B4",
+      "source_file": "B4.tif",
+      "source_sha256": "78ff3b847006a8be18473b4beb2ae5d2d663728b2fbdf6cdec617c067c347b20",
+      "pixels_sha256": "3ee9203c335eebac1124ebe14a99df0f1cccbd8e6ff36929777e4cc68ea62879"
+    },
+    {
+      "index": 5,
+      "name": "B5",
+      "source_file": "B5.tif",
+      "source_sha256": "e2a935f392c2632b50cc9276c12376a84fdea886905e6fbde71ccc3ba3f46e52",
+      "pixels_sha256": "a1122935968bb62800f90ecf44d2af363403f6c7a9062a24d93a72be52b288c8"
+    },
+    {
+      "index": 6,
+      "name": "B6",
+      "source_file": "B6.tif",
+      "source_sha256": "27a3ecb0fe7cefd22a875d95b094fe4b2d0e1c54b3c7f7a9c39a3fda9a4f90dd",
+      "pixels_sha256": "a03a0dba03edb6c297cfe2c21cdeb957a6929020a7678f7c6556b7e5ea1e7320"
+    },
+    {
+      "index": 7,
+      "name": "B7",
+      "source_file": "B7.tif",
+      "source_sha256": "ff1910642224182693b9a62a283a3b45247055fab7a68a3c4c00e71f7c8683ca",
+      "pixels_sha256": "5f2bc454e562f5b02fa223498239cb52465394d80d4ce7bb884424efdb5574c0"
+    },
+    {
+      "index": 8,
+      "name": "B8",
+      "source_file": "B8.tif",
+      "source_sha256": "69ffa642ab8698da9198dbe845ebb5e9ca79377f30fcdf0ca0c97f3fe5728cc5",
+      "pixels_sha256": "fbecec82e3d4021d34a0f34a6fdb11a46547c9677669cbe2242a3cf84d5d0317"
+    },
+    {
+      "index": 9,
+      "name": "B8A",
+      "source_file": "B8A.tif",
+      "source_sha256": "69ffa642ab8698da9198dbe845ebb5e9ca79377f30fcdf0ca0c97f3fe5728cc5",
+      "pixels_sha256": "fbecec82e3d4021d34a0f34a6fdb11a46547c9677669cbe2242a3cf84d5d0317"
+    },
+    {
+      "index": 10,
+      "name": "B9",
+      "source_file": "B9.tif",
+      "source_sha256": "59e903f429b86fb3749df6f00aeb012ba354a02ab7b8298a9b487a1b8476c78b",
+      "pixels_sha256": "59ffd6ba89cc72d67d379626e24a5716a4a65e80103c8e009971cfc82b870d2b"
+    },
+    {
+      "index": 11,
+      "name": "B11",
+      "source_file": "B11.tif",
+      "source_sha256": "2a088a4ee836276f5b34bb0e3524a4131509e3916242a1a279f6be23cd36c2af",
+      "pixels_sha256": "a2452530aded875ab25f7eb47ebc865f7a5101ed4d2d9455d9a8c6999ccf4b75"
+    },
+    {
+      "index": 12,
+      "name": "B12",
+      "source_file": "B12.tif",
+      "source_sha256": "4ee2df96628d931f7a997bd53de7265cb794a9d0913f7e58244160f75d9df216",
+      "pixels_sha256": "17f5bca7be007d87a12e5808263d7506dc50cd89a3cde26702aee3c042676031"
+    }
+  ],
+  "verification": "Each decoded output band equals its source; no resampling or type conversion.",
+  "rasterio_version": "1.5.2",
+  "gdal_version": "3.12.2"
+}

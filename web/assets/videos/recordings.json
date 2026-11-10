@@ -1,0 +1,95 @@
+[
+  {
+    "scenario": "smart-fill",
+    "origin": "http://127.0.0.1:3030",
+    "appVersion": "v3.0.1-local",
+    "theme": "dark",
+    "explainerVideos": "off",
+    "recordedAt": "2026-11-10T11:41:41.802Z",
+    "run": "2026-11-10T11-41-16-511Z-v2-smart-fill",
+    "width": 1280,
+    "height": 960,
+    "duration": 19,
+    "bytes": 8687587,
+    "sha256": "75b79ea81bc44deb2aa73869934230d1621a2d0dc3665c9279dc6650f9e40e09",
+    "verifiedModes": {
+      "Local": 9994,
+      "In viewport": 26070,
+      "Global": 78332
+    }
+  },
+  {
+    "scenario": "rivers-roads",
+    "origin": "https://app.satify.tech",
+    "appVersion": "v3.0.0",
+    "theme": "dark",
+    "recordedAt": "2026-11-09T15:38:37.801Z",
+    "run": "2026-11-09T15-37-42-339Z-forest-road-trial",
+    "width": 1280,
+    "height": 960,
+    "duration": 15.1,
+    "bytes": 1953228,
+    "sha256": "108dca1f7f4a0ffe90082613bd4b926cc2a8c3eef24b4e99fa30ca7a5ed00edc",
+    "sourceScene": "dw_-64.3106956299_49.8925498786-20190820",
+    "sourceSha256": "96fa9a12c763f4ce2fb267df0814a57a2e390f772c573e76c84311c2d4c979ce",
+    "selectedExport": "rivers-roads-short-clean.mp4",
+    "verifiedPixels": 581,
+    "maxGuideError": 0.40852974398951736,
+    "tracePlaybackRate": 2.4,
+    "sourceTraceWindowSeconds": [
+      2,
+      17.5
+    ],
+    "measuredTraceSeconds": 6.4,
+    "postprocess": {
+      "date": "2026-11-10",
+      "inputCommit": "8a97e76",
+      "inputPath": "assets/videos/rivers-roads.mp4",
+      "inputSha256": "94ffc97cd63cf41a24c038517399dbfa59a23c62e6e334230de69c93fc990751",
+      "removedFrames": [391, 403],
+      "endFrameExclusive": 465,
+      "finalCaptionRemovedFromFrame": 424,
+      "captionBackgroundFrame": 0
+    },
+    "previewWorkaround": "fresh-editor-page-after-calibration"
+  },
+  {
+    "scenario": "time-series",
+    "origin": "https://app.satify.tech",
+    "appVersion": "v3.0.0",
+    "theme": "dark",
+    "recordedAt": "2026-11-09T14:47:12.979Z",
+    "run": "2026-11-09T14-46-34-859Z-v2-time-series",
+    "width": 1600,
+    "height": 900,
+    "duration": 23.77,
+    "bytes": 6128214,
+    "sha256": "5b38e977a436b198a6e03b1727477ec1dca35e7ffb7d5979a53b4cbfc54ba090"
+  },
+  {
+    "scenario": "change-detection",
+    "origin": "https://app.satify.tech",
+    "appVersion": "v3.0.0",
+    "theme": "dark",
+    "recordedAt": "2026-11-09T14:47:48.267Z",
+    "run": "2026-11-09T14-47-16-040Z-v2-change-detection",
+    "width": 1600,
+    "height": 900,
+    "duration": 17.47,
+    "bytes": 6609344,
+    "sha256": "f161eaf7f6867a021f81c4a1c5164f157f229fdeb78c5ef42ec30d58da2cbbc4"
+  },
+  {
+    "scenario": "propagate",
+    "origin": "https://app.satify.tech",
+    "appVersion": "v3.0.0",
+    "theme": "dark",
+    "recordedAt": "2026-11-09T14:48:28.192Z",
+    "run": "2026-11-09T14-47-51-805Z-v2-propagate",
+    "width": 1600,
+    "height": 900,
+    "duration": 26.63,
+    "bytes": 3585266,
+    "sha256": "5555a600c1376646d0f163079131002102b63152b49d90eb25f02048443e63e4"
+  }
+]
