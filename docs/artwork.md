@@ -1,6 +1,6 @@
 # Pixel landscape
 
-File: `assets/pixel-world.png`
+File: `web/assets/pixel-world.png`
 
 Created with the built-in image-generation tool on 22 September 2026. Original artwork inspired by the requested
 cheerful 1990s strategy/adventure mood. The supplied game screenshots were visual references, not copied into the

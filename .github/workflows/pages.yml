@@ -23,9 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check website
-        run: node scripts/check.mjs
+        run: node tools/build/check.mjs
       - name: Build static site
-        run: node scripts/build.mjs
+        run: node tools/build/build.mjs
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

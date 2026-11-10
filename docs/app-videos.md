@@ -3,19 +3,19 @@
 Five fresh recordings for [#216](https://github.com/sSatify/issue-tracker/issues/216)
 and [#217](https://github.com/sSatify/issue-tracker/issues/217), recorded on 9 November
 2026 against the production app at **https://app.satify.tech**, version **v3.0.0**, in dark mode.
-Work continues on `codex/app-showcase-videos`.
-These assets are integrated locally; this document does not indicate deployment.
+The selected assets are published on the website's unlisted `/app/` page.
+Further website work can continue on `develop`; the deployment workflow publishes `main`.
 
 The recorder now forces dark mode before app startup, including when its saved
 browser state contains a light theme preference. Each new showcase capture verifies
 the app's dark theme and includes `theme: "dark"` in its recording manifest.
 The selected production MP4s are listed with their origin, version, theme and SHA-256 in
-`assets/videos/recordings.json`. The website check verifies those hashes and requires production dark-mode recordings.
+`web/assets/videos/recordings.json`. The website check verifies those hashes and requires production dark-mode recordings.
 Development trial captures remain ignored and are not selected for the website.
 
 ## Selected videos
 
-| Feature | Asset in assets/videos/ | Dimensions | Duration | Size |
+| Feature | Asset in web/assets/videos/ | Dimensions | Duration | Size |
 | --- | --- | --- | --- | --- |
 | Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 33.9 s | 13.9 MB |
 | Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 19.4 s | 3.0 MB |
@@ -82,16 +82,16 @@ the observed app version, origin and verified theme in each recording manifest.
 
 ## Reproduction
 
-See [the recorder guide](../videos/README.md) for dependencies, login and project setup.
+See [the recorder guide](../tools/videos/README.md) for dependencies, login and project setup.
 The recorder defaults to the production app and uses managed projects
 `SATIFY website showcase 2026-11-09 tools` and
 `SATIFY website showcase 2026-11-09 time series`. It requires their saved ownership
-records under ignored `videos/.state/`; it will not adopt arbitrary projects.
+records under ignored `tools/videos/.state/`; it will not adopt arbitrary projects.
 For a fresh checkout, prepare new managed projects through the setup CLI with these
 names, or pass a matching `--project` name to the showcase command. Authentication and
 project ownership are isolated per origin. Development requires explicit `--env dev`.
 
-From videos/, with Node 22+, Playwright's browser and FFmpeg installed:
+From tools/videos/, with Node 22+, Playwright's browser and FFmpeg installed:
 
 ```powershell
 npm run showcase -- smart-fill
@@ -107,7 +107,7 @@ labels, and verify all three dates are empty afterward. Authentication and raw
 captures stay ignored. FFmpeg can be on PATH, installed locally as ffmpeg-static,
 or selected with FFMPEG_PATH.
 
-Selected source directories under ignored videos/output/:
+Selected source directories under ignored tools/videos/output/:
 
 - 2026-11-09T14-48-57-084Z-v2-smart-fill
 - 2026-11-09T15-37-42-339Z-forest-road-trial
@@ -121,7 +121,7 @@ poster uses before.png to avoid showing labels that disappear when playback star
 The selected road export is `forest-road-trial-faster.mp4`; `trial.json` records
 the real operation and `review-faster.json` records its export timing. It uses the
 separate managed production project `SATIFY forest road trial 2019-08-20 2026-11-09`.
-The retained road capture can be exported from `videos/` with:
+The retained road capture can be exported from `tools/videos/` with:
 
 ```powershell
 $roadRun = 'output/2026-11-09T15-37-42-339Z-forest-road-trial'
@@ -130,9 +130,9 @@ $roadRun = 'output/2026-11-09T15-37-42-339Z-forest-road-trial'
 
 Recheck the tracing interval after a new take; these boundaries apply only to the
 selected source recording.
-Only selected MP4s, WebPs and the small recording provenance JSON in assets/videos/
+Only selected MP4s, WebPs and the small recording provenance JSON in web/assets/videos/
 enter the website build. Dataset provenance and checksums
-remain in videos/assets/release.json and the scene manifests.
+remain in tools/videos/assets/release.json and the scene manifests.
 
 The reusable recorder originally came from website branch tool_videos_mp at
 22509dc8f47dd89acfe8caeeb20990b6ae94327b. The old three-video scenarios remain for

@@ -26,21 +26,21 @@ Third-party material is excluded from the copyright claim and restrictions
 above. Its own copyright status, license, and usage conditions continue to
 apply. No additional rights in that material are granted by this notice.
 
-- assets/fonts/silkscreen-regular.ttf: Copyright 2001 The Silkscreen
+- web/assets/fonts/silkscreen-regular.ttf: Copyright 2001 The Silkscreen
   Project Authors (https://github.com/googlefonts/silkscreen).
   Licensed under the SIL Open Font License, Version 1.1.
-  See assets/fonts/OFL.txt for the full license. Its permissions remain
+  See web/assets/fonts/OFL.txt for the full license. Its permissions remain
   unaffected by this notice.
-- assets/pixel-world.png: AI-generated artwork created for this website.
+- web/assets/pixel-world.png: AI-generated artwork created for this website.
   See docs/artwork.md for its provenance. This notice asserts rights only
   to the extent that applicable law recognizes them.
-- assets/pixel-heroine-dragon.png: AI-generated artwork created for this website.
+- web/assets/pixel-heroine-dragon.png: AI-generated artwork created for this website.
   See docs/invitation-heroine-dragon.md for its provenance. This notice asserts
   rights only to the extent that applicable law recognizes them.
-- assets/pixel-quest-giver.png: AI-generated artwork created for this website.
+- web/assets/pixel-quest-giver.png: AI-generated artwork created for this website.
   See docs/contact-artwork.md for its provenance. This notice asserts rights only
   to the extent that applicable law recognizes them.
-- discovery.js: the discovery chime and victory fanfare are synthesised
+- web/discovery.js: the discovery chime and victory fanfare are synthesised
   in the browser from tones defined in code. They do not use third-party
   audio recordings or samples.
 

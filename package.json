@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "check": "node scripts/check.mjs"
+    "build": "node tools/build/build.mjs",
+    "check": "node tools/build/check.mjs"
   },
   "engines": { "node": ">=22" }
 }

@@ -1,6 +1,6 @@
 # Contact illustration
 
-File: `assets/pixel-quest-giver.png`
+File: `web/assets/pixel-quest-giver.png`
 
 Created with the built-in image-generation tool on 22 September 2026 for the homepage contact panel.
 The original 1536 × 1024 PNG is retained. The illustration sits to the right of the contact text on desktop

@@ -1,6 +1,6 @@
 # Invitation heroine and dragon
 
-File: `assets/pixel-heroine-dragon.png`
+File: `web/assets/pixel-heroine-dragon.png`
 
 Created with the built-in image-generation tool on 22 September 2026 using two earlier
 illustration variants as style and character references. Only this final illustration is

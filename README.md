@@ -1,7 +1,9 @@
 # Satify website
 
-A four-page static website for Satify: a cheerful pixel-art homepage, a dedicated app showcase, and plain, readable legal pages. HTML, CSS, and a
-small progressive-enhancement script; no framework, package dependencies, trackers, or external font requests. A
+A four-page static website for Satify: a cheerful pixel-art homepage, a dedicated app showcase, and plain, readable legal pages.
+Served HTML, CSS, JavaScript, and assets live in `web/`; build and check scripts live in `tools/build/`.
+The video recorder and its datasets live in `tools/videos/`.
+The site has no framework, package dependencies, trackers, or external font requests. A
 light/dark switch is available on every page. The default follows the browser/system preference, including changes
 while the page is open; an explicit choice overrides it and is remembered locally.
 
@@ -28,7 +30,7 @@ third-party material, including the Silkscreen font, retains its own license ter
 
 ## Local preview
 
-Open `index.html` through your IDE's built-in web preview. Reload the browser after changes.
+Open `web/index.html` through your IDE's built-in web preview. Reload the browser after changes.
 
 ## GitHub Pages
 
@@ -57,28 +59,28 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
 
 ## Design assets
 
-- Supporter logos in `assets/supporters/`, supplied by Marco on 7 October 2026 and displayed unchanged.
+- Supporter logos in `web/assets/supporters/`, supplied by Marco on 7 October 2026 and displayed unchanged.
   The homepage supporters panel links to Hereon, Helmholtz, DyNobel, and GITZ in that order.
-- Original Satify SVG and PNG supplied by the owner, in `assets/`.
-- Silkscreen by Jason Kottke, self-hosted under the SIL Open Font License; license in `assets/fonts/OFL.txt`.
+- Original Satify SVG and PNG supplied by the owner, in `web/assets/`.
+- Silkscreen by Jason Kottke, self-hosted under the SIL Open Font License; license in `web/assets/fonts/OFL.txt`.
   Source: [Google Fonts](https://github.com/google/fonts/tree/main/ofl/silkscreen).
-- Previous hero artwork (retained as a design asset): `assets/pixel-world.png`. Creation details and the full prompt are
+- Previous hero artwork (retained as a design asset): `web/assets/pixel-world.png`. Creation details and the full prompt are
   in [docs/artwork.md](docs/artwork.md).
-- Homepage discovery images: `assets/discovery-aerial.webp` and `assets/discovery-pixel.webp`, generated on 21 October 2026.
+- Homepage discovery images: `web/assets/discovery-aerial.webp` and `web/assets/discovery-pixel.webp`, generated on 21 October 2026.
   A fictional overhead aerial scene and a matching pixel-art version, registered to the same landscape layout.
   Served as 1152 × 768 WebP images (about 729 KB combined). The aerial image uses Lanczos downscaling and
   quality 82; the pixel image uses nearest-neighbour downscaling and quality 90, both encoded with method 6.
   The SVG retains its 1536 × 1024 coordinate system so discovery areas stay aligned.
-- Invitation illustration: `assets/pixel-heroine-dragon.png`, a female pixel-art explorer with a dragon flying over a distant valley.
+- Invitation illustration: `web/assets/pixel-heroine-dragon.png`, a female pixel-art explorer with a dragon flying over a distant valley.
   Created with the built-in image-generation tool; the full prompt is in
   [docs/invitation-heroine-dragon.md](docs/invitation-heroine-dragon.md).
-- Contact illustration: `assets/pixel-quest-giver.png`, an adventurer meeting a quest giver over a map.
+- Contact illustration: `web/assets/pixel-quest-giver.png`, an adventurer meeting a quest giver over a map.
   Created with the built-in image-generation tool; the full prompt is in [docs/contact-artwork.md](docs/contact-artwork.md).
-- Retained game assets (currently unused): `assets/satify-game-mobile.jpeg`, supplied by Marco on 24 September 2026,
-  and `assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
+- Retained game assets (currently unused): `web/assets/satify-game-mobile.jpeg`, supplied by Marco on 24 September 2026,
+  and `web/assets/satify-game-sticker.png`, reused unchanged from the Satify app's welcome page.
   The screenshot shows the Satify game comparing remote sensing imagery from 2026 and 2016, with agriculture labels
   and area measurements. The interactive hero uses its own aerial and pixel-art image pair.
-- App workspace screenshot: `assets/satify-app-workspace.jpeg`, supplied by Marco on 24 September 2026.
+- App workspace screenshot: `web/assets/satify-app-workspace.jpeg`, supplied by Marco on 24 September 2026.
   Displayed without retouching in the homepage app section and dedicated app page, with an enlarged on-page panel that closes using its Close button,
   Escape, or a click outside the panel. It shows colour-infrared imagery, built-up labels,
   Smart Fill controls, and the settings panel; the visible OpenStreetMap attribution is retained.
@@ -95,7 +97,7 @@ sections: [GitHub Pages data collection](https://docs.github.com/en/pages/gettin
 ## Game sounds
 
 The sounds were created in code for this website during development. They are synthesised directly in
-the visitor's browser using the Web Audio API in [discovery.js](discovery.js), with square-wave tones and short volume
+the visitor's browser using the Web Audio API in [discovery.js](web/discovery.js), with square-wave tones and short volume
 envelopes for a retro chiptune sound. No audio recordings, downloaded sound packs, third-party samples, or external
 audio services are used.
 
