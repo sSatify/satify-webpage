@@ -57,7 +57,7 @@ async function runProject(command, selected, values, config) {
     runtime = await launch(config, { login: command === 'login', headed: values.headed });
     if (command === 'login') {
       const page = await runtime.context.newPage();
-      await page.goto(config.baseUrl + '/data-store', { waitUntil: 'domcontentloaded' });
+      await page.goto(config.baseUrl + '/', { waitUntil: 'domcontentloaded' });
       const input = createInterface({ input: stdin, output: stdout });
       try { await input.question('Sign in in the opened browser, then press Enter here. '); }
       finally { input.close(); }

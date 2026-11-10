@@ -178,12 +178,12 @@ export async function prepareComparison(page, context, mode = 'Change detection'
     const box = await page.locator('.ol-paint-host').first().boundingBox();
     await page.mouse.click(box.x + box.width * .6, box.y + box.height * .7, { button: 'right' });
     const picker = page.getByRole('dialog', { name: /^Select or create (class|label)$/ });
-    const agriculture = picker.getByRole('button', { name: 'Agriculture', exact: true });
-    if (await agriculture.count()) await agriculture.click();
+    const seagrass = picker.getByRole('button', { name: 'Seagrass', exact: true });
+    if (await seagrass.count()) await seagrass.click();
     else {
       await picker.getByRole('button', { name: 'Add class', exact: true }).click();
-      await picker.getByRole('textbox', { name: 'New class name' }).fill('Agriculture');
-      await picker.locator('input[aria-label="Class colour"]').fill('#ff9f32');
+      await picker.getByRole('textbox', { name: 'New class name' }).fill('Seagrass');
+      await picker.locator('input[aria-label="Class colour"]').fill('#a000b5');
       await picker.getByRole('button', { name: 'Create class', exact: true }).click();
     }
     await picker.waitFor({ state: 'hidden' });
@@ -197,11 +197,22 @@ export async function prepareComparison(page, context, mode = 'Change detection'
 
 export async function prepareSync(page, context) {
   const frame = await prepareComparison(page, context, 'Time series');
+  const areaList = await context.runtime.api('GET', `/session/saved-areas/${encodeURIComponent(context.state.sceneIds[0])}?sid=${encodeURIComponent(context.state.sid)}`);
+  if (areaList.areas?.length) throw new Error('The recorder-owned date has saved areas; preserve them before recording.');
+  await page.getByRole('combobox', { name: 'Current file', exact: true }).selectOption({ label: '[1] Coastal farmland 2021-09-01' });
+  await waitForCanvas(page);
+  await page.getByRole('button', { name: 'Fit image', exact: true }).click();
+  await waitForCanvas(page);
   const sync = page.getByRole('switch', { name: 'Sync labelling', exact: true });
   if (await sync.getAttribute('aria-checked') === 'true') await sync.click();
   await page.getByRole('button', { name: 'Smart fill', exact: true }).click();
-  await selectMask(page, 0);
+  await page.getByRole('slider', { name: 'Source mask', exact: true }).waitFor();
+  await selectMask(page, 2);
+  if (!/^Adaptive Groups · k=3/.test(await page.getByRole('slider', { name: 'Source mask' }).getAttribute('aria-valuetext') ?? '')) {
+    throw new Error('The Water mask is not Adaptive Groups · k=3.');
+  }
   await page.getByRole('radio', { name: /^Local:/ }).click();
+  await placeToolPanel(page, { ...frame, panelAt: [.147, .123] });
   await page.waitForTimeout(1500);
   return { ...frame, restOnPanel: true };
 }
@@ -220,37 +231,118 @@ export async function runSync(demo, context) {
     const before = await counts();
     await demo.move({ x: box.x + box.width * x, y: box.y + box.height * y }, 700);
     await demo.hold(1500);
-    const synced = waitForMutation(demo.page, 'sync');
+    const observed = [];
+    const observe = request => {
+      if (/\/session\/(?:editor-mutation|editor-save)/.test(new URL(request.url()).pathname)) {
+        observed.push(request.postDataJSON()?.action ?? request.postDataJSON()?.kind ?? 'unknown');
+      }
+    };
+    demo.page.on('request', observe);
+    const synced = demo.page.waitForResponse(response => isMutationResponse(response, 'sync'), { timeout: 25_000 });
     await demo.page.mouse.down(); await demo.hold(100); await demo.page.mouse.up();
+    let response;
+    try { response = await synced; }
+    catch { throw new Error(`The Smart Fill click produced no Sync labelling operation (${observed.join(', ') || 'no editor write'}).`); }
+    finally { demo.page.off('request', observe); }
     context.undoStates.push(before);
     context.applied = true;
-    const response = await synced;
     if (!response.ok()) throw new Error('The dates could not be synced.');
     const result = await response.json();
     const targets = result.results?.flatMap(op => op.per_target ?? []);
     if (targets?.length !== 2 || targets.some(t => t.status !== 'ok' || !t.changed_tiles?.length)) throw new Error('Not every selected date was labelled.');
-    await demo.park();
     await demo.hold(650);
   }
-  await fill(.75, .79);
-  await demo.caption('Switch to Agriculture.');
-  await demo.move({ x: box.x + box.width * .4, y: box.y + box.height * .6 }, 500);
-  await demo.page.mouse.click(box.x + box.width * .4, box.y + box.height * .6, { button: 'right' });
+  // Middle of the water channel: the lower seed transfers to a different mask on the third date.
+  await fill(.65, .61);
+  if ((await counts('#3399ff'))[2] < 200_000) {
+    throw new Error('The third date did not receive the main Water channel.');
+  }
+  await demo.caption('Find the Seagrass shoreline.');
+  await demo.click(demo.page.getByRole('button', { name: 'Pan', exact: true }));
+  await demo.caption('Choose Seagrass.');
+  await demo.move({ x: 200, y: 600 }, 500);
+  await demo.page.mouse.click(200, 600, { button: 'right' });
   const picker = demo.page.getByRole('dialog', { name: /^Select or create (class|label)$/ });
-  await demo.click(picker.getByRole('button', { name: 'Agriculture', exact: true }));
-  // A finer mask separates individual fields while retaining each date's own boundaries.
+  await demo.click(picker.getByRole('button', { name: 'Seagrass', exact: true }));
+  await demo.caption('Draw one area around both intertidal stretches.');
+  await demo.page.evaluate(() => document.activeElement?.blur());
+  await demo.page.keyboard.press('a');
+  const shore = [[435,321],[563,321],[570,359],[558,399],[528,451],[528,484],[538,535],[530,584],[477,619],[367,619],[374,582],[396,531],[413,481],[430,434]];
+  for (const [x, y] of [...shore, shore[0]]) {
+    await demo.move({ x, y }, 300);
+    await demo.page.mouse.click(x, y);
+  }
+  const areaSaved = waitForMutation(demo.page, 'area-create');
+  await demo.page.keyboard.press('a');
+  const areaResponse = await areaSaved;
+  if (!areaResponse.ok()) throw new Error('The polygon area could not be saved.');
+  const savedArea = (await areaResponse.json()).area;
+  context.areaName = savedArea?.name;
+  context.areaId = savedArea?.id;
+  if (!context.areaName || !context.areaId) throw new Error('The saved polygon has no identity.');
+  context.areaCreated = true;
+  await demo.caption('Use Smooth Regions for Seagrass.');
+  await demo.click(demo.page.getByRole('button', { name: 'Smart fill', exact: true }));
   const sourceMask = demo.page.getByRole('slider', { name: 'Source mask', exact: true });
-  await demo.click(sourceMask, { x: .02 });
   await sourceMask.press('Home');
-  for (let index = 0; index < 5; index++) await sourceMask.press('ArrowRight');
-  if (Number(await demo.page.getByRole('slider', { name: 'Source mask', exact: true }).inputValue()) !== 5) throw new Error('Expected the field-scale source mask.');
-  await demo.caption('Label fields using each date’s own imagery.');
-  await fill(.46, .50);
-  await fill(.58, .46);
-  await demo.park();
-  await demo.caption('Two classes. Three dates.');
-  await demo.hold(3200);
-  context.verifiedClasses = { Water: await counts('#3399ff'), Agriculture: await counts('#ff9f32') };
+  for (let index = 0; index < 30; index++) {
+    if (/^Smooth Regions · k[-=]10\b/.test(await sourceMask.getAttribute('aria-valuetext') ?? '')) break;
+    const previous = await sourceMask.inputValue();
+    await sourceMask.press('ArrowRight');
+    if (await sourceMask.inputValue() === previous) break;
+  }
+  if (!/^Smooth Regions · k[-=]10\b/.test(await sourceMask.getAttribute('aria-valuetext') ?? '')) {
+    throw new Error('The Seagrass mask is not Smooth Regions · k=10.');
+  }
+  await demo.click(demo.page.getByRole('radio', { name: /^(In viewport|Viewport):/ }));
+  const replace = demo.page.getByRole('switch', { name: 'Replace existing', exact: true });
+  if (await replace.getAttribute('aria-checked') === 'true') await demo.click(replace);
+  if (await replace.getAttribute('aria-checked') !== 'false') throw new Error('Replace existing must be off.');
+  await demo.caption('Fill Seagrass inside the polygon.');
+  const beforeSeagrass = await counts();
+  await demo.move({ x: 420, y: 555 }, 700);
+  await demo.hold(700);
+  const syncedSeagrass = waitForMutation(demo.page, 'sync');
+  await demo.page.mouse.down(); await demo.hold(100); await demo.page.mouse.up();
+  const seagrassResponse = await syncedSeagrass;
+  if (!seagrassResponse.ok()) throw new Error('The Seagrass Smart Fill did not sync.');
+  const seagrassTargets = (await seagrassResponse.json()).results?.flatMap(op => op.per_target ?? []);
+  if (seagrassTargets?.length !== 2 || seagrassTargets.some(t => t.status !== 'ok' || !t.changed_tiles?.length)) {
+    throw new Error('Not every selected date received Seagrass labels.');
+  }
+  context.undoStates.push(beforeSeagrass);
+  let seagrassCounts = [0, 0, 0];
+  for (let attempt = 0; attempt < 60; attempt++) {
+    await context.writesFinished();
+    seagrassCounts = await counts('#a000b5');
+    if (seagrassCounts.every(count => count > 0)) break;
+    await demo.page.waitForTimeout(100);
+  }
+  if (seagrassCounts.some(count => count <= 0)) {
+    throw new Error('The Seagrass Smart Fill did not save labels on every date.');
+  }
+  await demo.hold(650);
+  await demo.caption('Cover the darker interior as well.');
+  const beforeInterior = await counts();
+  await demo.move({ x: 500, y: 360 }, 700);
+  await demo.hold(650);
+  await demo.page.mouse.down(); await demo.hold(100); await demo.page.mouse.up();
+  let interiorCounts = seagrassCounts;
+  for (let attempt = 0; attempt < 60; attempt++) {
+    await context.writesFinished();
+    interiorCounts = await counts('#a000b5');
+    if (interiorCounts[0] > seagrassCounts[0] + 20_000) break;
+    await demo.page.waitForTimeout(100);
+  }
+  if (interiorCounts[0] <= seagrassCounts[0] + 20_000 ||
+      interiorCounts.slice(1).some((count, index) => count < seagrassCounts[index + 1])) {
+    throw new Error('The darker Seagrass interior was not saved.');
+  }
+  context.undoStates.push(beforeInterior);
+  await demo.hold(650);
+  await demo.caption('Water and Seagrass across three dates.');
+  await demo.hold(2200);
+  context.verifiedClasses = { Water: await counts('#3399ff'), Seagrass: await counts('#a000b5') };
   if (Object.values(context.verifiedClasses).some(values => values.some(n => n <= 0))) throw new Error('Both classes must be saved on every date.');
   context.verifiedCounts = await counts();
 }
@@ -329,6 +421,33 @@ export async function cleanupSeries(demo, context) {
   context.applied = false;
 }
 
+export async function cleanupSync(demo, context) {
+  await cleanupSeries(demo, context);
+  if (!context.areaCreated) return;
+  const page = demo.page;
+  const workspace = page.getByRole('button', { name: 'Workspace', exact: true });
+  if (await workspace.isVisible()) await workspace.click();
+  const area = page.getByRole('region', { name: 'Area', exact: true });
+  const exit = area.getByRole('button', { name: /^Stop using this area/ });
+  if (await exit.isVisible()) await exit.click();
+  const list = () => context.runtime.api('GET', `/session/saved-areas/${encodeURIComponent(context.state.sceneIds[0])}?sid=${encodeURIComponent(context.state.sid)}`);
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const saved = (await list()).areas ?? [];
+    if (!saved.length) break;
+    const remove = area.getByRole('button', { name: `Delete ${saved[0].name}`, exact: true });
+    await remove.first().click();
+    await area.getByRole('button', { name: 'Delete', exact: true }).click();
+    let removed = false;
+    for (let n = 0; n < 40; n++) {
+      if (!((await list()).areas ?? []).some(entry => entry.id === saved[0].id)) { removed = true; break; }
+      await page.waitForTimeout(100);
+    }
+    if (!removed) throw new Error('The recorder-owned saved area could not be removed.');
+  }
+  if (((await list()).areas ?? []).length) throw new Error('Recorder-owned saved areas remain on the server.');
+  context.areaCreated = false;
+}
+
 const starterExamples = [
   { name: 'Forest', points: [[.65,.80],[.68,.82],[.71,.82]] },
   { name: 'Forest', points: [[.19,.43],[.20,.46],[.21,.48]] },
@@ -401,7 +520,7 @@ export const definitions = {
   'smart-fill': { dataset: 'tools', title: 'Local. Viewport. Global.', prepare: prepareSmart, run: runSmart, resultPreview: false },
   'rivers-roads': { dataset: 'tools', title: 'Follow the bend.', prepare: prepareRoads, run: runRoads },
   'change-detection': { dataset: 'time-series', title: 'See the change. Make it a label.', prepare: prepareChange, run: runChange, cleanup: cleanupSeries },
-  'time-series': { dataset: 'time-series', title: 'One action. Several dates.', prepare: prepareSync, run: runSync, cleanup: cleanupSeries },
+  'time-series': { dataset: 'time-series', title: 'One action. Several dates.', prepare: prepareSync, run: runSync, cleanup: cleanupSync },
   propagate: { dataset: 'tools', title: 'Teach it a little. Label a lot.', prepare: preparePropagate, run: runPropagate, resultPreview: false },
 };
 
@@ -437,7 +556,7 @@ export async function openManaged(name, options = {}) {
       await resetProject({ api: runtime.api, config, scene, state });
     }
     const page = await runtime.context.newPage();
-    await page.goto(config.baseUrl + '/data-store');
+    await page.goto(config.baseUrl + '/');
     if (await page.evaluate(() => localStorage.getItem('explainerVideos')) !== recordingExplainerVideos) {
       throw new Error('Tool videos must be disabled before recording.');
     }

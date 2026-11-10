@@ -55,16 +55,21 @@
   },
   {
     "scenario": "time-series",
-    "origin": "https://app.satify.tech",
-    "appVersion": "v3.0.0",
+    "origin": "http://127.0.0.1:3030",
+    "appVersion": "v3.0.1-local",
     "theme": "dark",
-    "recordedAt": "2026-11-09T14:47:12.979Z",
-    "run": "2026-11-09T14-46-34-859Z-v2-time-series",
+    "explainerVideos": "off",
+    "recordedAt": "2026-11-10T17:02:40.564Z",
+    "run": "2026-11-10T17-02-05-456Z-v2-time-series",
     "width": 1600,
     "height": 900,
-    "duration": 23.77,
-    "bytes": 6128214,
-    "sha256": "5b38e977a436b198a6e03b1727477ec1dca35e7ffb7d5979a53b4cbfc54ba090"
+    "duration": 23.87,
+    "bytes": 3513901,
+    "sha256": "379db9fd9412f1abe3aa610f16aeed5b6190f85cd11ccc6ad25658b8ba832c52",
+    "verifiedClasses": {
+      "Water": [292073, 344753, 222492],
+      "Seagrass": [78588, 69923, 73809]
+    }
   },
   {
     "scenario": "change-detection",

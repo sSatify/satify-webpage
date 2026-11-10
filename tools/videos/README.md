@@ -8,7 +8,8 @@ Global from clean starts, zooming out to show the previous viewport boundary and
 the unlabelled area beyond it. Saved counts must increase across the three modes.
 Propagate starts clean and shows all
 example strokes before prediction; its website poster also shows the clean image.
-Sync labelling demonstrates both Water and Agriculture across three dates.
+Sync labelling demonstrates Water and two Seagrass Smart Fill clicks inside a polygon
+spanning both eastern intertidal stretches across three dates.
 All clips show real app interaction with short captions. The showcase captions are
 bold 40 px, with a high-contrast panel inset 14% from the bottom of the recording.
 Recordings use dark mode, explicitly overriding any saved app theme before startup.
@@ -19,6 +20,8 @@ website; a one-second contact sheet missed a four-frame resize in Smart Fill.
 Smart Fill leaves the pointer where each action ends; it does not park it between
 steps. It avoids clipped screenshots while the screencast is running, because
 those screenshots briefly changed Chromium's capture surface.
+Sync labelling also leaves the pointer at each action instead of returning to
+the tool panel after every fill.
 See [selected recordings and reproduction](../../docs/app-videos.md) for
 the exact deployed build, managed projects, run IDs and verification notes.
 
@@ -29,7 +32,12 @@ name for sign-in, setup, and capture:
 npm run login -- --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
 npm run setup -- --dataset tools --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
 npm run showcase -- smart-fill --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
+npm run setup -- --dataset time-series --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 sync preview"
+npm run showcase -- time-series --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 sync preview"
 ```
+
+Do not edit the recorder-managed project in another browser while setup or
+capture is running; simultaneous saves can leave that browser with a conflict.
 
 The login window has its own browser profile and requires an interactive sign-in.
 On Windows it opens in Edge so normal password pasting is available. Press Enter

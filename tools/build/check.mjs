@@ -30,11 +30,11 @@ const css = await readFile(webFile('styles.css'), 'utf8');
 const recordings = JSON.parse(await readFile(webFile('assets/videos/recordings.json'), 'utf8'));
 assert.deepEqual(recordings.map(recording => recording.scenario).sort(), ['change-detection', 'propagate', 'rivers-roads', 'smart-fill', 'time-series']);
 for (const recording of recordings) {
-  if (recording.scenario === 'smart-fill') {
-    assert.equal(recording.origin, 'http://127.0.0.1:3030', 'Smart Fill: local app recording');
-    assert.equal(recording.appVersion, 'v3.0.1-local', 'Smart Fill: updated local app');
-    assert.equal(recording.explainerVideos, 'off', 'Smart Fill: Tool videos disabled');
-    assert(recording.duration <= 25, 'Smart Fill: at most 25 seconds');
+  if (['smart-fill', 'time-series'].includes(recording.scenario)) {
+    assert.equal(recording.origin, 'http://127.0.0.1:3030', `${recording.scenario}: local app recording`);
+    assert.equal(recording.appVersion, 'v3.0.1-local', `${recording.scenario}: updated local app`);
+    assert.equal(recording.explainerVideos, 'off', `${recording.scenario}: Tool videos disabled`);
+    if (recording.scenario === 'smart-fill') assert(recording.duration <= 25, 'Smart Fill: at most 25 seconds');
   } else {
     assert.equal(recording.origin, 'https://app.satify.tech', `${recording.scenario}: production recording`);
   }
@@ -45,6 +45,9 @@ for (const recording of recordings) {
 const modes = recordings.find(recording => recording.scenario === 'smart-fill').verifiedModes;
 assert(modes && modes.Local > 0 && modes['In viewport'] > modes.Local && modes.Global > modes['In viewport'],
   'Smart Fill must demonstrate three distinct saved scopes');
+const classes = recordings.find(recording => recording.scenario === 'time-series').verifiedClasses;
+assert(classes && ['Water', 'Seagrass'].every(name => classes[name]?.length === 3 && classes[name].every(count => count > 0)),
+  'Sync labelling must save both classes across all three dates');
 assert.match(await readFile(webFile('app/index.html'), 'utf8'), /<meta name="robots" content="noindex">/, 'The test showcase must opt out of search indexing');
 for (const [, asset] of css.matchAll(/url\(['"]?([^'"\)]+)['"]?\)/g)) {
   if (asset.startsWith('#')) {

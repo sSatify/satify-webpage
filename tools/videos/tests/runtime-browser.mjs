@@ -11,7 +11,7 @@ test('dark recording overrides a saved light theme and preserves refreshed authe
   const directory = await mkdtemp(join(tmpdir(), 'satify-video-auth-'));
   let expectedToken = 'fixture-first';
   const server = createServer((request, response) => {
-    if (request.url === '/data-store') {
+    if (request.url === '/') {
       response.writeHead(200, { 'Content-Type': 'text/html' });
       response.end(`<script>
         document.documentElement.dataset.theme = localStorage.getItem('theme');
@@ -39,7 +39,7 @@ test('dark recording overrides a saved light theme and preserves refreshed authe
     }] }));
     runtime = await launch(config);
     const page = await runtime.context.newPage();
-    await page.goto(config.baseUrl + '/data-store');
+    await page.goto(config.baseUrl + '/');
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
     assert.equal(await page.locator('html').getAttribute('data-explainer-videos'), 'off');
     assert.equal(await page.evaluate(() => matchMedia('(prefers-color-scheme: dark)').matches), true);

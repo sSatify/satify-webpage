@@ -107,7 +107,9 @@ export async function connect(runtime, config) {
     // Attach a rejection handler before navigation, so connection errors do not
     // leave an unhandled pending response promise.
     const result = await Promise.all([
-      ready, page.goto(config.baseUrl + '/data-store', { waitUntil: 'domcontentloaded' }),
+      // The app redirects / to Projects. Some local servers do not serve
+      // direct deep links even though client-side navigation works.
+      ready, page.goto(config.baseUrl + '/', { waitUntil: 'domcontentloaded' }),
     ]);
     if (!result[0].ok()) throw new Error('Sign in with npm run login before setup.');
     await runtime.saveAuth();
