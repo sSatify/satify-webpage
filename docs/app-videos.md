@@ -9,6 +9,29 @@ against the updated local app at **http://127.0.0.1:3030**, version
 The selected assets are used on the website's unlisted `/app/` page.
 Further website work can continue on `develop`; the deployment workflow publishes `main`.
 
+The separate, unlisted `/app2/` page is a technical tool gallery using the
+approved short edits. It has its own stylesheet and player interactions; `/app/`
+and the original recordings remain unchanged. The five MP4s and their posters
+are copied into `web/assets/videos/gallery/`, with hashes, edit versions, source
+app versions and durations in `clips.json`. `npm run check` verifies these assets
+and the new page as well as the original showcase.
+
+The gallery selects Smart Fill v1 (Global only), Roads v5, Sync labelling v2,
+Change Detection v3 and Propagate v2. Four clips are five seconds; Change
+Detection is eight seconds and returns to the selected NDVI mask after its
+histogram adjustment. All are 1280 × 720, 30 fps and silent. Their edit recipes
+and capture provenance are documented in `tools/videos/assets/micro/README.md`.
+The gallery uses short descriptions without scope badges, technical data tables,
+detail disclosures, category filters, duration labels or the introductory metadata row. It offers
+an enlarged player and mutually exclusive playback. Native players remain available without
+JavaScript. Playback, keyboard focus, themes, direct-file access, and video
+proportions from 320 to 1440 px were checked against the built page.
+The page now ends after the gallery: Workflow notes, the invitation panel and
+the recording note are removed, along with the Technical notes navigation link.
+Its heading is “SATIFY tools in action”; the road card's category is “Road & river tracing”.
+Select Similar was dropped from the showcase after the industrial roof trial
+failed its selection-quality check. Its local trial captures and review artifacts remain in `tools/videos/output/`.
+
 The recorder forces dark mode and switches Tool videos off before app startup,
 including when its saved browser state has different preferences. Each new
 showcase capture verifies the preferences and records them in its manifest.

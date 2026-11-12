@@ -1,0 +1,5 @@
+{
+  "tool": "Built-in image_gen",
+  "reference": "satify-app/frontend/public/error-satellite/not-found.png",
+  "prompt": "Use case: identity-preserve. Asset type: transparent character pose sheet for a 7-second SATIFY video. Input image is the exact satellite mascot identity reference. Create two separate full-body poses side by side, each fully inside its own half with wide clear transparent gap: LEFT curious explorer holding magnifying glass, friendly inquisitive expression; RIGHT delighted smiling satellite making one thumbs-up with a white glove. Preserve same silver box body, dark blue face screen, large expressive eyes, blue solar panels, antenna dish, mint/teal accents, gold small details, outlined polished cartoon illustration style. Same proportions and character identity in both poses. Both floating, front three-quarter view. Remove all background, floor, shadows outside character, planets, route marks, stars, circles, text. Actual transparent background. No text, no logos. Generous padding, no cropped solar panels. Wide landscape sheet with equal-size poses. This is an adaptation of the existing mascot, not a redesign."
+}

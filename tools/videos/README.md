@@ -69,7 +69,33 @@ their own operations and check the saved counts on all dates afterward.
 Development recordings require an explicit `--env dev` and, for historical projects,
 `--project "SATIFY website showcase 2026-10-26 tools"` (or `time series`). They are not used for the website.
 
+## Short Change Detection pilot
+
+The eight-second Change Detection pilot has a separate local recorder and edit.
+See [the micro-pilot recipes](assets/micro/README.md#change-detection--local-rerecording)
+for its explicit local URL, version check, isolated two-date project and verified
+Apply/Undo workflow. Its outputs remain separate from the selected website clip.
+
 ## Separate forest-road trial
+
+The short landscape pilot now has its own local recorder,
+`scripts/record-road-micro.mjs`. It creates a separate managed project, records a
+wide off-centre guide, requires an expected app version, verifies fitting revision
+2 and Preview/Apply/saved pixel counts, then undoes its saved label. Original
+WebM, timestamps, request provenance and saved tiles stay in ignored `output/`.
+Use the local origin explicitly, with Tool videos off and a saved local sign-in:
+
+```powershell
+node scripts/record-road-micro.mjs --prepare --url http://127.0.0.1:3030 --project "SATIFY micro road showcase 2026-11-11" --expect-version 3.0.1-local
+node scripts/record-road-micro.mjs --url http://127.0.0.1:3030 --project "SATIFY micro road showcase 2026-11-11" --expect-version 3.0.1-local
+```
+
+For a different local build, pass its actual verified version. The standard
+local login command above saves the same origin-specific session. An existing
+local session can also be supplied with `--auth <ignored-storage-state-file>`;
+never print its contents. Playwright's FFmpeg binary must be installed for capture.
+See [the pilot recipe](assets/micro/README.md) for the separate five-second export.
+The historical production recorder below is retained for the older selected clip.
 
 The prepared local bundles are `assets/city-scene.tif` with `assets/city-scene.json`
 (the urban/forest tools scene) and `assets/forest-scene.tif` with

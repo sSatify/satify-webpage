@@ -17,7 +17,7 @@ def digest(path):
     with path.open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
 
-def prepare(source, output):
+def prepare(source, output, display_name='Forest scene 2019-08-20'):
     source, output = source.resolve(), output.resolve()
     if source == output.parent or source in output.parents:
         raise ValueError('Output must be outside the source directory.')
@@ -57,7 +57,7 @@ def prepare(source, output):
             assert np.array_equal(dst.read(index), data, equal_nan=True)
             assert dst.descriptions[index - 1] == record['name']
             assert digest(paths[index - 1]) == record['source_sha256'], 'Source changed during preparation'
-        manifest = {'schema_version': 1, 'source_scene': source.name, 'displayName': 'Forest scene 2019-08-20',
+        manifest = {'schema_version': 1, 'source_scene': source.name, 'displayName': display_name,
                     'file': output.name, 'sha256': digest(staged), 'bytes': staged.stat().st_size,
                     'width': dst.width, 'height': dst.height, 'crs_wkt': dst.crs.to_wkt(),
                     'geotransform': list(dst.transform.to_gdal()), 'data_type': dst.dtypes[0], 'bands': records,
@@ -79,5 +79,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('source', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--display-name', default='Forest scene 2019-08-20')
     args = parser.parse_args()
-    prepare(args.source, args.output)
+    prepare(args.source, args.output, args.display_name)
