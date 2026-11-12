@@ -6,29 +6,38 @@
     <meta name="description"
           content="A technical gallery of SATIFY workflows: mask-guided annotation, road fitting, multi-date labelling, NDVI change detection and label propagation.">
     <meta name="robots" content="noindex">
-    <meta name="theme-color" content="#111a1c">
+    <meta name="theme-color" content="#203c31">
     <title>SATIFY — Tool gallery</title>
     <link rel="icon" href="../assets/satify-logo.svg" type="image/svg+xml">
+    <link rel="preload" href="../assets/fonts/silkscreen-regular.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="../assets/fonts/departure-mono.woff2" as="font" type="font/woff2" crossorigin>
     <script src="../theme.js"></script>
+    <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="gallery.css">
     <script src="../site.js" defer></script>
     <script src="gallery.js" defer></script>
 </head>
-<body>
+<body class="tool-gallery">
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
     <div class="header-inner wrap">
-        <a class="brand" href="../" aria-label="SATIFY home"><img src="../assets/satify-logo.svg" width="36" height="36"
-                                                                  alt=""><span>SATIFY</span><span class="brand-section">/ APP</span></a>
-        <nav aria-label="Main navigation"><a href="#workflows">Tools</a><a class="app-link" href="https://app.satify.tech/" target="_blank" rel="noopener noreferrer">Open
-            app <span aria-hidden="true">↗</span><span class="sr-only"> (new tab)</span></a></nav>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"
-                title="Switch to dark theme" hidden><span class="theme-label">Light</span><span
-                aria-hidden="true">◐</span></button>
+        <a class="brand" href="../" aria-label="SATIFY home"><img src="../assets/satify-logo.svg" width="42" height="42"
+                                                                 alt=""><span>SATIFY<span class="brand-caption">Pixels. Insights. Discoveries.</span></span></a>
+        <div class="header-tools">
+            <nav aria-label="Main navigation"><a href="../#how-it-works">The mission</a><a href="../#the-app">The app</a><a href="../#contact">Contact</a></nav>
+            <button class="theme-toggle pixel-button secondary" id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false"
+                    title="Switch to dark theme" hidden>
+                <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true">
+                    <path class="theme-sun"
+                          d="M8 0h4v3H8zM8 17h4v3H8zM0 8h3v4H0zM17 8h3v4h-3zM3 3h3v3H3zM14 3h3v3h-3zM3 14h3v3H3zM14 14h3v3h-3zM6 6h8v8H6z"/>
+                    <path class="theme-moon" d="M8 1h4v3H8v8h8V8h3v7h-3v3H5v-3H2V5h3V2h3z"/>
+                </svg>
+                <span class="theme-label">Light</span></button>
+        </div>
     </div>
 </header>
 <main id="main" class="wrap">
-    <section class="gallery-intro" aria-labelledby="page-title">
+    <section class="gallery-intro app-hero" aria-labelledby="page-title">
         <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> SATIFY / TOOL GALLERY</p>
         <h1 id="page-title">SATIFY tools in action</h1>
         <p class="intro">Explore some of the innovative, time-saving tools SATIFY provides for region annotation, tracing structures and temporal analysis.</p>
@@ -47,7 +56,7 @@
                            aria-describedby="smart-fill-description">
                         <source src="../assets/videos/gallery/smart-fill.mp4" type="video/mp4">
                         <a href="../assets/videos/gallery/smart-fill.mp4">Watch Smart Fill</a></video>
-                    <button class="play-overlay" type="button" data-play hidden aria-label="Play Smart Fill">
+                    <button class="play-overlay pixel-button primary" type="button" data-play hidden aria-label="Play Smart Fill">
                         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                             <path d="m8 4 12 8-12 8Z" fill="currentColor"/>
                         </svg>
@@ -58,7 +67,7 @@
                     <p class="card-description" id="smart-fill-description">Use a prepared region mask to label matching
                         forest patches across the image from a single selection.</p>
                     <div class="card-actions">
-                        <button type="button" class="expand-button" data-expand hidden
+                        <button type="button" class="expand-button pixel-button secondary" data-expand hidden
                                 aria-label="Enlarge Smart Fill video">Enlarge <span aria-hidden="true">⤢</span></button>
                     </div>
                 </div>
@@ -74,7 +83,7 @@
                            aria-describedby="rivers-roads-description">
                         <source src="../assets/videos/gallery/rivers-roads.mp4" type="video/mp4">
                         <a href="../assets/videos/gallery/rivers-roads.mp4">Watch Rivers &amp; roads pen</a></video>
-                    <button class="play-overlay" type="button" data-play hidden aria-label="Play Rivers and roads pen">
+                    <button class="play-overlay pixel-button primary" type="button" data-play hidden aria-label="Play Rivers and roads pen">
                         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                             <path d="m8 4 12 8-12 8Z" fill="currentColor"/>
                         </svg>
@@ -85,7 +94,7 @@
                     <p class="card-description" id="rivers-roads-description">Draw a loose corridor around a winding
                         road. Review the detected path and fitted width, then apply the result.</p>
                     <div class="card-actions">
-                        <button type="button" class="expand-button" data-expand hidden
+                        <button type="button" class="expand-button pixel-button secondary" data-expand hidden
                                 aria-label="Enlarge Rivers and roads pen video">Enlarge <span
                                 aria-hidden="true">⤢</span></button>
                     </div>
@@ -102,7 +111,7 @@
                            aria-describedby="time-series-description">
                         <source src="../assets/videos/gallery/time-series.mp4" type="video/mp4">
                         <a href="../assets/videos/gallery/time-series.mp4">Watch Sync labelling</a></video>
-                    <button class="play-overlay" type="button" data-play hidden aria-label="Play Sync labelling">
+                    <button class="play-overlay pixel-button primary" type="button" data-play hidden aria-label="Play Sync labelling">
                         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                             <path d="m8 4 12 8-12 8Z" fill="currentColor"/>
                         </svg>
@@ -114,7 +123,7 @@
                     <p class="card-description" id="time-series-description">Label one scene and repeat the operation
                         across other selected scenes, using each image’s own regions.</p>
                     <div class="card-actions">
-                        <button type="button" class="expand-button" data-expand hidden
+                        <button type="button" class="expand-button pixel-button secondary" data-expand hidden
                                 aria-label="Enlarge Sync labelling video">Enlarge <span aria-hidden="true">⤢</span>
                         </button>
                     </div>
@@ -131,7 +140,7 @@
                            aria-describedby="change-detection-description">
                         <source src="../assets/videos/gallery/change-detection.mp4" type="video/mp4">
                         <a href="../assets/videos/gallery/change-detection.mp4">Watch Change detection</a></video>
-                    <button class="play-overlay" type="button" data-play hidden aria-label="Play Change detection">
+                    <button class="play-overlay pixel-button primary" type="button" data-play hidden aria-label="Play Change detection">
                         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                             <path d="m8 4 12 8-12 8Z" fill="currentColor"/>
                         </svg>
@@ -142,7 +151,7 @@
                     <p class="card-description" id="change-detection-description">Spot potential vegetation loss from
                         decreases in NDVI. Adjust the threshold and label the affected areas.</p>
                     <div class="card-actions">
-                        <button type="button" class="expand-button" data-expand hidden
+                        <button type="button" class="expand-button pixel-button secondary" data-expand hidden
                                 aria-label="Enlarge Change detection video">Enlarge <span aria-hidden="true">⤢</span>
                         </button>
                     </div>
@@ -159,7 +168,7 @@
                            aria-describedby="propagate-description">
                         <source src="../assets/videos/gallery/propagate.mp4" type="video/mp4">
                         <a href="../assets/videos/gallery/propagate.mp4">Watch Propagate labels</a></video>
-                    <button class="play-overlay" type="button" data-play hidden aria-label="Play Propagate labels">
+                    <button class="play-overlay pixel-button primary" type="button" data-play hidden aria-label="Play Propagate labels">
                         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                             <path d="m8 4 12 8-12 8Z" fill="currentColor"/>
                         </svg>
@@ -170,7 +179,7 @@
                     <p class="card-description" id="propagate-description">Train from a few class examples, preview
                         predictions across the image, and apply the pixels that meet your confidence threshold.</p>
                     <div class="card-actions">
-                        <button type="button" class="expand-button" data-expand hidden
+                        <button type="button" class="expand-button pixel-button secondary" data-expand hidden
                                 aria-label="Enlarge Propagate labels video">Enlarge <span aria-hidden="true">⤢</span>
                         </button>
                     </div>
@@ -182,19 +191,19 @@
 
 </main>
 
-<dialog class="video-dialog" id="video-dialog" aria-labelledby="viewer-title" aria-describedby="viewer-description">
-    <div class="viewer-header">
+<dialog class="video-dialog screenshot-panel" id="video-dialog" aria-labelledby="viewer-title" aria-describedby="viewer-description">
+    <div class="viewer-header screenshot-panel-header">
         <div><span class="eyebrow">SATIFY / TOOL</span>
             <h2 id="viewer-title">Tool</h2></div>
-        <button type="button" class="close-viewer" autofocus>Close <span aria-hidden="true">×</span></button>
+        <button type="button" class="close-viewer screenshot-panel-close pixel-button primary" autofocus>Close <span aria-hidden="true">×</span></button>
     </div>
     <video class="viewer-video" controls muted playsinline preload="none" width="1280" height="720"></video>
     <p id="viewer-description"></p>
 </dialog>
 <footer class="site-footer">
-    <div class="wrap footer-inner"><a class="brand" href="../" aria-label="SATIFY home"><img
-            src="../assets/satify-logo.svg" width="28" height="28" alt=""><span>SATIFY</span></a><span
-            class="footer-caption">Pixels. Insights. Discoveries.</span>
+    <div class="footer-inner wrap"><a class="brand footer-brand" href="../" aria-label="SATIFY home"><img
+            src="../assets/satify-logo.svg" width="30" height="30" alt=""><span>SATIFY</span></a><span
+            class="footer-tagline">Pixels. Insights. Discoveries.</span>
         <nav aria-label="Legal"><a href="../imprint/">Imprint</a><a href="../privacy/">Privacy Notice</a></nav>
         <small>© 2026 SATIFY</small></div>
 </footer>

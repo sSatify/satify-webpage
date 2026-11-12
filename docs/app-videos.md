@@ -10,8 +10,10 @@ The selected assets are used on the website's unlisted `/app/` page.
 Further website work can continue on `develop`; the deployment workflow publishes `main`.
 
 The separate, unlisted `/app2/` page is a technical tool gallery using the
-approved short edits. It has its own stylesheet and player interactions; `/app/`
-and the original recordings remain unchanged. The five MP4s and their posters
+approved short edits. It shares `web/styles.css` for SATIFY typography, colours,
+page header/footer and pixel buttons. Its own stylesheet contains only the gallery
+layout and player-specific rules; `/app/` and the original recordings remain unchanged.
+The five MP4s and their posters
 are copied into `web/assets/videos/gallery/`, with hashes, edit versions, source
 app versions and durations in `clips.json`. `npm run check` verifies these assets
 and the new page as well as the original showcase.
