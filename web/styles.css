@@ -691,7 +691,6 @@ h1 span {
 }
 
 .app-overview-copy { min-width: 0; }
-.app-overview-copy > .pixel-button { margin-top: 28px; }
 
 .app-intro {
   font-size: 18px;
@@ -700,7 +699,7 @@ h1 span {
 .app-features {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   column-gap: 28px;
   list-style: none;
   padding: 0;
@@ -721,6 +720,16 @@ h1 span {
 
 .app-feature-summary {
   margin-block: 4px 8px;
+}
+
+.app-tools-action {
+  display: flex;
+  align-items: center;
+}
+
+.app-tools-action .pixel-button {
+  max-width: 100%;
+  text-align: center;
 }
 
 .app-invitation {
