@@ -1,298 +1,36 @@
 # Repeatable tool videos
 
-The current five-video showcase is implemented in `scripts/showcase-v2.mjs`.
-It records Smart Fill and Rivers & Roads Pen at 1280 × 960, and Sync labelling,
-Change detection and experimental Propagate Labels at 1600 × 900. Most silent clips
-open with a one-second result preview. Smart Fill instead compares Local, Viewport and
-Global from clean starts, zooming out to show the previous viewport boundary and
-the unlabelled area beyond it. Saved counts must increase across the three modes.
-Propagate starts clean and shows all
-example strokes before prediction; its website poster also shows the clean image.
-Sync labelling demonstrates Water and two Seagrass Smart Fill clicks inside a polygon
-spanning both eastern intertidal stretches across three dates.
-All clips show real app interaction with short captions. The showcase captions are
-bold 40 px, with a high-contrast panel inset 14% from the bottom of the recording.
-Recordings use dark mode, explicitly overriding any saved app theme before startup.
-The showcase recorder verifies the dark theme before capture and records it in the manifest.
-It also switches Tool videos off before app startup and checks the preference before capture.
-Review all frames around abrupt image changes before selecting a clip for the
-website; a one-second contact sheet missed a four-frame resize in Smart Fill.
-Smart Fill leaves the pointer where each action ends; it does not park it between
-steps. It avoids clipped screenshots while the screencast is running, because
-those screenshots briefly changed Chromium's capture surface.
-Sync labelling also leaves the pointer at each action instead of returning to
-the tool panel after every fill.
-See [selected recordings and reproduction](../../docs/app-videos.md) for
-the exact deployed build, managed projects, run IDs and verification notes.
+The approved short videos are displayed on `/tools/`. See
+[the current video recipes](../../docs/app-videos.md) for exact sources, commands,
+edit versions and review requirements. The five original sources are retained in
+`assets/sources/`; they are not copied into the website build.
 
-For the locally running app on this workstation, use the same origin and project
-name for sign-in, setup, and capture:
+The reusable `showcase-v2.mjs` recorder captures longer tool interactions.
+The `edit-*-micro.py` scripts crop and retime the real captures into the selected
+five-second clips (eight seconds for Change detection). Saty and the SATIFY logo
+stay visible; the clips have no audio track. The older `record` command and its
+scenarios remain available for recording other demonstrations.
 
-```powershell
-npm run login -- --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
-npm run setup -- --dataset tools --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
-npm run showcase -- smart-fill --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
-npm run setup -- --dataset time-series --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 sync preview"
-npm run showcase -- time-series --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 sync preview"
-```
+For the local app, every login, setup and capture must explicitly target
+`http://127.0.0.1:3030`. Sign in directly in the separate Edge window, save that
+session, confirm the app version, dark mode and disabled Tool videos, then
+capture. Never put passwords or browser state in Git. On this workstation,
+launch interactive login outside the Codex sandbox.
 
-Do not edit the recorder-managed project in another browser while setup or
-capture is running; simultaneous saves can leave that browser with a conflict.
+## Layout
 
-The login window has its own browser profile and requires an interactive sign-in.
-On Windows it opens in Edge so normal password pasting is available. Press Enter
-in the terminal after the Projects page appears. The saved session remains in
-the ignored `.state/` directory and is isolated by app origin.
-When running from Codex on this workstation, launch the interactive login
-outside its app sandbox; Edge otherwise exits before opening the sign-in page.
+- `assets/`: checksummed scene definitions and selected recording sources.
+- `assets/micro/`: Saty artwork and the short-video recipe index.
+- `scripts/`, `scenarios/`, `tests/`: reusable recorder, editors and verification.
+- `previews/`: local previews of the current five edits.
+- `output/`: ignored new captures, edit outputs and review images.
+- `.state/`: ignored origin-specific sign-in and managed-project identities.
+- `.cache/`, `node_modules/`: ignored, rebuildable dependencies and caches.
 
-After installing dependencies and preparing the managed projects, use
-`npm run showcase -- smart-fill` (or `rivers-roads`, `time-series`,
-`change-detection`, `propagate`). This entry point defaults to the production app,
-`https://app.satify.tech`, and prints the selected origin before recording.
-It uses saved project ownership records specific to that origin. Run recordings sequentially. FFmpeg must
-be on PATH, installed locally as `ffmpeg-static`, or configured through `FFMPEG_PATH`.
-
-The production showcase uses these dedicated managed projects. Prepare them once after login:
-
-```powershell
-npm run login -- --env prod
-npm run setup -- --env prod --dataset tools --project "SATIFY website showcase 2026-11-09 tools"
-npm run setup -- --env prod --dataset time-series --project "SATIFY website showcase 2026-11-09 time series"
-```
-
-Setup uploads through the versioned source API. Resets use explicit tile revisions,
-durable save/removal receipts, and only the reserved drawing layer in a verified managed project.
-The showcase waits for all editor saves before accepting a capture. Comparison demos undo
-their own operations and check the saved counts on all dates afterward.
-
-Development recordings require an explicit `--env dev` and, for historical projects,
-`--project "SATIFY website showcase 2026-10-26 tools"` (or `time series`). They are not used for the website.
-
-## Short Change Detection pilot
-
-The eight-second Change Detection pilot has a separate local recorder and edit.
-See [the micro-pilot recipes](assets/micro/README.md#change-detection--local-rerecording)
-for its explicit local URL, version check, isolated two-date project and verified
-Apply/Undo workflow. Its outputs remain separate from the selected website clip.
-
-## Separate forest-road trial
-
-The short landscape pilot now has its own local recorder,
-`scripts/record-road-micro.mjs`. It creates a separate managed project, records a
-wide off-centre guide, requires an expected app version, verifies fitting revision
-2 and Preview/Apply/saved pixel counts, then undoes its saved label. Original
-WebM, timestamps, request provenance and saved tiles stay in ignored `output/`.
-Use the local origin explicitly, with Tool videos off and a saved local sign-in:
-
-```powershell
-node scripts/record-road-micro.mjs --prepare --url http://127.0.0.1:3030 --project "SATIFY micro road showcase 2026-11-11" --expect-version 3.0.1-local
-node scripts/record-road-micro.mjs --url http://127.0.0.1:3030 --project "SATIFY micro road showcase 2026-11-11" --expect-version 3.0.1-local
-```
-
-For a different local build, pass its actual verified version. The standard
-local login command above saves the same origin-specific session. An existing
-local session can also be supplied with `--auth <ignored-storage-state-file>`;
-never print its contents. Playwright's FFmpeg binary must be installed for capture.
-See [the pilot recipe](assets/micro/README.md) for the separate five-second export.
-The historical production recorder below is retained for the older selected clip.
-
-The prepared local bundles are `assets/city-scene.tif` with `assets/city-scene.json`
-(the urban/forest tools scene) and `assets/forest-scene.tif` with
-`assets/forest-scene.json` (the new forest-road scene). Both manifests are tracked;
-the TIFFs are ignored. The forest TIFF is prepared locally using the command below
-and is not yet included in the downloadable dataset release. Earlier cache copies
-and recording outputs retain their historical names.
-
-The owner-supplied `dw_-64.3106956299_49.8925498786-20190820` scene has a separate
-production project, `SATIFY forest road trial 2019-08-20 2026-11-09`. The reviewed
-export from this project is now selected as `../../web/assets/videos/rivers-roads.mp4`.
-New captures stay in `output/` until reviewed and explicitly selected for the site.
-
-`scripts/prepare-road-scene.py` stacks the twelve original bands without resampling,
-verifies decoded values, grid, CRS and types, and verifies that source hashes did not
-change. It handles the long Google Drive shortcut path on Windows. Rasterio 1.5.2
-was used in the ignored `.cache/scene-tools` environment. From `tools/videos/`:
-
-```powershell
-python -m venv .cache/scene-tools
-& .cache/scene-tools/Scripts/python.exe -m pip install rasterio==1.5.2
-& .cache/scene-tools/Scripts/python.exe scripts/prepare-road-scene.py "<source scene folder>" --output assets/forest-scene.tif
-node scripts/test-forest-road.mjs
-```
-
-The trial reuses the production login and reserves only its own project's drawing
-layer. It uses the existing test-data calibration convention (scale 0.0001, offset 0);
-the original band samples are preserved and no product processing level is invented.
-Settings match the supplied screenshot: 79.9 m brush, Draw, Trace, Preserve curvature
-0.85, Fit width on, +1 px buffer, Replace existing off, and a purple Road class.
-The northwestern road is traced through both S-bends to the owner's red mark.
-Native pixel centres are listed in `roadPixels`. Before capture, an unapplied UI
-guide measures the camera transform and Escape discards it. The recorded guide
-must stay within 0.65 native pixels of the reviewed path and reach its endpoint;
-the script stops before Apply if either check fails.
-
-The earlier alignment-review capture is under `output/2026-11-09T15-27-37-628Z-forest-road-trial/`,
-including the preview, applied result, 39.47-second MP4 and `trial.json` with the
-actual mutation and saved-pixel check. It saved 581 road pixels (58,165 m² shown
-by the app); maximum guide deviation was 0.41 native pixels. Review included
-decoded frames across the entire video and a source/result comparison using the
-downloaded saved label tile. All 105 sampled road centres between native rows
-29 and 133 are labelled; the tool trims the stroke caps. The endpoint falls at
-the red mark in the reference screenshot. The earlier 347/380-pixel trials were
-offset and are superseded by this capture.
-
-The subsequent clean-start recording is in
-`output/2026-11-09T15-37-42-339Z-forest-road-trial/`. After Escape discards the
-calibration guide, the recorder opens a fresh editor page, restores the camera and
-tool settings, and starts capture there. This avoids production v3.0.0 briefly
-showing the discarded guide at the start of the next stroke. It changes no app
-rendering code. The actual app fix is being investigated separately on develop.
-
-The movement budget is halved to 25 ms/native pixel. Because input and capture
-overhead varies with workstation load, the intermediate export additionally speeds
-only the tracing interval by 2.4; its caption holds retain their original duration.
-`forest-road-trial-faster.mp4` has a measured 6.4-second trace, versus 25.9 seconds
-in the earlier recording. It preserves the same 581-pixel
-saved result and 0.41-pixel maximum guide deviation. Review covered 78 consecutive
-onset frames, decoded frames throughout the final video, and the applied result.
-`review-faster.json` records the intermediate export timing. `review.json` describes
-the intermediate 12.8-second version. From `tools/videos/`,
-the selected source recording can be exported again with:
-
-```powershell
-$roadRun = 'output/2026-11-09T15-37-42-339Z-forest-road-trial'
-& node_modules/ffmpeg-static/ffmpeg.exe -hide_banner -loglevel error -y -i "$roadRun/forest-road-trial.mp4" -filter_complex '[0:v]trim=end=2.0,setpts=PTS-STARTPTS[head];[0:v]trim=start=2.0:end=17.5,setpts=(PTS-STARTPTS)/2.4[trace];[0:v]trim=start=17.5,setpts=PTS-STARTPTS[tail];[head][trace][tail]concat=n=3:v=1:a=0,fps=30,format=yuv420p[out]' -map '[out]' -an -c:v libx264 -crf 19 -pix_fmt yuv420p -movflags +faststart "$roadRun/forest-road-trial-faster.mp4"
-```
-
-Recheck the tracing interval and visible speed after recording a new take; these
-export boundaries refer only to this selected capture.
-The website uses a later 15.1-second cut, `rivers-roads-short-clean.mp4`, which
-removes the brief resize at about 13 seconds, trims the idle ending, and removes
-the final bottom caption. The source MP4, exact frame boundaries, and poster are
-documented in [the website recording notes](../../docs/app-videos.md).
-
-The remaining scenario descriptions and dated status entries below document the
-earlier three-video recorder, retained for reference and project setup.
-Its dimensions and storyboards do not describe the five selected website videos.
-
-This folder contains portable demonstration data, project setup, and earlier website
-showcases for Pen, Smart Fill, and time-series change detection. The scripts operate the real SATIFY
-editor at `https://app.satify.tech` by default, or `https://app-dev.satify.tech`
-with `--env dev`, and export silent videos for a 500 × 450
-website player, plus native 600 × 540 exports (1440 × 900 for change detection). The recorder is self-contained in this website repository; it
-does not need the application source, Docker or a local SATIFY instance.
-The app showcase now integrates reviewed recordings; see [the website recording notes](../../docs/app-videos.md).
-
-Migrated from `sSatify/satify-app`, branch `feat/script-tool-videos_mp`, commit
-`a5a67afa6010de1ebf15435aeb8fb7e03d7803e0`. The portable scene and project workflow
-are preserved. The original tutorial scenarios have been rewritten as silent,
-benefit-focused website showcases, with visible actions and results.
-
-## Repository contents
-
-- `assets/`: tracked selection definitions and the pinned dataset release with checksums.
-  Downloaded scene JSON and GeoTIFFs are cached here and ignored by Git.
-- `scripts/`, `scenarios/`, `tests/`: reusable recording code and automated checks.
-- Configuration, npm package/lock files, this README and `.gitignore`.
-
-New recordings and diagnostic images go to the Git-ignored `output/` directory.
-Generated videos are reproducible and are not committed in this folder. When a
-video is selected for the website, copy its reviewed MP4 into `../../web/assets/videos/`
-as part of the playback integration. The website build already copies `web/`.
-WebM intermediates, posters, test output and scratch images
-are also excluded. The ignored `.state/`, `.cache/` and `node_modules/` directories
-are local runtime data; keep `.state/` to retain login and managed-project identity.
-
-## Status
-
-Website integration pass, 26 October 2026: Smart Fill, Pen, and change detection were
-recorded against `app-dev.satify.tech` in separate managed website-showcase projects.
-The website uses the native 600 × 540 Pen/Smart Fill exports, avoiding the smaller
-500 × 450 export. Change detection now records a 1440 × 900 (16:10) crop and is
-displayed across the full content width. The scripts accept both the older “label”
-and current “class” control names. Before Apply, the comparison recording scrolls
-the control into view and still verifies it is completely inside the crop.
-All 34 Node tests, the recording/export/responsive smoke test, and the saved-login
-browser check pass. The historical dimensions and results below describe earlier passes.
-
-Website showcase pass, 22 October 2026: both scripts recorded successfully against
-`app-dev.satify.tech`. Pen exports at about 29 seconds / 503 KB; Smart Fill at about
-23 seconds / 1.5 MB, both silent H.264 at 500 × 450. Reviewed before/result frames,
-final video frames, and desktop/mobile previews. All 34 Node tests and the browser
-recording/export/responsive-preview smoke test pass. These are first review drafts;
-the new scenarios have not yet been recorded against production. The revised Pen
-result was checked against the traced dark shoreline in both the saved native tile
-and rendered image: no yellow over the water, no blue outside the yellow outline,
-and no unpainted pixels anywhere inside it.
-
-Change detection was also recorded on dev: about 19 seconds / 6.3 MB at 1200 × 1080.
-New recordings keep only this large MP4 as the video output. It compares
-the three dates, narrows the August–September 2022 NDVI decrease range, and applies
-an 8,007-pixel mask. The recorder verifies the server result, then undoes its own
-mask after capture and checks that no labels remain in the managed drawing layer.
-
-Verified after migration on 22 October 2026: all 9 project tests, all 4 GDAL
-scene tests, the browser authentication test, and the synthetic recording test
-(including 500 × 450 H.264 export) pass from this repository. The bundled scene
-matches its manifest. The website check and build pass, and the build excludes
-this tooling directory. Those checks describe the original migration, before the
-website showcase rewrite above.
-
-The following checks were completed in the original application repository
-before migration. They describe the local stack at that time, not verification
-against the current published application:
-
-- All 12 bands in `assets/city-scene.tif` have decoded pixels identical to their
-  source TIFFs, with the same dimensions, data type, CRS and transform.
-- The current router recognised every band, accepted the generated metadata and
-  upload, and converted the scene successfully in an isolated container.
-- Project lifecycle tests cover reuse, interrupted upload recovery, configuration
-  changes, name collisions, failed preparation and restricted drawing reset.
-- A real Chromium smoke test exercised the visible cursor, button click,
-  captions, WebM capture, and valid H.264 MP4 export at 500 × 450.
-- Both scenarios have run in the authenticated local SATIFY stack. Smart fill
-  compares three masks and applies Local, In viewport and Global fills, using
-  Undo between scopes. The recorder checks the fill requests' scope and pond
-  coordinates as well as their successful responses.
-
-Review each clip at its final playback size before publishing. The browser smoke
-test uses a synthetic page; the scenario recordings operate the actual editor.
-Each scenario has its own focus, zoom, subject position and tool-card position.
-The current clips crop a 600 × 540 imagery area and export at 500 × 450. The
-browser remains larger so unrelated help panels and navigation controls stay
-outside the crop. Smart Fill's mask and scope controls are inside the frame.
-No application UI or imagery is painted over or removed.
-This is a camera crop: **In viewport** still means SATIFY's full editor viewport,
-not just the portion shown in the video. The dashed outline marks the original
-full editor viewport when the Smart Fill demonstration zooms out.
-
-## Website showcase direction
-
-Each clip demonstrates one benefit through visible actions and results. The Pen
-panel stays visible while drawing a yellow outline with two brush sizes, switching
-to the blue label, increasing the brush size and selecting Fill gaps. Smart Fill changes masks and
-selects each fill scope. There are no instructional captions, undo comparisons, voiceovers,
-or speed changes. The pointer stays inside the recorded frame at all times,
-including pauses. Pen rests beside the size field; Smart Fill keeps its cursor on
-the subject while previewing masks with Shift + scroll. It moves to the card only
-to change scope and for the final hold, clearing the preview without hiding the cursor.
-
-- **Pen — Make every detail count:** trace a yellow boundary around the pond, select
-  blue in the on-image label picker, then use a wider brush in Fill gaps mode.
-  Use 4 px on the outer yellow curve and 2 px on the tight inner bend.
-  The brush overlaps the existing yellow pixels without replacing them. Hold the
-  two-colour result. Aim for 20–30 seconds.
-- **Smart Fill — Choose the region. Choose the reach.:** explore masks, fill the
-  forest with Local, extend the result with In viewport, then use Global. Zoom out
-  to reveal the viewport boundary and labels beyond it. Aim for 20–30 seconds.
-
-Timing is a guide, not a hard limit: real server responses and rendering are
-awaited. Every export includes `before.png`, a final `poster.png`, and a local
-`preview.html` pairing the video with draft benefit copy. The preview displays
-the video at up to 500 × 450 with text alongside; below 720 px, text moves below
-the video and the video scales proportionally. Playback is silent, user-controlled,
-and loopable. This preview does not publish or change the website.
+The old root `videos/` directory contains local historical captures and browser
+sessions from before the tooling move. It is ignored, is not used by the website,
+and is not the location for new recordings. Keep any unique raw takes there until
+they are intentionally archived or discarded. New work belongs under `tools/videos/`.
 
 ## First recording
 

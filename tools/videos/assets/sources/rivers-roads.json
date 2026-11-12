@@ -1,0 +1,59 @@
+{
+  "origin": "http://127.0.0.1:3030",
+  "appVersion": "v3.0.1-local",
+  "theme": "dark",
+  "explainerVideos": "off",
+  "settings": {
+    "brush": "159.8 m",
+    "curvature": 0.25,
+    "fitWidth": true,
+    "bufferPx": 0
+  },
+  "guide": [
+    [
+      108,
+      27.5
+    ],
+    [
+      125,
+      62
+    ],
+    [
+      129,
+      86
+    ],
+    [
+      144,
+      98
+    ],
+    [
+      122,
+      116
+    ],
+    [
+      144,
+      139
+    ]
+  ],
+  "fitRevision": 2,
+  "pixelsWritten": 280,
+  "previewApplyCountParity": true,
+  "times": {
+    "traceStart": 0.6626826000000001,
+    "traceEnd": 4.167468099999998,
+    "previewReady": 4.977760399999999,
+    "applyStart": 5.706664000000001,
+    "savedReady": 6.8864211,
+    "end": 7.805691800000001
+  },
+  "rawCrop": {
+    "x": 80,
+    "y": 69,
+    "width": 1280,
+    "height": 960
+  },
+  "recordedAt": "2026-11-11T15:42:32.824Z",
+  "rawVideo": "rivers-roads.webm",
+  "rawSha256": "0619a49d43bb102b852a321937a8ae30e1cb07071c25fa8142ef569c231b108d",
+  "sourceRun": "2026-11-11T15-42-08-514Z-local-road-micro"
+}

@@ -5,3 +5,6 @@ node_modules/
 
 # Personal agent instructions
 /AGENTS.local.md
+
+# Legacy local recording workspace (captures, caches and browser sessions)
+/videos/

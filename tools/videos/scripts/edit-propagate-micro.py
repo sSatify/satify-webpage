@@ -39,7 +39,7 @@ def source_time(n):
 
 def render(ffmpeg):
     OUT.mkdir(parents=True,exist_ok=True)
-    source = ROOT/'web/assets/videos/propagate.mp4'
+    source = ROOT/'tools/videos/assets/sources/propagate.mp4'
     provenance = next(item for item in json.loads((source.parent/'recordings.json').read_text())
                       if item['scenario'] == 'propagate')
     assert hashlib.sha256(source.read_bytes()).hexdigest() == provenance['sha256']

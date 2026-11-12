@@ -1,264 +1,150 @@
-# App showcase recordings
+# Tool gallery videos
 
-Five recordings for [#216](https://github.com/sSatify/issue-tracker/issues/216)
-and [#217](https://github.com/sSatify/issue-tracker/issues/217). Three were recorded
-on 9 November 2026 against the production app at **https://app.satify.tech**,
-version **v3.0.0**. Smart Fill and Sync labelling were rerecorded on 10 November
-against the updated local app at **http://127.0.0.1:3030**, version
-**v3.0.1-local**. All use dark mode.
-The selected assets are used on the website's unlisted `/app/` page.
-Further website work can continue on `develop`; the deployment workflow publishes `main`.
+The approved gallery is `/tools/` (`web/tools/index.html`). It replaces both
+`/app/` and `/app2/`; those old pages and their long published videos are removed.
+The gallery shares `web/styles.css` for SATIFY branding. Its own CSS and JS handle
+the grid and players. It remains unlisted with `noindex` until the homepage update.
 
-The separate, unlisted `/app2/` page is a technical tool gallery using the
-approved short edits. It shares `web/styles.css` for SATIFY typography, colours,
-page header/footer and pixel buttons. Its own stylesheet contains only the gallery
-layout and player-specific rules; `/app/` and the original recordings remain unchanged.
-The five MP4s and their posters
-are copied into `web/assets/videos/gallery/`, with hashes, edit versions, source
-app versions and durations in `clips.json`. `npm run check` verifies these assets
-and the new page as well as the original showcase.
+## Selected exports
 
-The gallery selects Smart Fill v1 (Global only), Roads v5, Sync labelling v2,
-Change Detection v3 and Propagate v2. Four clips are five seconds; Change
-Detection is eight seconds and returns to the selected NDVI mask after its
-histogram adjustment. All are 1280 × 720, 30 fps and silent. Their edit recipes
-and capture provenance are documented in `tools/videos/assets/micro/README.md`.
-The gallery uses short descriptions without scope badges, technical data tables,
-detail disclosures, category filters, duration labels or the introductory metadata row. It offers
-an enlarged player and mutually exclusive playback. Native players remain available without
-JavaScript. Playback, keyboard focus, themes, direct-file access, and video
-proportions from 320 to 1440 px were checked against the built page.
-The page now ends after the gallery: Workflow notes, the invitation panel and
-the recording note are removed, along with the Technical notes navigation link.
-Its heading is “SATIFY tools in action”; the road card's category is “Road & river tracing”.
-Select Similar was dropped from the showcase after the industrial roof trial
-failed its selection-quality check. Its local trial captures and review artifacts remain in `tools/videos/output/`.
+All five clips are silent H.264, 1280 × 720, 30 fps, with fixed prominent SATIFY
+branding and Saty. Four run for five seconds; Change detection runs for eight.
+The website assets and posters are in `web/assets/videos/gallery/`.
+`clips.json` pins their exact hashes, dimensions, durations and edit versions.
+The static build copies only `web/`, excluding the recorder and sources.
 
-The recorder forces dark mode and switches Tool videos off before app startup,
-including when its saved browser state has different preferences. Each new
-showcase capture verifies the preferences and records them in its manifest.
-The selected MP4s are listed with their origin, version, theme and SHA-256 in
-`web/assets/videos/recordings.json`. The website check verifies their hashes,
-origins and dark mode, plus the disabled Tool videos preference for the local captures.
-Development trial captures remain ignored and are not selected for the website.
+| Clip | Editor in tools/videos/scripts/ | Selected output in tools/videos/output/ |
+| --- | --- | --- |
+| Smart Fill · Global only | `edit-smart-fill-micro.py` | `smart-fill-micro-pilot-v1/satify-smart-fill-5s-v1.mp4` |
+| Rivers & Roads Pen | `edit-roads-micro.py` | `roads-micro-pilot-v5/satify-roads-5s-v5.mp4` |
+| Sync labelling | `edit-time-series-micro.py` | `time-series-micro-pilot-v2/satify-time-series-5s-v2.mp4` |
+| Change detection | `edit-change-micro.py` | `change-micro-pilot-v3/satify-change-8s-v3.mp4` |
+| Propagate labels · Experimental | `edit-propagate-micro.py` | `propagate-micro-pilot-v2/satify-propagate-5s-v2.mp4` |
 
-## Selected videos
+## Retained source recordings
 
-| Feature | Asset in web/assets/videos/ | Dimensions | Duration | Size |
-| --- | --- | --- | --- | --- |
-| Smart Fill | smart-fill.mp4 | 1280 × 960 (4:3) | 19.0 s | 8.7 MB |
-| Rivers & Roads Pen | rivers-roads.mp4 | 1280 × 960 (4:3) | 15.1 s | 2.0 MB |
-| Time Series Sync labelling | time-series.mp4 | 1600 × 900 (16:9) | 23.9 s | 3.5 MB |
-| Change detection | change-detection.mp4 | 1600 × 900 (16:9) | 17.5 s | 6.6 MB |
-| Propagate Labels (experimental) | propagate.mp4 | 1600 × 900 (16:9) | 26.6 s | 3.6 MB |
+The exact inputs for all five edits are versioned under
+`tools/videos/assets/sources/`, outside the published site:
 
-Each silent H.264 MP4 has a WebP poster. A one-second still of the result opens
-most clips, followed by app interaction with a visible pointer and short
-captions. Captions use bold 40 px text, a high-contrast panel and a 14% bottom inset,
-bringing them toward the centre and above the playback controls. Smart Fill uses
-mode titles with a smaller explanatory line. No predicted labels or processing results are simulated.
-Source datasets are prepared before capture. Smart Fill starts chronologically with Local,
-without a result-preview intro. Propagate also has no result preview: it starts with a
-clean image and shows every Forest, Water and Built-up example being drawn before
-prediction. Its website poster also uses the clean before frame.
-The new Smart Fill clip is under 25 seconds. Tool videos were disabled before
-capture. Its pointer moves between actual controls and fill points without
-returning to a resting position after each action. Cropped screenshots during
-the screencast caused the earlier four-frame resize; the script no longer takes
-them. The selected recording is the raw export, with no frame removal. A
-frame-by-frame review of abrupt changes found only the intended zoom animations.
-The new Sync labelling clip leaves the pointer at the action location between
-steps. It labels Water with Adaptive Groups · k=3, draws one polygon spanning the
-two marked shoreline stretches, and fills Seagrass with two Smart Fill clicks:
-one for the shoreline and one for the darker interior. Both use Smooth Regions · k=10,
-Viewport scope and Replace existing off.
-The tool panel is placed left of the shoreline before capture so the full area
-remains visible. The 23.9-second raw export needs no frame removal. Both classes
-were verified on all three dates; the recorder undid its labels and removed its saved area.
-An unselected 10 November rerecord is in
-`tools/videos/output/2026-11-10T15-56-04-381Z-v2-time-series/`. Moving the
-Seagrass click from (395, 580) to (390, 525) made the source date's hover preview
-follow the dark tidal bands, but the two target dates still saved broad regions.
-The hover previews showed narrower bands before the click, so that take was not
-selected. The recorder cleaned its labels and area.
-The selected Rivers & Roads clip starts clean, follows the owner-supplied forest
-road through both bends, and accelerates only the tracing to 6.4 seconds. A later
-review removed a brief six-frame resize and its distorted recovery frames near
-13 seconds, the redundant ending after 15.1 seconds, and the final bottom caption.
-Its poster shows the saved road without that caption.
+- `smart-fill.mp4`, `time-series.mp4`, `propagate.mp4`: original longer recordings.
+  `recordings.json` pins their SHA-256 hashes and app/build provenance, including
+  verified Global fill counts and Water/Seagrass counts across the three dates.
+- `rivers-roads.webm` and `rivers-roads.json`: raw local capture from
+  `2026-11-11T15-42-08-514Z-local-road-micro`, v3.0.1-local. Revision-2 width fitting,
+  159.8 m loose guide, curvature 0.25, zero buffer. Preview and saved Apply agreed
+  at 280 road pixels; the recorder undid its own operation.
+- `change-detection.webm` and `change-detection.json`: raw local capture from
+  `2026-11-12T08-48-02-732Z-local-change-micro`, v3.0.1-local. NDVI difference between
+  2022-08-15 and 2022-09-04, with the real histogram drag to approximately −0.20.
+  Apply and native tiles agreed at 7,560 pixels; both dates were empty after Undo.
 
-The close-ups use larger players beside their descriptions. The three wide
-workflows use the full content width, capped at 1120 CSS pixels. All players have
-native controls, inline playback, preload="none", accessible descriptions and a
-full-size link. There is no autoplay. The homepage retains the app section and menu link from `main`.
-The dedicated `/app/` page is unlisted for colleague testing: no public-page navigation links to it,
-and its `noindex` metadata opts out of search indexing. Propagate is marked experimental.
-Fullscreen helps inspect comparison controls on phones.
+The two raw-capture JSON files retain editing/verification metadata and raw hashes.
+Their video paths are relative to the JSON, so they work in a fresh checkout.
+Private browser state and managed-project identifiers are excluded. The original
+ignored capture directories are left intact locally. The sources show real SATIFY
+imagery and raster results; edits shorten timing and add captions, branding and
+click emphasis. They do not generate the labelled map pixels.
 
-## Provenance and interpretation
+## Reproduce the current edits
 
-All five selected workflows were exercised in SATIFY. Smart Fill and Sync
-labelling used the local **v3.0.1-local** app; the other three used production
-**v3.0.0**.
-The recorder prints the chosen origin before opening a managed project and saves
-the observed app version, origin and verified theme in each recording manifest.
+Requirements: Python with Pillow and NumPy, FFmpeg, and Windows Segoe UI fonts.
+The scripts currently use `C:/Windows/Fonts`; adapt the font helper when using
+another operating system. Commands below run from the repository root:
 
-- Smart Fill compares Local, Viewport and Global using the same forest point, class
-  and source mask from clean starts. Undo is verified before each new mode.
-  The first view is zoomed in; after Viewport and Global, real zoom-out gestures reveal
-  the image beyond a dashed outline of the previous viewport. Viewport leaves the
-  outside unlabelled; Global includes matching regions there. Saved counts were
-  9,994 (Local), 26,070 (Viewport) and 78,332 (Global). The recorder rejects a capture
-  unless each mode demonstrably expands the saved extent. Generated regions require human review.
-- Rivers & Roads Pen uses the supplied forest scene
-  `dw_-64.3106956299_49.8925498786-20190820`. The guide follows the road's centre
-  through both S-bends to the owner's red mark. Settings: 79.9 m brush, Draw,
-  Trace, curvature 0.85, Fit width on, +1 px buffer, Replace existing off.
-  A discarded guide measures the camera transform before capture; opening a fresh
-  editor page afterward avoids production v3.0.0 briefly flashing that old guide.
-  The recorded guide's maximum deviation from the reviewed path was 0.41 native
-  pixels. Apply saved 581 road pixels (58,165 m²), verified from the stored tile.
-  The intermediate export speeds only source seconds 2.0–17.5 by 2.4, giving a
-  measured 6.4-second trace. The selected export then removes the brief resize,
-  trims the ending, and clears the final caption without changing the road label.
-- Sync labelling first uses Adaptive Groups · k=3 with Local scope to label Water.
-  The click is in the middle of the channel (normalized first-pane position
-  0.65, 0.61). Three user-marked water points were tested; all selected the same
-  region, which covers the channel on the third date without filling the lower
-  area selected by the earlier seed (0.52, 0.80). The workflow
-  then draws a polygon around both eastern intertidal stretches and uses Smooth Regions · k=10
-  with Viewport scope and Replace existing off to label the shoreline. A second
-  click fills the dark interior on the source date; both target dates already
-  had the matching mask region from the first click.
-  Saved Water counts were 292,073, 344,753 and 222,492 pixels; Seagrass counts
-  were 78,588, 69,923 and 73,809. Both target dates reported changed tiles for
-  the first Seagrass fill; the second reported no additional target tiles.
-  Cleanup undid the fills in reverse order, checked the saved counts after
-  each Undo, removed the saved area, and verified all three dates were empty.
-  Earlier Smart Fill trials with different settings showed only a preview; the
-  selected settings saved labels on all dates.
-- Change detection selects an NDVI decrease range near −0.2 and applies 13,584 pixels
-  using the existing Open ground class. An index difference is not validated ground
-  truth; the page asks viewers to interpret it with the imagery.
-- Propagate shows all Forest, Water and Built-up examples being drawn, learns from
-  them, previews predictions, and applies 247,576 new pixels after adjusting confidence to about 82%. Confidence
-  and the displayed hold-out score are model diagnostics, not overall accuracy.
-
-## Reproduction
-
-See [the recorder guide](../tools/videos/README.md) for dependencies, login and project setup.
-The recorder defaults to the production app and uses managed projects
-`SATIFY website showcase 2026-11-09 tools` and
-`SATIFY website showcase 2026-11-09 time series`. It requires their saved ownership
-records under ignored `tools/videos/.state/`; it will not adopt arbitrary projects.
-For a fresh checkout, prepare new managed projects through the setup CLI with these
-names, or pass a matching `--project` name to the showcase command. Authentication and
-project ownership are isolated per origin. Development requires explicit `--env dev`.
-
-From tools/videos/, with Node 22+, Playwright's browser and FFmpeg installed:
+Create an isolated editing environment once, then activate it before rendering:
 
 ```powershell
-npm run showcase -- change-detection
-npm run showcase -- propagate
+python -m venv tools/videos/.venv
+& tools/videos/.venv/Scripts/Activate.ps1
+python -m pip install -r tools/videos/requirements-editing.txt
 ```
 
-To reproduce the selected Smart Fill clip, run the local app on port 3030 and
-use the same origin and project name for interactive login, project setup and capture:
+```powershell
+python tools/videos/scripts/edit-smart-fill-micro.py --ffmpeg ffmpeg
+python tools/videos/scripts/edit-roads-micro.py --ffmpeg ffmpeg --recording tools/videos/assets/sources/rivers-roads.json
+python tools/videos/scripts/edit-time-series-micro.py --ffmpeg ffmpeg
+python tools/videos/scripts/edit-change-micro.py --ffmpeg ffmpeg --recording tools/videos/assets/sources/change-detection.json
+python tools/videos/scripts/edit-propagate-micro.py --ffmpeg ffmpeg
+```
+
+Replace the `ffmpeg` argument with an executable path if it is not on PATH.
+Outputs include the MP4, `poster.jpg`, `edit.json`, frame/contact sheets and a
+preview under ignored `tools/videos/output/`. These commands do not publish or
+replace selected website assets. Byte-identical exports depend on encoder, font
+and imaging-library versions; the selected website hashes are the reference.
+The source hashes are checked before rendering.
+
+Current edit decisions:
+
+- **Smart Fill:** Global action only, source seconds 13.25–14.1. Crop away the
+  controls and previous captions. Caption: “Click once. Label matching forest
+  patches.” A short graphic pulse marks the real click.
+- **Roads:** one fixed crop rotated 90° counterclockwise. Clean view 0–0.6 s,
+  loose stroke 0.6–3.1, fitted preview 3.1–4.0, Apply 4.0–4.4 and persisted result
+  4.4–5.0. Caption: “Mark it roughly. SATIFY finds the road.” No sound effects.
+- **Sync labelling:** three aligned coastal crops from each same source frame.
+  Water appears at 0.6 s and simultaneously on both target dates at 0.9 s.
+  Seagrass follows at 2.0/2.4 s, completed at 3.3 s. Source snapshots are 6.25,
+  6.4, 7.1, 17.2, 18.0 and 20.8 s. Caption: “Label once. Sync across dates.”
+- **Change detection:** reference/current dates at 0/0.9 s, NDVI difference at
+  1.8, histogram/threshold at 3.0, selected NDVI mask again at 5.5, saved labels
+  at 6.8. Caption: “What changed?” The real ramp key is repositioned intact.
+  A decrease in NDVI indicates potential vegetation loss, without attributing
+  a cause.
+- **Propagate:** source 0.3 s clean frame; drawing intervals 4.7–6.2, 10.2–11.6
+  and 14.9–16.5 s are retimed to 31 frames each, followed by the saved result at
+  source 23.5 s. The final result holds 1.4 s including the transition. Crops
+  compensate for the recorded workspace shift. Caption: “Teach a little. Label
+  a lot.” The experimental tool name remains visible.
+
+Saty is the transparent two-pose adaptation in `tools/videos/assets/micro/`.
+Its adjacent JSON preserves the reference and generation prompt. The same logo,
+large fixed mascot and single main visual area are used throughout. Saty can
+crossfade to the happy pose without disappearing.
+
+## Record a new take
+
+See [the recorder guide](../tools/videos/README.md) for dependency/browser setup,
+scene data and managed-project rules. Run recorder commands from `tools/videos/`.
+For the local app, always pass `--url http://127.0.0.1:3030` to login, setup and
+capture. Login opens its own Edge window: let the user sign in there and save
+that session before setup. On this workstation launch interactive login outside
+the Codex sandbox. Keep the password in the browser.
 
 ```powershell
-npm run login -- --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
+npm run login -- --url http://127.0.0.1:3030
 npm run setup -- --dataset tools --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
 npm run showcase -- smart-fill --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 tools"
-```
-
-On Windows the interactive login opens Edge, allowing normal password paste.
-The recorder stores its own session locally and the user signs in directly.
-The selected 570-frame export needs no postprocessing. The recorder retains its
-raw capture and recording manifest in the ignored output directory.
-
-For the selected Sync labelling clip, the same local sign-in applies. Prepare its
-separate three-date project, then record:
-
-```powershell
 npm run setup -- --dataset time-series --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 sync preview"
 npm run showcase -- time-series --url http://127.0.0.1:3030 --project "SATIFY website showcase 2026-11-10 sync preview"
+node scripts/record-road-micro.mjs --url http://127.0.0.1:3030 --expect-version 3.0.1-local
+node scripts/record-change-micro.mjs --histogram --url http://127.0.0.1:3030 --expect-version 3.0.1-local
 ```
 
-Run these sequentially. The recorder locks each managed project, resets only the
-reserved tools drawing layer, and preserves mask display settings and other layers.
-Time-series operations require empty demonstration layers, undo their own applied
-labels, and verify all three dates are empty afterward. Authentication and raw
-captures stay ignored. FFmpeg can be on PATH, installed locally as ffmpeg-static,
-or selected with FFMPEG_PATH.
+Use the actual intended app version for a new take. Verify dark mode and Tool
+videos off before capture. The road/change recorders prepare their own separate
+projects; use `--prepare` to prepare without capturing. Run sequentially and do
+not edit a managed project in another browser. Propagate's selected source was
+recorded on production v3.0.0; `showcase -- propagate` also supports an explicitly
+selected local origin for future rerecording. Existing project ownership state
+is local and origin-specific; a fresh checkout must prepare its own projects.
 
-Selected source directories under ignored tools/videos/output/:
+## Review and select
 
-- 2026-11-10T11-41-16-511Z-v2-smart-fill
-- 2026-11-09T15-37-42-339Z-forest-road-trial
-- 2026-11-10T17-02-05-456Z-v2-time-series
-- 2026-11-09T14-47-16-040Z-v2-change-detection
-- 2026-11-09T14-47-51-805Z-v2-propagate
+1. Decode the entire export. Confirm H.264, 1280 × 720, 30 fps, the approved
+   duration and no audio track.
+2. Inspect short consecutive frame sequences around every edit and abrupt image
+   change. One-second contact sheets can miss brief resize glitches.
+3. Check real tool output, Preview/Apply agreement, saved raster pixels and cleanup
+   receipts for a new capture. Review captions and persistent Saty/logo placement.
+4. Copy the approved MP4 and poster into `web/assets/videos/gallery/` using the
+   filenames in `clips.json`; update its hashes and edit version together.
+5. Run `npm run check` and `npm run build`. Play the selected files to completion
+   in the built `/tools/` page, including the enlarged viewer, both themes and
+   narrow/mobile widths. Check exclusive playback and no-JS native controls.
 
-Each contains its MP4, final poster.png, before frame, capture and recording
-manifest. WebP posters use FFmpeg scale=960:-2, quality 86. Propagate's website
-poster uses before.png to avoid showing labels that disappear when playback starts.
-The road capture was first exported as `forest-road-trial-faster.mp4`; `trial.json` records
-the real operation and `review-faster.json` records its export timing. It uses the
-separate managed production project `SATIFY forest road trial 2019-08-20 2026-11-09`.
-The retained road capture can be exported from `tools/videos/` with:
-
-```powershell
-$roadRun = 'output/2026-11-09T15-37-42-339Z-forest-road-trial'
-& node_modules/ffmpeg-static/ffmpeg.exe -hide_banner -loglevel error -y -i "$roadRun/forest-road-trial.mp4" -filter_complex '[0:v]trim=end=2.0,setpts=PTS-STARTPTS[head];[0:v]trim=start=2.0:end=17.5,setpts=(PTS-STARTPTS)/2.4[trace];[0:v]trim=start=17.5,setpts=PTS-STARTPTS[tail];[head][trace][tail]concat=n=3:v=1:a=0,fps=30,format=yuv420p[out]' -map '[out]' -an -c:v libx264 -crf 19 -pix_fmt yuv420p -movflags +faststart "$roadRun/forest-road-trial-faster.mp4"
-```
-
-Recheck the tracing interval after a new take; these boundaries apply only to the
-selected source recording.
-The selected 15.1-second cut was made from that intermediate export on 10 November 2026.
-Its input is preserved locally as ignored `output/road-review-2026-11-10/rivers-roads-before-review.mp4`
-and is also the `assets/videos/rivers-roads.mp4` blob in commit `8a97e76`.
-At 30 fps, source frames 391–402 contain the resize and distorted recovery;
-frames from 465 onward are the redundant ending. The final caption begins at
-source frame 424. The unobstructed bottom of source frame 0 supplies the matching
-map background under that caption after the cut. `web/assets/videos/recordings.json`
-pins the source and selected MP4 hashes and the exact frame boundaries.
-The website poster comes from the selected clip at 15.0 seconds.
-To reproduce the final cut from `tools/videos/`, place the previous selected MP4
-at the ignored review path above, then run:
-
-```powershell
-$review = 'output/road-review-2026-11-10'
-ffmpeg -hide_banner -loglevel error -y -i "$review/rivers-roads-before-review.mp4" -vf "select='eq(n,0)',crop=648:138:316:691" -frames:v 1 "$review/clean-caption-area.png"
-ffmpeg -hide_banner -loglevel error -y -i "$review/rivers-roads-before-review.mp4" -loop 1 -i "$review/clean-caption-area.png" -filter_complex "[0:v]trim=end_frame=391,setpts=PTS-STARTPTS[a];[0:v]trim=start_frame=403:end_frame=465,setpts=PTS-STARTPTS[b];[a][b]concat=n=2:v=1:a=0,format=yuv420p[cut];[cut][1:v]overlay=x=316:y=691:enable='gte(n,412)':shortest=1,format=yuv420p[out]" -map '[out]' -an -c:v libx264 -crf 19 -preset medium -pix_fmt yuv420p -movflags +faststart "$review/rivers-roads-short-clean.mp4"
-ffmpeg -hide_banner -loglevel error -y -ss 15.0 -i "$review/rivers-roads-short-clean.mp4" -frames:v 1 -vf 'scale=960:-2' -c:v libwebp -quality 86 -compression_level 6 "$review/rivers-roads-short-clean.webp"
-```
-
-Only selected MP4s, WebPs and the small recording provenance JSON in web/assets/videos/
-enter the website build. Dataset provenance and checksums
-remain in tools/videos/assets/release.json and the scene manifests.
-
-The reusable recorder originally came from website branch tool_videos_mp at
-22509dc8f47dd89acfe8caeeb20990b6ae94327b. The old three-video scenarios remain for
-reference, but their Pen clip and former exports are no longer used by the site.
-
-## Verification
-
-All five scenarios completed; comparison operations verified their saved labels
-and successful Undo cleanup. The selected Smart Fill clip was reviewed across its
-timeline, including the previous resize location and every high-change interval,
-decoded in full with FFmpeg, and played to the end
-in the built website with no media error. Its H.264 stream is 1280 × 960 at 30 fps.
-All 45 Node tests, the saved-login browser check, site checks and the static build
-passed. The site check rejects public-page links to the unlisted showcase and
-requires its `noindex` metadata. Builds exclude scene datasets, recording tools
-and browser state.
-
-When replacing a clip, update its poster and HTML dimensions together, review the
-result at its actual display size, and rerun playback and responsive checks.
-
-The road clip was reviewed across the new cut, including consecutive frames around
-the removed resize and the clean saved result. Its new poster matches that result.
-The new Smart Fill capture replaces its previous production recording and keeps
-the same three verified fill counts. The Sync labelling rerecording saves Water
-and Seagrass across all three dates and limits Seagrass to the drawn shoreline
-area. Change detection and Propagate retain their earlier selected clips.
+Failed Select Similar trials and their scripts were removed after roof selection
+proved unsuitable for this gallery. Old public long-video assets and unused page
+styles were removed; the reusable recorder, approved sources and artwork remain.
+Historical ignored local takes are not published. Basemap attribution in the
+original recordings: © OpenStreetMap contributors.

@@ -1,6 +1,6 @@
 # Satify website
 
-A four-page static website for Satify: a cheerful pixel-art homepage, a dedicated app showcase, and plain, readable legal pages.
+A four-page static website for Satify: a cheerful pixel-art homepage, a tool gallery, and plain, readable legal pages.
 Served HTML, CSS, JavaScript, and assets live in `web/`; build and check scripts live in `tools/build/`.
 The video recorder and its datasets live in `tools/videos/`.
 The site has no framework, package dependencies, trackers, or external font requests. A
@@ -10,17 +10,12 @@ while the page is open; an explicit choice overrides it and is remembered locall
 The homepage introduces the invitation-only Satify app, its labelling workflow, and how to request access.
 Remote sensing imagery is the general term used for the app's satellite, drone, and aerial imagery support.
 The header's "The app" link leads to the homepage app section, preserving the public homepage from `main`.
-The separate `app/` showcase is unlisted for colleague testing: public navigation does not link to it,
-and its `noindex` metadata asks search engines to omit it. Share its direct URL with testers.
-It contains five workflow highlights, more tool details, and invitation and sign-in links.
-Smart Fill, Rivers & Roads Pen, Sync labelling, Change detection, and experimental Propagate Labels each have a real, silent
-demonstration video with a local poster, playback controls, and a full-size link.
-The three wide workflows use 16:9 frames and the full content width; the two close-up
-tool videos use larger 4:3 frames. Most start with a one-second glimpse of the result,
-followed by real app interactions with prominent captions. Smart Fill starts with Local
-and compares all three scopes, zooming out to reveal the viewport boundary. Propagate starts with a clean
-image and shows every example being drawn before the predictions. Videos load only when played.
-See [the recording notes](docs/app-videos.md).
+The approved tool gallery lives at `/tools/`. It currently remains unlisted with
+`noindex` until the homepage is updated in the next step. It uses the shared SATIFY
+styling and five short, silent landscape videos: Smart Fill, Rivers & Roads Pen,
+Sync labelling, Change detection and experimental Propagate Labels. Clips load on
+play; an enlarged viewer and native controls are available.
+See [the selected clips and recording sources](docs/app-videos.md).
 
 
 ## License

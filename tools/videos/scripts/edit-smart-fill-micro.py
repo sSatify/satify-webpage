@@ -71,7 +71,7 @@ def verify(ffmpeg, target, *, output_dir=OUT, edit_cuts=(36, 48, 72, 120, 126), 
 
 def render(ffmpeg):
     OUT.mkdir(parents=True, exist_ok=True)
-    source = ROOT/'web/assets/videos/smart-fill.mp4'
+    source = ROOT/'tools/videos/assets/sources/smart-fill.mp4'
     provenance = next(item for item in json.loads((source.parent/'recordings.json').read_text())
                       if item['scenario'] == 'smart-fill')
     assert hashlib.sha256(source.read_bytes()).hexdigest() == provenance['sha256']

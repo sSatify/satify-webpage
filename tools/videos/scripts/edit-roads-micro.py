@@ -92,6 +92,10 @@ def render(ffmpeg, recording):
     assert capture['fitRevision'] == 2 and capture['previewApplyCountParity']
     assert capture['theme'] == 'dark' and capture['explainerVideos'] == 'off'
     source = Path(capture['rawVideo'])
+    if not source.is_absolute():
+        source = Path(recording).resolve().parent/source
+    if capture.get('rawSha256'):
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == capture['rawSha256']
     times = [round(source_time(n, capture)*FPS) for n in range(FRAME_COUNT)]
     wanted = set(times)
     crop = capture.get('rawCrop')

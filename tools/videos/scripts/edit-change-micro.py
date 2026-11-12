@@ -47,6 +47,10 @@ def render(ffmpeg, recording):
     assert capture['cleanupVerifiedCounts'] == [0,0]
     assert capture['times']['histogramEnd'] > capture['times']['histogramStart']
     source = Path(capture['rawVideo'])
+    if not source.is_absolute():
+        source = Path(recording).resolve().parent/source
+    if capture.get('rawSha256'):
+        assert hashlib.sha256(source.read_bytes()).hexdigest() == capture['rawSha256']
     source_frames = {'clean':round(capture['times']['cleanReady']*FPS),
                      'preview':round((capture['times']['previewReady']+.15)*FPS),
                      'saved':round((capture['times']['savedReady']+.2)*FPS)}

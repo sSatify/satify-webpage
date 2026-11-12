@@ -1,0 +1,60 @@
+[
+  {
+    "scenario": "smart-fill",
+    "origin": "http://127.0.0.1:3030",
+    "appVersion": "v3.0.1-local",
+    "theme": "dark",
+    "explainerVideos": "off",
+    "recordedAt": "2026-11-10T11:41:41.802Z",
+    "run": "2026-11-10T11-41-16-511Z-v2-smart-fill",
+    "width": 1280,
+    "height": 960,
+    "duration": 19,
+    "bytes": 8687587,
+    "sha256": "75b79ea81bc44deb2aa73869934230d1621a2d0dc3665c9279dc6650f9e40e09",
+    "verifiedModes": {
+      "Local": 9994,
+      "In viewport": 26070,
+      "Global": 78332
+    }
+  },
+  {
+    "scenario": "time-series",
+    "origin": "http://127.0.0.1:3030",
+    "appVersion": "v3.0.1-local",
+    "theme": "dark",
+    "explainerVideos": "off",
+    "recordedAt": "2026-11-10T17:02:40.564Z",
+    "run": "2026-11-10T17-02-05-456Z-v2-time-series",
+    "width": 1600,
+    "height": 900,
+    "duration": 23.87,
+    "bytes": 3513901,
+    "sha256": "379db9fd9412f1abe3aa610f16aeed5b6190f85cd11ccc6ad25658b8ba832c52",
+    "verifiedClasses": {
+      "Water": [
+        292073,
+        344753,
+        222492
+      ],
+      "Seagrass": [
+        78588,
+        69923,
+        73809
+      ]
+    }
+  },
+  {
+    "scenario": "propagate",
+    "origin": "https://app.satify.tech",
+    "appVersion": "v3.0.0",
+    "theme": "dark",
+    "recordedAt": "2026-11-09T14:48:28.192Z",
+    "run": "2026-11-09T14-47-51-805Z-v2-propagate",
+    "width": 1600,
+    "height": 900,
+    "duration": 26.63,
+    "bytes": 3585266,
+    "sha256": "5555a600c1376646d0f163079131002102b63152b49d90eb25f02048443e63e4"
+  }
+]
