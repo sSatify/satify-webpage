@@ -3,7 +3,8 @@
 The approved gallery is `/tools/` (`web/tools/index.html`). It replaces both
 `/app/` and `/app2/`; those old pages and their long published videos are removed.
 The gallery shares `web/styles.css` for SATIFY branding. Its own CSS and JS handle
-the grid and players. It remains unlisted with `noindex` until the homepage update.
+the grid and players. The homepage app section links to the gallery; it is open
+to search indexing.
 
 ## Selected exports
 

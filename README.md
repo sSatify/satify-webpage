@@ -9,9 +9,9 @@ while the page is open; an explicit choice overrides it and is remembered locall
 
 The homepage introduces the invitation-only Satify app, its labelling workflow, and how to request access.
 Remote sensing imagery is the general term used for the app's satellite, drone, and aerial imagery support.
-The header's "The app" link leads to the homepage app section, preserving the public homepage from `main`.
-The approved tool gallery lives at `/tools/`. It currently remains unlisted with
-`noindex` until the homepage is updated in the next step. It uses the shared SATIFY
+The header's "The app" link leads to the homepage app section. Its concise introduction,
+workspace screenshot and three benefits link visitors to the tool gallery.
+The approved tool gallery lives at `/tools/` and is linked from the homepage. It uses the shared SATIFY
 styling and five short, silent landscape videos: Smart Fill, Rivers & Roads Pen,
 Sync labelling, Change detection and experimental Propagate Labels. Clips load on
 play; an enlarged viewer and native controls are available.

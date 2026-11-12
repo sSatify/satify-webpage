@@ -684,19 +684,24 @@ h1 span {
 
 .app-overview {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 28px;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr);
+  align-items: center;
+  gap: 32px 40px;
   padding: var(--panel-padding);
 }
+
+.app-overview-copy { min-width: 0; }
+.app-overview-copy > .pixel-button { margin-top: 28px; }
 
 .app-intro {
   font-size: 18px;
 }
 
 .app-features {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 40px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 28px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -716,13 +721,6 @@ h1 span {
 
 .app-feature-summary {
   margin-block: 4px 8px;
-}
-
-.app-feature-final {
-  grid-column: 1 / -1;
-  justify-self: center;
-  width: calc((100% - 40px) / 2);
-  text-align: center;
 }
 
 .app-invitation {
@@ -775,13 +773,6 @@ h1 span {
   align-items: center;
   gap: 18px;
   width: 100%;
-}
-
-@media(min-width:801px) {
-  .app-preview {
-    width: min(80%, 960px);
-    justify-self: center;
-  }
 }
 
 .app-preview-open {
@@ -857,11 +848,9 @@ html.screenshot-open {
   .supporters-card {
     --panel-padding: 24px;
   }
+  .app-overview,
   .app-features {
     grid-template-columns: 1fr;
-  }
-  .app-feature-final {
-    width: 100%;
   }
   .app-section {
     padding-block: 0 44px;

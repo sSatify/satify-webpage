@@ -7,7 +7,6 @@ import { fileURLToPath } from 'node:url';
 const web = fileURLToPath(new URL('../../web/', import.meta.url));
 const webFile = path => resolve(web, path);
 const pages = ['index.html', 'tools/index.html', 'imprint/index.html', 'privacy/index.html'];
-const unlistedPages = ['tools/index.html'];
 let links = 0;
 for (const page of pages) {
   const html = await readFile(webFile(page), 'utf8');
@@ -22,9 +21,6 @@ for (const page of pages) {
     const [path, fragment] = value.split('#');
     let target = path ? resolve(dirname(webFile(page)), path) : webFile(page);
     if ((await stat(target)).isDirectory()) target = resolve(target, 'index.html');
-    if (!unlistedPages.includes(page)) {
-      for (const unlisted of unlistedPages) assert.notEqual(target, webFile(unlisted), `${page}: the tool gallery stays unlisted until the homepage update`);
-    }
     if (fragment) assert.match(await readFile(target, 'utf8'), new RegExp(`id="${fragment}"`), `${page}: valid fragment ${value}`);
     links++;
   }
@@ -52,7 +48,6 @@ assert(modes && modes.Local > 0 && modes['In viewport'] > modes.Local && modes.G
 const classes = recordings.find(recording => recording.scenario === 'time-series').verifiedClasses;
 assert(classes && ['Water', 'Seagrass'].every(name => classes[name]?.length === 3 && classes[name].every(count => count > 0)),
   'Sync labelling must save both classes across all three dates');
-for (const page of unlistedPages) assert.match(await readFile(webFile(page), 'utf8'), /<meta name="robots" content="noindex">/, `${page}: opt out of search indexing`);
 const gallery = await readFile(webFile('tools/index.html'), 'utf8');
 for (const retired of ['app', 'app2']) {
   assert(!(await readdir(web)).includes(retired), `${retired}: retired page removed`);
